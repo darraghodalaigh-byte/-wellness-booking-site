@@ -1,61 +1,122 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en-IE">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Serene Balance Wellness | Coaching, Reflexology & Indian Head Massage</title>
+    <title>Soul to Sole | Reflexology, Wellness Treatments & Clarity Coaching</title>
     <meta
       name="description"
-      content="Book coaching, reflexology, or Indian head massage in a calm and professional setting. View live availability and submit your booking in minutes."
+      content="Soul to Sole by Louise O'Dalaigh. NRRI Reflexologist and Clarity Coach. Book live availability for reflexology, massage, and restorative wellness treatments."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles.css" />
+    <script>
+      (() => {
+        if ('scrollRestoration' in window.history) {
+          window.history.scrollRestoration = 'manual';
+        }
+
+        const navigationEntry =
+          window.performance && window.performance.getEntriesByType
+            ? window.performance.getEntriesByType('navigation')[0]
+            : null;
+        const isHistoryRestore = navigationEntry && navigationEntry.type === 'back_forward';
+
+        if (!isHistoryRestore) {
+          if (window.location.hash && window.location.hash !== '#top') {
+            window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+          }
+          window.scrollTo(0, 0);
+          window.addEventListener(
+            'pageshow',
+            () => {
+              window.scrollTo(0, 0);
+            },
+            { once: true }
+          );
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="/styles.css?v=20260418-2" />
   </head>
   <body>
     <header class="site-header" id="top">
       <div class="container nav-wrap">
-        <a class="brand" href="#top">Serene Balance Wellness</a>
+        <a class="brand" href="/">Soul to Sole</a>
         <nav class="main-nav" aria-label="Primary">
-          <a href="#services">Services</a>
           <a href="#about">About</a>
+          <a href="#services">Services</a>
           <a href="#availability">Availability</a>
-          <a href="#faq">FAQs</a>
-          <a class="btn btn-sm" href="#booking">Book Now</a>
+          <a href="#contact">Contact</a>
+          <a class="btn btn-sm" href="#booking" data-scroll-target="booking">Book Now</a>
         </nav>
       </div>
     </header>
 
     <main>
-      <section class="hero section">
-        <div class="container hero-grid">
-          <div class="reveal">
-            <p class="eyebrow">Private Wellness Studio in Bristol</p>
-            <h1>Calm your nervous system and feel like yourself again.</h1>
-            <p class="lead" id="heroIntro">
-              Private sessions in Bristol for coaching, reflexology, and Indian head massage. Choose a service, view real-time availability, and request your appointment online.
-            </p>
-            <div class="hero-cta-row">
-              <a class="btn" href="#availability" data-scroll-target="availability">View Live Availability</a>
-              <a class="btn btn-ghost" href="#how-it-works" data-scroll-target="how-it-works">How It Works</a>
+      <section class="hero section" aria-labelledby="heroTitle">
+        <div class="container hero-wrap reveal">
+          <div class="hero-top-copy">
+            <p class="eyebrow">Wellness Studio by Louise O'Dalaigh</p>
+            <h1 id="heroTitle" class="hero-brand">Soul to Sole</h1>
+            <div class="hero-title-pills">
+              <span>NRRI Reflexologist</span>
+              <span>Clarity Coach</span>
             </div>
-            <p class="small hero-reassure">New to wellness sessions? You can book in minutes and we'll guide you through each step.</p>
-            <div class="hero-meta" id="heroMeta"></div>
+            <p class="lead" id="heroIntro"></p>
           </div>
-          <aside class="hero-card card reveal">
-            <h2>Why first-time clients feel safe here</h2>
-            <ul>
-              <li>Tailored sessions with clear goals and next steps</li>
-              <li>Calm, private studio environment</li>
-              <li>Transparent pricing and no hidden extras</li>
-              <li>Supportive practitioner follow-up after booking</li>
-            </ul>
-            <div class="divider"></div>
-            <p class="small">Average response time: under 2 hours during business hours.</p>
+
+          <div class="hero-layout">
+            <article class="hero-message card">
+              <h2>Healing support with calm, personal care</h2>
+              <p>
+                Book your session online with live availability, then receive confirmation and personal follow-up from
+                Louise.
+              </p>
+              <div class="hero-cta-row">
+                <a class="btn" href="#availability" data-scroll-target="availability">View Availability</a>
+                <a class="btn btn-ghost" href="#booking" data-scroll-target="booking">Book a Session</a>
+              </div>
+              <div class="hero-meta" id="heroMeta"></div>
+            </article>
+
+            <figure class="hero-portrait-wrap">
+              <img
+                src="/assets/brand/louise-portrait.png"
+                alt="Louise O'Dalaigh, Soul to Sole practitioner"
+                class="hero-portrait"
+              />
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section soft" id="about">
+        <div class="container about-layout">
+          <article class="about-main card reveal">
+            <p class="eyebrow">About Louise</p>
+            <h2>Louise O'Dalaigh</h2>
+            <p class="title-line">NRRI Reflexologist | Clarity Coach</p>
+            <p id="aboutIntro"></p>
+            <blockquote>
+              “Success is not about how high you have climbed, but how you make a positive difference to the world.”
+            </blockquote>
+            <p class="small">A warm, trusted space to pause, reset, and feel supported.</p>
+          </article>
+
+          <aside class="about-side reveal">
+            <figure class="about-portrait-card card">
+              <img
+                src="/assets/brand/louise-portrait.png"
+                alt="Portrait of Louise O'Dalaigh"
+                class="about-portrait"
+              />
+            </figure>
+            <article class="policy-card card" id="policyCard"></article>
           </aside>
         </div>
       </section>
@@ -63,71 +124,36 @@
       <section class="section" id="services">
         <div class="container">
           <div class="section-head">
-            <p class="eyebrow">Services</p>
-            <h2>Choose your session based on how you want to feel after.</h2>
-            <p class="small">Each option includes clear duration, pricing, and outcomes so you can book with confidence.</p>
-          </div>
-          <div class="service-grid" id="serviceGrid"></div>
-        </div>
-      </section>
-
-      <section class="section soft" id="about">
-        <div class="container about-grid">
-          <div class="reveal">
-            <div class="section-head">
-              <p class="eyebrow">About Your Practitioner</p>
-              <h2>Professional support with a calm, evidence-informed approach.</h2>
-            </div>
-            <p id="aboutIntro">
-              Sessions combine practical guidance and restorative therapies to help you reduce overwhelm and feel more grounded.
+            <p class="eyebrow">Treatments & Pricing</p>
+            <h2>Thoughtful treatments tailored to your wellbeing journey.</h2>
+            <p class="small">
+              Inspired by Soul to Sole brand materials, with transparent pricing and a calm booking experience.
             </p>
-            <div class="pill-row">
-              <span class="pill">Fully confidential</span>
-              <span class="pill">Trauma-aware practice</span>
-              <span class="pill">Personalised treatment plans</span>
-            </div>
           </div>
-          <div class="stack">
-            <div class="trust-card card reveal" id="policyCard"></div>
-            <article class="card reveal">
-              <h3>What to expect in your first visit</h3>
-              <ul class="expect-list">
-                <li>A warm arrival and short check-in conversation</li>
-                <li>A tailored session matched to your goals and comfort level</li>
-                <li>Simple aftercare guidance you can use immediately</li>
-              </ul>
-              <p class="small">If anything feels unclear, you can ask questions at any stage before or during your session.</p>
-            </article>
-          </div>
-        </div>
-      </section>
 
-      <section class="section" id="how-it-works">
-        <div class="container">
-          <div class="section-head">
-            <p class="eyebrow">How Booking Works</p>
-            <h2>Simple planner flow, clear confirmations, no back-and-forth emails.</h2>
-          </div>
-          <div class="steps">
-            <article class="step card">
-              <span>1</span>
-              <h3>Select your service</h3>
-              <p>Compare durations, pricing, and outcomes before you choose.</p>
+          <div class="pricing-stage reveal">
+            <article class="price-arch card">
+              <div class="price-arch-top">
+                <div class="logo-crop">
+                  <img src="/assets/brand/price-list-reference.png" alt="Soul to Sole butterfly logo style" />
+                </div>
+                <h3>Price List</h3>
+              </div>
+              <div class="price-arch-body">
+                <div id="serviceGrid" class="service-grid"></div>
+                <p class="pricing-note">Package prices available on request.</p>
+                <p class="pricing-note">For bespoke coaching packages please contact.</p>
+              </div>
             </article>
-            <article class="step card">
-              <span>2</span>
-              <h3>Pick a date and time</h3>
-              <p>Use the planner to see available and unavailable slots in real time.</p>
-            </article>
-            <article class="step card">
-              <span>3</span>
-              <h3>Submit booking request</h3>
-              <p>We send your details instantly to the owner and show your booking summary.</p>
-            </article>
-          </div>
-          <div class="entry-actions">
-            <a class="btn" href="#availability" data-scroll-target="availability">Start Booking</a>
-            <a class="btn btn-ghost" href="#booking" data-scroll-target="booking">Jump to Form</a>
+
+            <figure class="price-reference card">
+              <img
+                src="/assets/brand/price-list-reference.png"
+                alt="Soul to Sole branded price list reference"
+                class="price-reference-image"
+              />
+              <figcaption>Soul to Sole visual brand reference</figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -135,15 +161,16 @@
       <section class="section soft" id="availability">
         <div class="container">
           <div class="section-head">
-            <p class="eyebrow">Availability Planner</p>
-            <h2>Choose your service, date, and time with confidence.</h2>
-            <p class="small">Select a date to reveal available times. Unavailable slots include a clear reason.</p>
+            <p class="eyebrow">Live Booking Planner</p>
+            <h2>Choose your treatment, then select your date and time.</h2>
+            <p class="small">Availability updates in real-time and unavailable slots show clear reasons.</p>
           </div>
+
           <div id="plannerStatus" class="planner-status" aria-live="polite"></div>
 
           <div class="planner-grid">
-            <div class="card planner-card">
-              <label for="serviceSelect">Service</label>
+            <div class="card planner-card reveal">
+              <label for="serviceSelect">Treatment</label>
               <select id="serviceSelect" aria-label="Select service"></select>
 
               <div class="month-controls">
@@ -155,7 +182,7 @@
               <div id="calendar" class="calendar" role="grid" aria-label="Availability calendar"></div>
             </div>
 
-            <div class="card slots-card">
+            <div class="card slots-card reveal">
               <h3 id="slotTitle">Select a date to view times</h3>
               <p class="small" id="slotHint">Unavailable times are shown with reasons.</p>
               <div id="timeSlots" class="time-slots"></div>
@@ -166,13 +193,13 @@
 
       <section class="section" id="booking">
         <div class="container booking-grid">
-          <div class="card summary-card">
-            <h2>Booking Summary</h2>
-            <div id="bookingSummary" class="summary-empty">Choose a service, date, and time to continue.</div>
+          <div class="card summary-card reveal">
+            <h2>Your Booking Summary</h2>
+            <div id="bookingSummary" class="summary-empty">Choose a treatment, date, and time to continue.</div>
           </div>
 
-          <div class="card form-card">
-            <h2>Request Appointment</h2>
+          <div class="card form-card reveal">
+            <h2>Request Your Appointment</h2>
             <form id="bookingForm" novalidate>
               <div class="input-grid">
                 <label>
@@ -201,8 +228,12 @@
               </div>
 
               <label>
-                Notes or reason for visit
-                <textarea name="notes" rows="4" placeholder="Anything useful for your practitioner to know ahead of your appointment."></textarea>
+                Notes
+                <textarea
+                  name="notes"
+                  rows="4"
+                  placeholder="Share anything useful ahead of your treatment, including wellbeing goals or preferences."
+                ></textarea>
               </label>
 
               <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -220,12 +251,11 @@
         </div>
       </section>
 
-      <section class="section soft" id="testimonials">
+      <section class="section soft" id="client-reflections">
         <div class="container">
           <div class="section-head">
-            <p class="eyebrow">Client Stories</p>
-            <h2>Trusted by clients seeking practical, restorative care.</h2>
-            <p class="small">Real feedback from people balancing work, family, and recovery.</p>
+            <p class="eyebrow">Client Experience</p>
+            <h2>Kind words from Soul to Sole clients.</h2>
           </div>
           <div class="testimonial-grid" id="testimonialGrid"></div>
         </div>
@@ -234,33 +264,65 @@
       <section class="section" id="faq">
         <div class="container">
           <div class="section-head">
-            <p class="eyebrow">FAQs</p>
-            <h2>Helpful details before your first visit.</h2>
+            <p class="eyebrow">Frequently Asked Questions</p>
+            <h2>Everything you need before your first session.</h2>
           </div>
           <div id="faqList" class="faq-list"></div>
         </div>
       </section>
+
+      <section class="section contact-band" id="contact">
+        <div class="container contact-grid reveal">
+          <div>
+            <p class="eyebrow">Get in touch</p>
+            <h2>Ready to book or ask a question?</h2>
+            <p class="small">
+              Message Louise directly for package options, bespoke coaching packages, or help choosing the right
+              treatment.
+            </p>
+            <div class="contact-actions">
+              <a class="btn" href="#booking" data-scroll-target="booking">Book Now</a>
+              <a class="btn btn-ghost" href="tel:0861568818">Call 086-156-8818</a>
+            </div>
+          </div>
+          <div class="contact-card card">
+            <h3>Soul to Sole</h3>
+            <p><strong>Louise O'Dalaigh</strong></p>
+            <p>NRRI Reflexologist | Clarity Coach</p>
+            <p><strong>Instagram:</strong> @soultosolebylouise</p>
+            <p><strong>Phone:</strong> 086-156-8818</p>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer class="site-footer" id="contact">
+    <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-          <h3>Serene Balance Wellness</h3>
+          <h3>Soul to Sole</h3>
+          <div class="footer-logo-crop" aria-hidden="true">
+            <img src="/assets/brand/price-list-reference.png" alt="" />
+          </div>
           <p id="footerTagline"></p>
+          <p class="small">Louise O'Dalaigh | NRRI Reflexologist | Clarity Coach</p>
         </div>
         <div>
           <h4>Contact</h4>
           <p id="contactInfo"></p>
         </div>
         <div>
-          <h4>Business Hours</h4>
+          <h4>Treatment Highlights</h4>
+          <p>
+            Reflexology, Fertility Reflexology, Pregnancy Reflexology, Facial Reflexology, Indian Head Massage, and
+            6-session programmes.
+          </p>
           <p id="businessHours"></p>
         </div>
       </div>
     </footer>
 
-    <a class="mobile-book-cta btn" href="#availability" data-scroll-target="availability">Book Now</a>
+    <a class="mobile-book-cta btn" href="#booking" data-scroll-target="booking">Book Soul to Sole</a>
 
-    <script type="module" src="/app.js"></script>
+    <script src="/app.js?v=20260418-2" type="module"></script>
   </body>
 </html>

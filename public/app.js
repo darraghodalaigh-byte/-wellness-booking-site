@@ -36,6 +36,11 @@ const refs = {
 };
 
 const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const euroFormatter = new Intl.NumberFormat('en-IE', {
+  style: 'currency',
+  currency: 'EUR',
+  minimumFractionDigits: 2
+});
 
 function fmtMonthLabel(month) {
   const [year, m] = month.split('-').map(Number);
@@ -64,6 +69,10 @@ function toPrettyDate(dateStr) {
     month: 'short',
     year: 'numeric'
   });
+}
+
+function formatEuro(value) {
+  return euroFormatter.format(Number(value || 0));
 }
 
 function setFormStatus(message, kind = '') {
@@ -182,7 +191,7 @@ function renderServices() {
           <p>${service.shortDescription}</p>
           <div class="service-meta">
             <span class="service-badge">${service.durationMinutes} mins</span>
-            <span class="service-price">GBP ${service.priceGBP}</span>
+            <span class="service-price">${formatEuro(service.priceGBP)}</span>
           </div>
           <ul class="service-benefits">${benefits}</ul>
           <button class="btn btn-sm service-select-btn" type="button" data-service-id="${service.id}">Book this session</button>
@@ -241,14 +250,15 @@ function renderFaq() {
 function renderMeta() {
   const { business, bookingRules, policies } = state.config;
   refs.heroIntro.textContent = business.intro;
-  refs.aboutIntro.textContent = `${business.ownerName} combines practical coaching and restorative therapies to help you feel clearer, calmer, and more resilient.`;
+  refs.aboutIntro.textContent = `${business.ownerName} offers personal reflexology and clarity coaching designed to support your wellbeing with gentle, professional care.`;
   refs.footerTagline.textContent = business.tagline;
-  refs.contactInfo.innerHTML = `${business.phone}<br/>${business.ownerEmail}<br/>${business.location}`;
+  const instagram = business.instagram || '@soultosolebylouise';
+  refs.contactInfo.innerHTML = `${business.phone}<br/>${instagram}<br/>${business.ownerEmail}`;
   refs.businessHours.textContent = `${bookingRules.workingHours.start} to ${bookingRules.workingHours.end}, selected days`;
   refs.heroMeta.innerHTML = `
+    <span>Phone: ${business.phone}</span>
+    <span>Instagram: ${instagram}</span>
     <span>Min notice ${bookingRules.minNoticeHours}h</span>
-    <span>Up to ${bookingRules.maxAdvanceBookingDays} days ahead</span>
-    <span>${bookingRules.bufferBetweenAppointmentsMinutes} min buffer</span>
   `;
 
   refs.policyCard.innerHTML = `
@@ -263,7 +273,7 @@ function renderServiceSelect() {
   refs.serviceSelect.innerHTML = state.config.services
     .map(
       (service) =>
-        `<option value="${service.id}">${service.name} (${service.durationMinutes} mins, GBP ${service.priceGBP})</option>`
+        `<option value="${service.id}">${service.name} (${service.durationMinutes} mins, ${formatEuro(service.priceGBP)})</option>`
     )
     .join('');
 
@@ -430,7 +440,7 @@ function renderSummary() {
     <div class="summary-item"><strong>Date:</strong> ${toPrettyDate(state.selectedDate)}</div>
     <div class="summary-item"><strong>Time:</strong> ${state.selectedTime}</div>
     <div class="summary-item"><strong>Duration:</strong> ${service.durationMinutes} minutes</div>
-    <div class="summary-item"><strong>Price:</strong> GBP ${service.priceGBP}</div>
+    <div class="summary-item"><strong>Price:</strong> ${formatEuro(service.priceGBP)}</div>
     <div class="divider"></div>
     <p class="small">Submitting this form sends a booking request directly to the owner by email.</p>
     ${successBlock}

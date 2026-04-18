@@ -146,6 +146,14 @@ export async function getBusinessConfig() {
   await ensureSettingsFile();
   const raw = await fs.readFile(SETTINGS_FILE, 'utf8');
   const parsed = raw ? JSON.parse(raw) : {};
+
+  const legacyBusinessName = String(parsed?.business?.name || '').trim().toLowerCase();
+  if (legacyBusinessName === 'serene balance wellness') {
+    const migrated = normalizeConfig(BUSINESS_CONFIG);
+    await fs.writeFile(SETTINGS_FILE, `${JSON.stringify(migrated, null, 2)}\n`, 'utf8');
+    return migrated;
+  }
+
   const normalized = normalizeConfig(parsed);
   return normalized;
 }
