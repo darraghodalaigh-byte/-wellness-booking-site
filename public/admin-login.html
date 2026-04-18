@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | Serene Balance Wellness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body>
+    <main class="login-shell">
+      <section class="login-card">
+        <p class="eyebrow">Admin Access</p>
+        <h1>Serene Balance Dashboard</h1>
+        <p class="muted">Sign in to manage bookings, calendar, and business settings.</p>
+
+        <form id="adminLoginForm" class="stack">
+          <label>
+            Username
+            <input type="text" name="username" autocomplete="username" required />
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit" class="btn">Sign In</button>
+          <p id="loginStatus" class="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="/admin-login.js"></script>
+  </body>
+</html>

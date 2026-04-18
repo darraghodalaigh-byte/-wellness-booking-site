@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Serene Balance Wellness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <div>
+        <p class="eyebrow">Admin Dashboard</p>
+        <h1>Booking Management</h1>
+      </div>
+      <button id="logoutBtn" class="btn btn-ghost" type="button">Log Out</button>
+    </header>
+
+    <main class="admin-main">
+      <section class="panel">
+        <h2>Dashboard</h2>
+        <div class="kpi-grid">
+          <article class="kpi-card">
+            <span>Today's Bookings</span>
+            <strong id="kpiToday">0</strong>
+          </article>
+          <article class="kpi-card">
+            <span>Next Upcoming</span>
+            <strong id="kpiNext">-</strong>
+          </article>
+          <article class="kpi-card">
+            <span>This Week</span>
+            <strong id="kpiWeek">0</strong>
+          </article>
+          <article class="kpi-card">
+            <span>This Month</span>
+            <strong id="kpiMonth">0</strong>
+          </article>
+          <article class="kpi-card">
+            <span>Cancelled</span>
+            <strong id="kpiCancelled">0</strong>
+          </article>
+          <article class="kpi-card">
+            <span>Revenue Estimate</span>
+            <strong id="kpiRevenue">GBP 0</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="row-between">
+          <h2>Bookings</h2>
+          <button id="refreshBookings" class="btn btn-ghost" type="button">Refresh</button>
+        </div>
+
+        <div class="filters">
+          <label>
+            Search
+            <input id="filterSearch" type="text" placeholder="Name or email" />
+          </label>
+          <label>
+            Date
+            <input id="filterDate" type="date" />
+          </label>
+          <label>
+            Service
+            <select id="filterService"></select>
+          </label>
+          <label>
+            Status
+            <select id="filterStatus">
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="no-show">No-show</option>
+            </select>
+          </label>
+          <label>
+            Sort by date
+            <select id="filterSort">
+              <option value="asc">Earliest first</option>
+              <option value="desc">Latest first</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Name</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Phone</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="split-grid">
+        <article class="panel">
+          <h2>Booking Detail</h2>
+          <div id="bookingDetail" class="detail-empty">Select a booking row to view details.</div>
+          <div id="bookingActions" class="actions hidden">
+            <button data-action="confirmed" class="btn btn-ghost" type="button">Confirm</button>
+            <button data-action="completed" class="btn btn-ghost" type="button">Mark Completed</button>
+            <button data-action="cancelled" class="btn btn-ghost" type="button">Cancel</button>
+            <button data-action="no-show" class="btn btn-ghost" type="button">Mark No-show</button>
+            <button id="deleteBookingBtn" class="btn btn-danger" type="button">Delete</button>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>Manual Booking</h2>
+          <form id="manualBookingForm" class="stack compact">
+            <label>Full Name <input type="text" name="fullName" required /></label>
+            <label>Email <input type="email" name="email" required /></label>
+            <label>Phone <input type="tel" name="phone" required /></label>
+            <label>Service <select id="manualService" name="serviceId" required></select></label>
+            <div class="grid-2">
+              <label>Date <input type="date" name="date" required /></label>
+              <label>Time <input type="time" name="time" required /></label>
+            </div>
+            <label>Notes <textarea name="notes" rows="3"></textarea></label>
+            <label>
+              Preferred contact
+              <select name="preferredContactMethod">
+                <option value="email">Email</option>
+                <option value="phone">Phone</option>
+                <option value="whatsapp">WhatsApp</option>
+              </select>
+            </label>
+            <button class="btn" type="submit">Create Manual Booking</button>
+            <p id="manualStatus" class="status"></p>
+          </form>
+        </article>
+      </section>
+
+      <section class="split-grid">
+        <article class="panel">
+          <h2>Block Out Time</h2>
+          <form id="blockDayForm" class="stack compact">
+            <h3>Block Full Day</h3>
+            <label>Date <input type="date" name="date" required /></label>
+            <button class="btn" type="submit">Block Day</button>
+          </form>
+
+          <form id="blockRangeForm" class="stack compact block-form-gap">
+            <h3>Block Time Range</h3>
+            <label>Date <input type="date" name="date" required /></label>
+            <div class="grid-2">
+              <label>Start <input type="time" name="start" required /></label>
+              <label>End <input type="time" name="end" required /></label>
+            </div>
+            <button class="btn" type="submit">Block Range</button>
+          </form>
+
+          <div>
+            <h3>Current Blocks</h3>
+            <ul id="blockList" class="list"></ul>
+          </div>
+          <p id="blockStatus" class="status"></p>
+        </article>
+
+        <article class="panel">
+          <h2>Settings</h2>
+          <form id="settingsForm" class="stack compact">
+            <label>Owner Email <input type="email" name="ownerEmail" required /></label>
+            <div class="grid-2">
+              <label>Working Start <input type="time" name="workStart" required /></label>
+              <label>Working End <input type="time" name="workEnd" required /></label>
+            </div>
+            <label>
+              Working Days
+              <div class="check-row" id="workingDaysChecks"></div>
+            </label>
+            <div class="grid-3">
+              <label>Buffer (mins) <input type="number" name="buffer" min="0" required /></label>
+              <label>Min Notice (hours) <input type="number" name="minNotice" min="0" required /></label>
+              <label>Advance Window (days) <input type="number" name="maxAdvance" min="1" required /></label>
+            </div>
+
+            <h3>Services</h3>
+            <div id="servicesEditor" class="stack compact"></div>
+            <button class="btn" type="submit">Save Settings</button>
+            <p id="settingsStatus" class="status"></p>
+          </form>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="row-between">
+          <h2>Calendar View</h2>
+          <div class="inline-controls">
+            <select id="calendarViewMode">
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+            </select>
+            <input id="calendarDate" type="date" />
+            <button id="loadCalendarBtn" class="btn btn-ghost" type="button">Load</button>
+          </div>
+        </div>
+        <div id="calendarView" class="calendar-view"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/admin.js"></script>
+  </body>
+</html>

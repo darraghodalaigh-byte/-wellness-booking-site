@@ -1,0 +1,96 @@
+export const BUSINESS_CONFIG = {
+  business: {
+    name: 'Serene Balance Wellness',
+    ownerName: 'Amara Shah',
+    ownerEmail: 'owner@example.com',
+    phone: '+44 7700 900123',
+    location: '14 Oakfield Court, Bristol',
+    timezone: 'Europe/London',
+    tagline: 'Coaching and therapeutic bodywork for calmer, clearer living.',
+    intro: 'Private one-to-one sessions in a calm studio environment, tailored to your needs and pace.'
+  },
+  email: {
+    senderName: 'Serene Balance Wellness',
+    fromEmail: 'no-reply@example.com',
+    replyToEmail: 'owner@example.com',
+    ownerEmail: 'owner@example.com'
+  },
+  booking: {
+    workingDays: [1, 2, 3, 4, 5, 6],
+    workingHours: {
+      start: '09:00',
+      end: '18:30'
+    },
+    slotIntervalMinutes: 15,
+    bufferBetweenAppointmentsMinutes: 15,
+    minNoticeHours: 12,
+    maxAdvanceBookingDays: 75,
+    disabledDates: ['2026-12-25', '2026-12-26', '2027-01-01'],
+    blockedTimeRangesByDate: {
+      '2026-04-22': ['13:00-15:00'],
+      '2026-04-30': ['09:00-11:00']
+    }
+  },
+  services: [
+    {
+      id: 'coaching',
+      name: 'Wellness Coaching',
+      durationMinutes: 60,
+      priceGBP: 85,
+      shortDescription: 'Goal-focused support for stress, confidence, and sustainable wellbeing routines.',
+      benefits: ['Clarity and direction', 'Practical coping strategies', 'Accountability and momentum']
+    },
+    {
+      id: 'reflexology',
+      name: 'Reflexology',
+      durationMinutes: 50,
+      priceGBP: 70,
+      shortDescription: 'Gentle pressure-point foot therapy to help your nervous system settle and recover.',
+      benefits: ['Deep relaxation', 'Reduced tension', 'Improved sleep quality']
+    },
+    {
+      id: 'indian-head-massage',
+      name: 'Indian Head Massage',
+      durationMinutes: 45,
+      priceGBP: 65,
+      shortDescription: 'A focused upper-body treatment easing neck, scalp, and shoulder tightness.',
+      benefits: ['Relief from muscular strain', 'Mental calm', 'Better concentration']
+    }
+  ],
+  policies: {
+    cancellation: 'Please provide at least 24 hours notice to cancel or reschedule. Late cancellations may be charged 50% of the session fee.',
+    arrival: 'Please arrive 5 minutes before your session start time to settle in.',
+    privacy: 'Your information is stored securely and only used to manage your care and appointments.'
+  },
+  faq: [
+    {
+      question: 'How do I know which service is right for me?',
+      answer: 'If you are unsure, choose Coaching and include your goals in the notes. We will confirm the best fit before your appointment.'
+    },
+    {
+      question: 'Can I reschedule after booking?',
+      answer: 'Yes. Reply to your confirmation email or contact us directly and we will help you find a new time.'
+    },
+    {
+      question: 'Do you offer evening appointments?',
+      answer: 'Selected late slots are offered on Tuesdays and Thursdays depending on demand.'
+    }
+  ],
+  testimonials: [
+    {
+      name: 'Sophie M.',
+      role: 'Marketing Lead',
+      quote: 'The sessions helped me reset my stress levels and build better daily routines. The booking process is effortless.'
+    },
+    {
+      name: 'Daniel R.',
+      role: 'Business Owner',
+      quote: 'Reflexology sessions are now a key part of my recovery routine. Calm, professional and genuinely restorative.'
+    },
+    {
+      name: 'Aisha K.',
+      role: 'Teacher',
+      quote: 'The care and attention are excellent. I felt listened to and left every appointment feeling lighter and clearer.'
+    }
+  ]
+};
