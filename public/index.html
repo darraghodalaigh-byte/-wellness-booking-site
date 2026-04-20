@@ -41,14 +41,14 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="/styles.css?v=20260418-2" />
+    <link rel="stylesheet" href="/styles.css?v=20260420-1" />
   </head>
   <body>
     <header class="site-header" id="top">
       <div class="container nav-wrap">
         <a class="brand" href="/">Soul to Sole</a>
         <nav class="main-nav" aria-label="Primary">
-          <a href="#portal-login">Login</a>
+          <a href="/admin-login.html">Login</a>
           <a href="#about">About</a>
           <a href="#services">Services</a>
           <a href="#availability">Availability</a>
@@ -59,50 +59,6 @@
     </header>
 
     <main>
-      <section class="section portal-login" id="portal-login">
-        <div class="container portal-grid">
-          <article class="card portal-card reveal">
-            <p class="eyebrow">Mom / Admin Login</p>
-            <h2>Manage Availability</h2>
-            <p class="small">Use this login to edit availability, bookings, and settings.</p>
-            <form id="momLoginForm" class="portal-form" novalidate>
-              <label>
-                Username
-                <input type="text" name="username" autocomplete="username" required />
-              </label>
-              <label>
-                Password
-                <input type="password" name="password" autocomplete="current-password" required />
-              </label>
-              <button class="btn" type="submit">Login as Mom</button>
-              <p id="momLoginStatus" class="form-status" aria-live="polite"></p>
-            </form>
-          </article>
-
-          <article class="card portal-card reveal">
-            <p class="eyebrow">Client Login</p>
-            <h2>Save Details For Future Bookings</h2>
-            <p class="small">Log in once and your details will be pre-filled next time.</p>
-            <form id="clientLoginForm" class="portal-form" novalidate>
-              <label>
-                Full name
-                <input type="text" name="fullName" autocomplete="name" required />
-              </label>
-              <label>
-                Email
-                <input type="email" name="email" autocomplete="email" required />
-              </label>
-              <label>
-                Phone
-                <input type="tel" name="phone" autocomplete="tel" required />
-              </label>
-              <button class="btn" type="submit">Login as Client</button>
-              <p id="clientLoginStatus" class="form-status" aria-live="polite"></p>
-            </form>
-          </article>
-        </div>
-      </section>
-
       <section class="hero section" aria-labelledby="heroTitle">
         <div class="container hero-wrap reveal">
           <div class="hero-top-copy">
@@ -131,7 +87,7 @@
 
             <figure class="hero-portrait-wrap">
               <img
-                src="/assets/brand/louise-portrait-clean.png"
+                src="/assets/brand/louise-portrait.png"
                 alt="Louise O'Dalaigh, Soul to Sole practitioner"
                 class="hero-portrait"
               />
@@ -156,7 +112,7 @@
           <aside class="about-side reveal">
             <figure class="about-portrait-card card">
               <img
-                src="/assets/brand/louise-portrait-clean.png"
+                src="/assets/brand/louise-portrait.png"
                 alt="Portrait of Louise O'Dalaigh"
                 class="about-portrait"
               />
@@ -180,7 +136,7 @@
             <article class="price-arch card">
               <div class="price-arch-top">
                 <div class="logo-crop">
-                  <img src="/assets/brand/price-list-clean.png" alt="Soul to Sole butterfly logo style" />
+                  <img src="/assets/brand/price-list-reference.png" alt="Soul to Sole butterfly logo style" />
                 </div>
                 <h3>Price List</h3>
               </div>
@@ -193,7 +149,7 @@
 
             <figure class="price-reference card">
               <img
-                src="/assets/brand/price-list-clean.png"
+                src="/assets/brand/price-list-reference.png"
                 alt="Soul to Sole branded price list reference"
                 class="price-reference-image"
               />
@@ -346,7 +302,7 @@
         <div>
           <h3>Soul to Sole</h3>
           <div class="footer-logo-crop" aria-hidden="true">
-            <img src="/assets/brand/price-list-clean.png" alt="" />
+            <img src="/assets/brand/price-list-reference.png" alt="" />
           </div>
           <p id="footerTagline"></p>
           <p class="small">Louise O'Dalaigh | NRRI Reflexologist | Clarity Coach</p>
