@@ -9,6 +9,8 @@ const state = {
   bookingSuccess: null
 };
 
+const CLIENT_PROFILE_STORAGE_KEY = 'soulToSoleClientProfile';
+
 const refs = {
   serviceGrid: document.getElementById('serviceGrid'),
   testimonialGrid: document.getElementById('testimonialGrid'),
@@ -24,6 +26,10 @@ const refs = {
   nextMonth: document.getElementById('nextMonth'),
   bookingSummary: document.getElementById('bookingSummary'),
   bookingForm: document.getElementById('bookingForm'),
+  momLoginForm: document.getElementById('momLoginForm'),
+  clientLoginForm: document.getElementById('clientLoginForm'),
+  momLoginStatus: document.getElementById('momLoginStatus'),
+  clientLoginStatus: document.getElementById('clientLoginStatus'),
   formStatus: document.getElementById('formStatus'),
   submitBooking: document.getElementById('submitBooking'),
   heroMeta: document.getElementById('heroMeta'),
@@ -88,10 +94,111 @@ function setPlannerStatus(message = '', kind = '') {
   if (kind) refs.plannerStatus.classList.add(kind);
 }
 
+function setInlineStatus(element, message, kind = '') {
+  if (!element) return;
+  element.textContent = message;
+  element.classList.remove('success', 'fail');
+  if (kind) element.classList.add(kind);
+}
+
 function clearErrors() {
   document.querySelectorAll('[data-error-for]').forEach((el) => {
     el.textContent = '';
   });
+}
+
+function readStoredClientProfile() {
+  try {
+    const raw = localStorage.getItem(CLIENT_PROFILE_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function storeClientProfile(profile) {
+  localStorage.setItem(CLIENT_PROFILE_STORAGE_KEY, JSON.stringify(profile));
+}
+
+function applyClientProfileToBookingForm(profile) {
+  if (!refs.bookingForm || !profile) return;
+  const fullNameInput = refs.bookingForm.querySelector('input[name="fullName"]');
+  const emailInput = refs.bookingForm.querySelector('input[name="email"]');
+  const phoneInput = refs.bookingForm.querySelector('input[name="phone"]');
+  if (fullNameInput && profile.fullName) fullNameInput.value = profile.fullName;
+  if (emailInput && profile.email) emailInput.value = profile.email;
+  if (phoneInput && profile.phone) phoneInput.value = profile.phone;
+}
+
+function bindPortalLogins() {
+  if (refs.clientLoginForm) {
+    const stored = readStoredClientProfile();
+    if (stored) {
+      const fullNameInput = refs.clientLoginForm.querySelector('input[name="fullName"]');
+      const emailInput = refs.clientLoginForm.querySelector('input[name="email"]');
+      const phoneInput = refs.clientLoginForm.querySelector('input[name="phone"]');
+      if (fullNameInput && stored.fullName) fullNameInput.value = stored.fullName;
+      if (emailInput && stored.email) emailInput.value = stored.email;
+      if (phoneInput && stored.phone) phoneInput.value = stored.phone;
+      applyClientProfileToBookingForm(stored);
+      setInlineStatus(refs.clientLoginStatus, 'Saved client details loaded.', 'success');
+    }
+
+    refs.clientLoginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(refs.clientLoginForm);
+      const profile = {
+        fullName: String(data.get('fullName') || '').trim(),
+        email: String(data.get('email') || '').trim().toLowerCase(),
+        phone: String(data.get('phone') || '').trim()
+      };
+
+      if (!profile.fullName || !profile.email || !profile.phone) {
+        setInlineStatus(refs.clientLoginStatus, 'Please complete all fields.', 'fail');
+        return;
+      }
+
+      storeClientProfile(profile);
+      applyClientProfileToBookingForm(profile);
+      setInlineStatus(refs.clientLoginStatus, 'Client login saved. Your booking form is now pre-filled.', 'success');
+      scrollToSection('booking');
+    });
+  }
+
+  if (refs.momLoginForm) {
+    refs.momLoginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      setInlineStatus(refs.momLoginStatus, 'Signing in...');
+      const data = new FormData(refs.momLoginForm);
+      const payload = {
+        username: String(data.get('username') || '').trim(),
+        password: String(data.get('password') || '').trim()
+      };
+
+      if (!payload.username || !payload.password) {
+        setInlineStatus(refs.momLoginStatus, 'Please enter username and password.', 'fail');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          setInlineStatus(refs.momLoginStatus, result.error || 'Login failed.', 'fail');
+          return;
+        }
+        setInlineStatus(refs.momLoginStatus, 'Login successful. Opening admin dashboard...', 'success');
+        window.location.href = '/admin';
+      } catch {
+        setInlineStatus(refs.momLoginStatus, 'Network error. Please retry.', 'fail');
+      }
+    });
+  }
 }
 
 function showFieldErrors(errors = {}) {
@@ -518,6 +625,12 @@ async function submitBooking(event) {
     }
 
     refs.bookingForm.reset();
+    storeClientProfile({
+      fullName: payload.fullName,
+      email: payload.email,
+      phone: payload.phone
+    });
+    applyClientProfileToBookingForm(readStoredClientProfile());
     const info = result.booking;
     state.bookingSuccess = {
       bookingReference: info.bookingReference,
@@ -594,6 +707,7 @@ async function init() {
   renderCalendarLoading();
   renderSlotsLoading();
   bindSmoothScroll();
+  bindPortalLogins();
 
   const response = await fetch('/api/public-config');
   if (!response.ok) {
