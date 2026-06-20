@@ -237,6 +237,7 @@ p {
   font-size: clamp(1.04rem, 1.75vw, 1.24rem);
   color: var(--muted);
   max-width: 68ch;
+  white-space: pre-line;
 }
 
 .card {
@@ -372,6 +373,19 @@ p {
 .title-line {
   color: #50396d;
   font-weight: 700;
+}
+
+.about-copy {
+  max-width: 74ch;
+}
+
+.about-copy p {
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+
+.about-copy p:last-child {
+  margin-bottom: 0;
 }
 
 blockquote {

@@ -243,21 +243,83 @@ function renderServices() {
       renderCalendar();
       scrollToSection('availability', { focusSelector: '#serviceSelect' });
     });
+	  });
+	}
+	
+function splitParagraphs(value) {
+  return String(value || '')
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
+
+function renderAboutCopy(copy) {
+  const paragraphs = splitParagraphs(copy || '');
+  const fragment = document.createDocumentFragment();
+
+  paragraphs.forEach((paragraph) => {
+    const node = document.createElement('p');
+    node.textContent = paragraph;
+    fragment.appendChild(node);
   });
+
+  refs.aboutIntro.replaceChildren(fragment);
+}
+
+function testimonialAttribution(entry) {
+  if (entry.attribution) return String(entry.attribution).trim();
+  return [entry.name, entry.role].map((value) => String(value || '').trim()).filter(Boolean).join(', ');
+}
+
+function replaceWithTextLines(target, lines) {
+  const fragment = document.createDocumentFragment();
+  lines.filter(Boolean).forEach((line, index) => {
+    if (index > 0) fragment.appendChild(document.createElement('br'));
+    fragment.appendChild(document.createTextNode(line));
+  });
+  target.replaceChildren(fragment);
+}
+
+function renderMetaPillList(target, labels) {
+  const fragment = document.createDocumentFragment();
+  labels.forEach((label) => {
+    const pill = document.createElement('span');
+    pill.textContent = label;
+    fragment.appendChild(pill);
+  });
+  target.replaceChildren(fragment);
+}
+
+function policyLine(label, value) {
+  const node = document.createElement('p');
+  const strong = document.createElement('strong');
+  strong.textContent = `${label}:`;
+  node.append(strong, ` ${value}`);
+  return node;
 }
 
 function renderTestimonials() {
-  refs.testimonialGrid.innerHTML = state.config.testimonials
-    .map(
-      (entry) => `
-      <article class="card testimonial reveal">
-        <p>"${entry.quote}"</p>
-        <strong>${entry.name}</strong>
-        <div class="small">${entry.role}</div>
-      </article>
-    `
-    )
-    .join('');
+  const fragment = document.createDocumentFragment();
+
+  state.config.testimonials.forEach((entry) => {
+    const card = document.createElement('article');
+    card.className = 'card testimonial reveal';
+
+    const quote = document.createElement('p');
+    quote.textContent = `"${entry.quote}"`;
+    card.appendChild(quote);
+
+    const attribution = testimonialAttribution(entry);
+    if (attribution) {
+      const attributionNode = document.createElement('strong');
+      attributionNode.textContent = attribution;
+      card.appendChild(attributionNode);
+    }
+
+    fragment.appendChild(card);
+  });
+
+  refs.testimonialGrid.replaceChildren(fragment);
 }
 
 function renderFaq() {
@@ -276,23 +338,25 @@ function renderFaq() {
 function renderMeta() {
   const { business, bookingRules, policies } = state.config;
   refs.heroIntro.textContent = business.intro;
-  refs.aboutIntro.textContent = `${business.ownerName} offers personal reflexology and clarity coaching designed to support your wellbeing with gentle, professional care.`;
+  renderAboutCopy(business.about);
   refs.footerTagline.textContent = business.tagline;
   const instagram = business.instagram || '@soultosolebylouise';
-  refs.contactInfo.innerHTML = `${business.phone}<br/>${instagram}<br/>${business.ownerEmail}`;
+  replaceWithTextLines(refs.contactInfo, [business.phone, instagram, business.ownerEmail]);
   refs.businessHours.textContent = `${bookingRules.workingHours.start} to ${bookingRules.workingHours.end}, selected days`;
-  refs.heroMeta.innerHTML = `
-    <span>Phone: ${business.phone}</span>
-    <span>Instagram: ${instagram}</span>
-    <span>Min notice ${bookingRules.minNoticeHours}h</span>
-  `;
+  renderMetaPillList(refs.heroMeta, [
+    `Phone: ${business.phone}`,
+    `Instagram: ${instagram}`,
+    `Min notice ${bookingRules.minNoticeHours}h`
+  ]);
 
-  refs.policyCard.innerHTML = `
-    <h3>Policies at a glance</h3>
-    <p><strong>Cancellation:</strong> ${policies.cancellation}</p>
-    <p><strong>Arrival:</strong> ${policies.arrival}</p>
-    <p><strong>Privacy:</strong> ${policies.privacy}</p>
-  `;
+  const policyHeading = document.createElement('h3');
+  policyHeading.textContent = 'Policies at a glance';
+  refs.policyCard.replaceChildren(
+    policyHeading,
+    policyLine('Cancellation', policies.cancellation),
+    policyLine('Arrival', policies.arrival),
+    policyLine('Privacy', policies.privacy)
+  );
 }
 
 function renderServiceSelect() {

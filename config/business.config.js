@@ -8,8 +8,25 @@ export const BUSINESS_CONFIG = {
     location: 'Ireland',
     timezone: 'Europe/Dublin',
     tagline: 'Reflexology and coaching sessions that bring calm, clarity, and grounded wellbeing.',
-    intro:
-      'Soul to Sole offers restorative reflexology and clarity coaching in a warm, supportive setting, with thoughtful care tailored to each stage of life.'
+    intro: `You've spent so long looking after everyone else.
+It's easy to forget that you matter too.
+If you've been running on empty — you're not alone.
+There is so much hope. And this is a good place to start.`,
+    about: `I didn't plan any of this. What I planned was a career in healthcare — and for over two decades, that's exactly what I had.
+
+But burnout has a way of asking questions you can't ignore. I found myself searching for something that would help me navigate life with a bit more ease. What I found changed everything.
+
+I came across an understanding about how our minds actually work. It transformed my life in ways I'm still discovering.
+
+Around the same time I started taking reflexology sessions myself — and found them enormously helpful for stress. So a few years later, I trained. Because if something genuinely helps, I want to be able to offer it to others.
+
+None of this happened in a vacuum. I was doing all of it while raising four children, working full time in a very demanding role, and caring for elderly parents. Life was full — in every sense of the word. And this transformation changed how I showed up in all of it. As a parent. As a daughter. As a person.
+
+That desire to help people never went away. It just found a new home.
+
+I work especially with people in healthcare and caring professions. People who are brilliant at giving to others — and have quietly stopped giving to themselves. I know that place. I've been there.
+
+People who work with me start to see life through a different lens. Things feel lighter. Clearer. And quite often — they start to laugh again. You'd be surprised how many people have forgotten how to do that. And how much difference it makes when they remember.`
   },
   email: {
     senderName: 'Soul to Sole',
@@ -133,22 +150,28 @@ export const BUSINESS_CONFIG = {
   ],
   testimonials: [
     {
-      name: 'Client, Cork',
-      role: 'Reflexology Client',
+      attribution: 'Coaching Client, Scotland',
       quote:
-        'Louise creates such a calm, caring space. I always leave feeling lighter, clearer, and deeply restored.'
+        'I will be forever grateful. I have a really different outlook on life — and it\'s really helping me most of the time.'
     },
     {
-      name: 'Client, Dublin',
-      role: 'Fertility Reflexology Client',
+      attribution: 'Coaching Client, Scotland',
       quote:
-        'The treatment was both professional and personal. I felt fully supported at every step of my journey.'
+        'I feel a lot calmer and don\'t always see things as negatives or worries. There are days which are better than others — but I feel happier with myself, which means I\'m not as hard on myself either. And that makes things so much easier!'
     },
     {
-      name: 'Client, Limerick',
-      role: 'Coaching Client',
+      attribution: 'Coaching Client, Northern Ireland',
       quote:
-        'The clarity coaching gave me practical direction and confidence. It felt warm, thoughtful, and genuinely empowering.'
+        'Awh Louise, I have a new lens to life. Thanks so much for your support. It will take a while but I will let the new thoughts and perceptions unfold.'
+    },
+    {
+      attribution: 'Coaching Client, Wales',
+      quote: 'Thanks Louise for our last call. I am feeling so much calmer inside.'
+    },
+    {
+      attribution: 'Reflexology Client, Donegal',
+      quote:
+        'I noticed such a difference in my sleep after my sessions with Louise. When I went a while without coming, I really missed it — that said everything about how much it had helped me.'
     }
   ]
 };
