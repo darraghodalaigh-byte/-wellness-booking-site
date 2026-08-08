@@ -30,9 +30,20 @@ const refs = {
   submitBooking: document.getElementById('submitBooking'),
   heroMeta: document.getElementById('heroMeta'),
   heroIntro: document.getElementById('heroIntro'),
+  bookSection: document.getElementById('deeply-ok'),
+  bookNavLink: document.querySelector('.main-nav a[href="#deeply-ok"]'),
+  bookTitle: document.getElementById('bookTitle'),
+  bookHeading: document.getElementById('bookHeading'),
+  bookCover: document.getElementById('bookCover'),
+  bookDescription: document.getElementById('bookDescription'),
+  bookLaunch: document.getElementById('bookLaunch'),
+  bookCta: document.getElementById('bookCta'),
+  bookCtaStatus: document.getElementById('bookCtaStatus'),
   aboutIntro: document.getElementById('aboutIntro'),
   footerTagline: document.getElementById('footerTagline'),
   contactInfo: document.getElementById('contactInfo'),
+  contactInstagram: document.getElementById('contactInstagram'),
+  contactFacebook: document.getElementById('contactFacebook'),
   businessHours: document.getElementById('businessHours'),
   plannerStatus: document.getElementById('plannerStatus')
 };
@@ -266,28 +277,153 @@ function renderAboutCopy(copy) {
   refs.aboutIntro.replaceChildren(fragment);
 }
 
+function safeExternalUrl(value) {
+  const candidate = String(value || '').trim();
+  if (!candidate) return '';
+
+  try {
+    const url = new URL(candidate, window.location.origin);
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
+  } catch {
+    return '';
+  }
+}
+
+function setExternalLink(link, label, value) {
+  if (!link) return false;
+
+  const url = safeExternalUrl(value);
+  link.textContent = label;
+
+  if (!url) {
+    link.removeAttribute('href');
+    link.removeAttribute('target');
+    link.removeAttribute('rel');
+    link.setAttribute('aria-disabled', 'true');
+    link.setAttribute('tabindex', '-1');
+    link.classList.add('is-disabled');
+    return false;
+  }
+
+  link.href = url;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.removeAttribute('aria-disabled');
+  link.removeAttribute('tabindex');
+  link.classList.remove('is-disabled');
+  return true;
+}
+
+function hasReachedDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value || ''))) return false;
+
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(
+    now.getDate()
+  ).padStart(2, '0')}`;
+  return today >= value;
+}
+
+function renderBook() {
+  const book = state.config.book;
+  const isEnabled = Boolean(book && book.enabled !== false);
+
+  refs.bookSection.hidden = !isEnabled;
+  if (refs.bookNavLink) refs.bookNavLink.hidden = !isEnabled;
+  if (!isEnabled) return;
+
+  refs.bookTitle.textContent = book.title || '';
+  refs.bookHeading.textContent = book.heading || '';
+
+  if (book.coverImage) {
+    refs.bookCover.src = book.coverImage;
+    refs.bookCover.alt = book.coverAlt || `Cover of ${book.title || 'Deeply Ok'}`;
+  } else {
+    refs.bookCover.removeAttribute('src');
+    refs.bookCover.alt = '';
+  }
+
+  const descriptionFragment = document.createDocumentFragment();
+  (Array.isArray(book.description) ? book.description : []).forEach((paragraph) => {
+    const node = document.createElement('p');
+    node.textContent = paragraph;
+    descriptionFragment.appendChild(node);
+  });
+  refs.bookDescription.replaceChildren(descriptionFragment);
+
+  refs.bookLaunch.textContent = book.launchDateLabel || '';
+  if (book.launchDate) {
+    refs.bookLaunch.setAttribute('datetime', book.launchDate);
+  } else {
+    refs.bookLaunch.removeAttribute('datetime');
+  }
+
+  const amazonUrl = safeExternalUrl(book.amazonUrl);
+  const useAmazon = Boolean(amazonUrl && hasReachedDate(book.launchDate));
+  const ctaLabel = useAmazon ? book.amazonLabel : book.waitlistLabel;
+  const ctaUrl = useAmazon ? amazonUrl : book.waitlistUrl;
+  const isReady = setExternalLink(refs.bookCta, ctaLabel || 'Join the Waitlist', ctaUrl);
+
+  refs.bookCtaStatus.textContent = isReady ? '' : 'Waitlist signup will open soon.';
+}
+
 function testimonialAttribution(entry) {
   if (entry.attribution) return String(entry.attribution).trim();
   return [entry.name, entry.role].map((value) => String(value || '').trim()).filter(Boolean).join(', ');
 }
 
-function replaceWithTextLines(target, lines) {
+function renderMetaPillList(target, items) {
   const fragment = document.createDocumentFragment();
-  lines.filter(Boolean).forEach((line, index) => {
-    if (index > 0) fragment.appendChild(document.createElement('br'));
-    fragment.appendChild(document.createTextNode(line));
+  items.forEach((item) => {
+    const entry = typeof item === 'string' ? { label: item } : item;
+    const url = safeExternalUrl(entry.href);
+    const pill = document.createElement(url ? 'a' : 'span');
+    pill.textContent = entry.label;
+    if (url) {
+      pill.href = url;
+      pill.target = '_blank';
+      pill.rel = 'noopener noreferrer';
+    }
+    fragment.appendChild(pill);
   });
   target.replaceChildren(fragment);
 }
 
-function renderMetaPillList(target, labels) {
-  const fragment = document.createDocumentFragment();
-  labels.forEach((label) => {
-    const pill = document.createElement('span');
-    pill.textContent = label;
-    fragment.appendChild(pill);
-  });
-  target.replaceChildren(fragment);
+function contactLine(label, value, href = '') {
+  const line = document.createElement('p');
+  const strong = document.createElement('strong');
+  strong.textContent = `${label}:`;
+  line.append(strong, ' ');
+
+  if (href) {
+    const link = document.createElement('a');
+    link.textContent = value;
+    link.href = href;
+    if (/^https?:/i.test(href)) {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    }
+    line.appendChild(link);
+  } else {
+    line.append(value);
+  }
+
+  return line;
+}
+
+function renderFooterContactInfo(business) {
+  const instagram = business.instagram || '@soultosolebylouise';
+  const facebook = business.facebook || 'Soul To Sole by Louise';
+  const phoneHref = `tel:${String(business.phone || '').replace(/[^\d+]/g, '')}`;
+  const instagramUrl = safeExternalUrl(business.instagramUrl);
+  const facebookUrl = safeExternalUrl(business.facebookUrl);
+
+  refs.contactInfo.replaceChildren(
+    contactLine('Phone', business.phone || '', phoneHref),
+    contactLine('Instagram', instagram, instagramUrl),
+    contactLine('Facebook', facebook, facebookUrl),
+    contactLine('Email', business.ownerEmail || '', `mailto:${business.ownerEmail || ''}`)
+  );
 }
 
 function policyLine(label, value) {
@@ -339,13 +475,18 @@ function renderMeta() {
   const { business, bookingRules, policies } = state.config;
   refs.heroIntro.textContent = business.intro;
   renderAboutCopy(business.about);
+  renderBook();
   refs.footerTagline.textContent = business.tagline;
   const instagram = business.instagram || '@soultosolebylouise';
-  replaceWithTextLines(refs.contactInfo, [business.phone, instagram, business.ownerEmail]);
+  const facebook = business.facebook || 'Soul To Sole by Louise';
+  setExternalLink(refs.contactInstagram, instagram, business.instagramUrl);
+  setExternalLink(refs.contactFacebook, facebook, business.facebookUrl);
+  renderFooterContactInfo(business);
   refs.businessHours.textContent = `${bookingRules.workingHours.start} to ${bookingRules.workingHours.end}, selected days`;
   renderMetaPillList(refs.heroMeta, [
     `Phone: ${business.phone}`,
-    `Instagram: ${instagram}`,
+    { label: `Instagram: ${instagram}`, href: business.instagramUrl },
+    { label: `Facebook: ${facebook}`, href: business.facebookUrl },
     `Min notice ${bookingRules.minNoticeHours}h`
   ]);
 

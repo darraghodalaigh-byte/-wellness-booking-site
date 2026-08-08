@@ -5,11 +5,37 @@
     "ownerEmail": "hello@soultosole.ie",
     "phone": "086-156-8818",
     "instagram": "@soultosolebylouise",
+    "instagramUrl": "https://www.instagram.com/soultosolebylouise/",
+    "facebook": "Soul To Sole by Louise",
+    "facebookUrl": "https://www.facebook.com/louiseodalaigh/?ref=1&_rdr",
     "location": "Ireland",
     "timezone": "Europe/Dublin",
     "tagline": "Reflexology and coaching sessions that bring calm, clarity, and grounded wellbeing.",
     "intro": "You've spent so long looking after everyone else.\nIt's easy to forget that you matter too.\nIf you've been running on empty — you're not alone.\nThere is so much hope. And this is a good place to start.",
     "about": "I didn't plan any of this. What I planned was a career in healthcare — and for over two decades, that's exactly what I had.\n\nBut burnout has a way of asking questions you can't ignore. I found myself searching for something that would help me navigate life with a bit more ease. What I found changed everything.\n\nI came across an understanding about how our minds actually work. It transformed my life in ways I'm still discovering.\n\nAround the same time I started taking reflexology sessions myself — and found them enormously helpful for stress. So a few years later, I trained. Because if something genuinely helps, I want to be able to offer it to others.\n\nNone of this happened in a vacuum. I was doing all of it while raising four children, working full time in a very demanding role, and caring for elderly parents. Life was full — in every sense of the word. And this transformation changed how I showed up in all of it. As a parent. As a daughter. As a person.\n\nThat desire to help people never went away. It just found a new home.\n\nI work especially with people in healthcare and caring professions. People who are brilliant at giving to others — and have quietly stopped giving to themselves. I know that place. I've been there.\n\nPeople who work with me start to see life through a different lens. Things feel lighter. Clearer. And quite often — they start to laugh again. You'd be surprised how many people have forgotten how to do that. And how much difference it makes when they remember."
+  },
+  "book": {
+    "enabled": true,
+    "title": "Deeply Ok",
+    "heading": "My First Book — Coming Soon",
+    "coverImage": "/assets/brand/deeply-ok-cover.jpeg",
+    "coverAlt": "Cover of Deeply Ok by Louise O'Dalaigh",
+    "description": [
+      "There was a time I genuinely believed I was broken. Not struggling. Not having a hard patch. Broken.",
+      "Deeply Ok is a collection of 99 short insight posts written with warmth, humour and radical honesty from the middle of ordinary family life, pointing toward one simple truth — that the okayness you have been searching for was never actually missing.",
+      "It was just temporarily hidden."
+    ],
+    "launchDate": "2026-10-10",
+    "launchDateLabel": "Coming 10th October 2026 — World Mental Health Day",
+    "waitlistLabel": "Join the Waitlist",
+    "waitlistUrl": "",
+    "amazonLabel": "Buy Now on Amazon",
+    "amazonUrl": "",
+    "isbn": {
+      "ebook": "978-1-0668865-2-4",
+      "paperback": "978-1-0668865-0-0",
+      "hardback": "978-1-0668865-1-7"
+    }
   },
   "email": {
     "senderName": "Soul to Sole",

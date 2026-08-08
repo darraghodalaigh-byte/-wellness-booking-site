@@ -240,8 +240,11 @@ export function checkBookingConflict({
 }
 
 export function getPublicBusinessData(config = BUSINESS_CONFIG) {
+  const { isbn: _isbn, ...publicBook } = config.book || {};
+
   return {
     business: config.business,
+    book: publicBook,
     services: (config.services || []).filter((service) => service.active !== false),
     policies: config.policies,
     faq: config.faq,

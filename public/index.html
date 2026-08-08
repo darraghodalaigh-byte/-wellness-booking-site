@@ -41,7 +41,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="/styles.css?v=20260420-1" />
+    <link rel="stylesheet" href="/styles.css?v=20260808-1" />
   </head>
   <body>
     <header class="site-header" id="top">
@@ -50,6 +50,7 @@
         <nav class="main-nav" aria-label="Primary">
           <a href="/admin-login.html">Login</a>
           <a href="#about">About</a>
+          <a href="#deeply-ok">Book</a>
           <a href="#services">Services</a>
           <a href="#availability">Availability</a>
           <a href="#contact">Contact</a>
@@ -92,6 +93,25 @@
                 class="hero-portrait"
               />
             </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section book-section" id="deeply-ok" aria-labelledby="bookHeading" hidden>
+        <div class="container book-layout reveal">
+          <figure class="book-cover-wrap">
+            <img id="bookCover" class="book-cover" alt="" loading="lazy" />
+          </figure>
+
+          <div class="book-copy">
+            <p class="eyebrow" id="bookTitle"></p>
+            <h2 id="bookHeading"></h2>
+            <div id="bookDescription" class="book-description"></div>
+            <p class="book-launch"><time id="bookLaunch"></time></p>
+            <div class="book-actions">
+              <a class="btn" id="bookCta" aria-disabled="true">Join the Waitlist</a>
+            </div>
+            <p class="book-cta-status small" id="bookCtaStatus" aria-live="polite"></p>
           </div>
         </div>
       </section>
@@ -286,7 +306,24 @@
             <h3>Soul to Sole</h3>
             <p><strong>Louise O'Dalaigh</strong></p>
             <p>NRRI Reflexologist | Clarity Coach</p>
-            <p><strong>Instagram:</strong> @soultosolebylouise</p>
+            <p>
+              <strong>Instagram:</strong>
+              <a
+                id="contactInstagram"
+                href="https://www.instagram.com/soultosolebylouise/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >@soultosolebylouise</a>
+            </p>
+            <p>
+              <strong>Facebook:</strong>
+              <a
+                id="contactFacebook"
+                href="https://www.facebook.com/louiseodalaigh/?ref=1&amp;_rdr"
+                target="_blank"
+                rel="noopener noreferrer"
+              >Soul To Sole by Louise</a>
+            </p>
             <p><strong>Phone:</strong> 086-156-8818</p>
           </div>
         </div>
@@ -305,7 +342,7 @@
         </div>
         <div>
           <h4>Contact</h4>
-          <p id="contactInfo"></p>
+          <div id="contactInfo" class="footer-contact-list"></div>
         </div>
         <div>
           <h4>Treatment Highlights</h4>
@@ -320,6 +357,6 @@
 
     <a class="mobile-book-cta btn" href="#booking" data-scroll-target="booking">Book Soul to Sole</a>
 
-    <script src="/app.js?v=20260418-2" type="module"></script>
+    <script src="/app.js?v=20260808-1" type="module"></script>
   </body>
 </html>

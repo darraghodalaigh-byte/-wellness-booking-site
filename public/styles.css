@@ -11,6 +11,9 @@
   --purple-500: #7d62a7;
   --green-700: #2f8b64;
   --green-500: #5bab7d;
+  --book-navy: #102f5f;
+  --book-sky: #e8f1f8;
+  --book-gold: #c79222;
   --line: #decee9;
   --line-strong: #bca7d4;
   --ok: #2f8b64;
@@ -309,7 +312,8 @@ p {
   gap: 0.52rem;
 }
 
-.hero-meta span {
+.hero-meta span,
+.hero-meta a {
   border-radius: var(--radius-pill);
   padding: 0.35rem 0.72rem;
   font-size: 0.8rem;
@@ -317,6 +321,15 @@ p {
   border: 1px solid #d8c7e9;
   color: #543b73;
   background: #f8f2ff;
+}
+
+.hero-meta a {
+  text-decoration: none;
+}
+
+.hero-meta a:hover {
+  border-color: var(--purple-500);
+  color: var(--purple-900);
 }
 
 .hero-portrait-wrap {
@@ -336,6 +349,82 @@ p {
   object-fit: cover;
   object-position: center 26%;
   display: block;
+}
+
+.book-section {
+  scroll-margin-top: 82px;
+  background: var(--book-sky);
+  border-block: 1px solid #cbdbea;
+}
+
+.book-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.book-cover-wrap {
+  width: min(100%, 410px);
+  margin: 0 auto;
+}
+
+.book-cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border: 1px solid rgba(16, 47, 95, 0.22);
+  border-radius: 6px;
+  box-shadow: 0 24px 54px rgba(16, 47, 95, 0.2);
+}
+
+.book-copy {
+  max-width: 700px;
+}
+
+.book-copy .eyebrow,
+.book-copy h2 {
+  color: var(--book-navy);
+}
+
+.book-description {
+  margin-top: 1.35rem;
+}
+
+.book-description p {
+  color: #34445a;
+  font-size: 1.04rem;
+  margin-bottom: 1.05rem;
+}
+
+.book-description p:last-child {
+  color: var(--book-navy);
+  font-weight: 700;
+}
+
+.book-launch {
+  margin: 1.55rem 0 0;
+  padding-top: 1rem;
+  border-top: 2px solid rgba(199, 146, 34, 0.58);
+  color: var(--book-navy);
+  font-weight: 800;
+}
+
+.book-actions {
+  display: flex;
+  margin-top: 1.35rem;
+}
+
+.book-cta-status {
+  min-height: 1.5rem;
+  margin: 0.55rem 0 0;
+}
+
+.btn.is-disabled {
+  pointer-events: none;
+  opacity: 0.58;
+  box-shadow: none;
 }
 
 .section-head {
@@ -836,6 +925,12 @@ textarea:focus {
   margin-bottom: 0.4rem;
 }
 
+.contact-card a {
+  color: var(--purple-700);
+  font-weight: 700;
+  text-underline-offset: 0.16em;
+}
+
 .site-footer {
   background: #2d1e3f;
   color: #ddd2e9;
@@ -868,6 +963,20 @@ textarea:focus {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr 1fr;
   gap: 1rem;
+}
+
+.footer-contact-list {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.footer-contact-list p {
+  margin: 0;
+}
+
+.footer-contact-list a {
+  color: #fff;
+  text-underline-offset: 0.16em;
 }
 
 .skeleton {
@@ -927,6 +1036,7 @@ textarea:focus {
 @media (max-width: 1080px) {
   .hero-layout,
   .portal-grid,
+  .book-layout,
   .about-layout,
   .pricing-stage,
   .planner-grid,
@@ -939,6 +1049,10 @@ textarea:focus {
 
   .hero-portrait {
     min-height: 340px;
+  }
+
+  .book-cover-wrap {
+    max-width: 360px;
   }
 
   .price-reference {
@@ -986,17 +1100,23 @@ textarea:focus {
   }
 
   .hero-cta-row,
+  .book-actions,
   .contact-actions {
     flex-direction: column;
   }
 
   .hero-cta-row .btn,
+  .book-actions .btn,
   .contact-actions .btn,
   #submitBooking,
   .mobile-book-cta {
     width: 100%;
     justify-content: center;
     text-align: center;
+  }
+
+  .book-cover-wrap {
+    max-width: min(84vw, 320px);
   }
 
   .time-slots {

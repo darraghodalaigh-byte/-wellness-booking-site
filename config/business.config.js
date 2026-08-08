@@ -5,6 +5,9 @@ export const BUSINESS_CONFIG = {
     ownerEmail: 'hello@soultosole.ie',
     phone: '086-156-8818',
     instagram: '@soultosolebylouise',
+    instagramUrl: 'https://www.instagram.com/soultosolebylouise/',
+    facebook: 'Soul To Sole by Louise',
+    facebookUrl: 'https://www.facebook.com/louiseodalaigh/?ref=1&_rdr',
     location: 'Ireland',
     timezone: 'Europe/Dublin',
     tagline: 'Reflexology and coaching sessions that bring calm, clarity, and grounded wellbeing.',
@@ -27,6 +30,29 @@ That desire to help people never went away. It just found a new home.
 I work especially with people in healthcare and caring professions. People who are brilliant at giving to others — and have quietly stopped giving to themselves. I know that place. I've been there.
 
 People who work with me start to see life through a different lens. Things feel lighter. Clearer. And quite often — they start to laugh again. You'd be surprised how many people have forgotten how to do that. And how much difference it makes when they remember.`
+  },
+  book: {
+    enabled: true,
+    title: 'Deeply Ok',
+    heading: 'My First Book — Coming Soon',
+    coverImage: '/assets/brand/deeply-ok-cover.jpeg',
+    coverAlt: 'Cover of Deeply Ok by Louise O\'Dalaigh',
+    description: [
+      'There was a time I genuinely believed I was broken. Not struggling. Not having a hard patch. Broken.',
+      'Deeply Ok is a collection of 99 short insight posts written with warmth, humour and radical honesty from the middle of ordinary family life, pointing toward one simple truth — that the okayness you have been searching for was never actually missing.',
+      'It was just temporarily hidden.'
+    ],
+    launchDate: '2026-10-10',
+    launchDateLabel: 'Coming 10th October 2026 — World Mental Health Day',
+    waitlistLabel: 'Join the Waitlist',
+    waitlistUrl: '',
+    amazonLabel: 'Buy Now on Amazon',
+    amazonUrl: '',
+    isbn: {
+      ebook: '978-1-0668865-2-4',
+      paperback: '978-1-0668865-0-0',
+      hardback: '978-1-0668865-1-7'
+    }
   },
   email: {
     senderName: 'Soul to Sole',

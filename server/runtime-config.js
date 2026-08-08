@@ -25,6 +25,46 @@ function validDate(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ''));
 }
 
+function validExternalUrl(value) {
+  const candidate = String(value || '').trim();
+  if (!candidate) return '';
+
+  try {
+    const url = new URL(candidate);
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : '';
+  } catch {
+    return '';
+  }
+}
+
+function normalizeBook(book = {}, fallback = {}) {
+  const sourceDescription = Array.isArray(book.description) ? book.description : fallback.description;
+  const fallbackIsbn = fallback.isbn || {};
+  const sourceIsbn = book.isbn || {};
+
+  return {
+    enabled: typeof book.enabled === 'boolean' ? book.enabled : (fallback.enabled ?? true),
+    title: String(book.title || fallback.title || '').trim(),
+    heading: String(book.heading || fallback.heading || '').trim(),
+    coverImage: String(book.coverImage || fallback.coverImage || '').trim(),
+    coverAlt: String(book.coverAlt || fallback.coverAlt || '').trim(),
+    description: Array.isArray(sourceDescription)
+      ? sourceDescription.map((paragraph) => String(paragraph || '').trim()).filter(Boolean)
+      : [],
+    launchDate: validDate(book.launchDate) ? book.launchDate : String(fallback.launchDate || '').trim(),
+    launchDateLabel: String(book.launchDateLabel || fallback.launchDateLabel || '').trim(),
+    waitlistLabel: String(book.waitlistLabel || fallback.waitlistLabel || '').trim(),
+    waitlistUrl: validExternalUrl(book.waitlistUrl),
+    amazonLabel: String(book.amazonLabel || fallback.amazonLabel || '').trim(),
+    amazonUrl: validExternalUrl(book.amazonUrl),
+    isbn: {
+      ebook: String(sourceIsbn.ebook || fallbackIsbn.ebook || '').trim(),
+      paperback: String(sourceIsbn.paperback || fallbackIsbn.paperback || '').trim(),
+      hardback: String(sourceIsbn.hardback || fallbackIsbn.hardback || '').trim()
+    }
+  };
+}
+
 function sanitizeService(service, fallback = {}) {
   const idRaw = String(service?.id || fallback.id || '')
     .trim()
@@ -66,6 +106,14 @@ function normalizeConfig(inputConfig = {}) {
     policies: {
       ...clone(BUSINESS_CONFIG.policies),
       ...(inputConfig.policies || {})
+    },
+    book: {
+      ...clone(BUSINESS_CONFIG.book),
+      ...(inputConfig.book || {}),
+      isbn: {
+        ...clone(BUSINESS_CONFIG.book.isbn),
+        ...(inputConfig.book?.isbn || {})
+      }
     }
   };
 
@@ -105,8 +153,13 @@ function normalizeConfig(inputConfig = {}) {
     ...merged,
     business: {
       ...merged.business,
-      ownerEmail: String(merged.business.ownerEmail || BUSINESS_CONFIG.business.ownerEmail).trim()
+      ownerEmail: String(merged.business.ownerEmail || BUSINESS_CONFIG.business.ownerEmail).trim(),
+      instagramUrl:
+        validExternalUrl(merged.business.instagramUrl) || validExternalUrl(BUSINESS_CONFIG.business.instagramUrl),
+      facebookUrl:
+        validExternalUrl(merged.business.facebookUrl) || validExternalUrl(BUSINESS_CONFIG.business.facebookUrl)
     },
+    book: normalizeBook(merged.book, BUSINESS_CONFIG.book),
     booking: {
       ...merged.booking,
       slotIntervalMinutes: toInt(merged.booking.slotIntervalMinutes, BUSINESS_CONFIG.booking.slotIntervalMinutes),
