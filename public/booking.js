@@ -1,10 +1,24 @@
-const euro = new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 });
-const dayFormatter = new Intl.DateTimeFormat('en-IE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
-const monthFormatter = new Intl.DateTimeFormat('en-IE', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const euro = new Intl.NumberFormat("en-IE", {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 2,
+});
+const dayFormatter = new Intl.DateTimeFormat("en-IE", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+const monthFormatter = new Intl.DateTimeFormat("en-IE", {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
 let disposePrevious = null;
 
 function dateObject(value) {
-  const [year, month, day = 1] = value.split('-').map(Number);
+  const [year, month, day = 1] = value.split("-").map(Number);
   return new Date(Date.UTC(year, month - 1, day));
 }
 
@@ -27,7 +41,9 @@ function element(tag, className, text) {
 
 function servicePrice(service) {
   const amount = Number(service?.priceEUR ?? service?.priceGBP);
-  return Number.isFinite(amount) ? euro.format(amount) : 'Ask Louise for pricing';
+  return Number.isFinite(amount)
+    ? euro.format(amount)
+    : "Ask Louise for pricing";
 }
 
 async function readResponse(response) {
@@ -40,32 +56,48 @@ async function readResponse(response) {
 
 /** Mount the public appointment-request flow after the site's public config has loaded. */
 export async function initBooking(config) {
-  const root = document.getElementById('bookingApp');
+  const root = document.getElementById("bookingApp");
   if (!root) return;
   disposePrevious?.();
 
-  const services = (Array.isArray(config?.services) ? config.services : []).filter((service) => service.active !== false);
+  const services = (
+    Array.isArray(config?.services) ? config.services : []
+  ).filter((service) => service.active !== false);
   if (!services.length) {
-    root.replaceChildren(element('p', 'empty-state', 'Online appointments are not available just now. Please contact Louise to arrange a session.'));
+    root.replaceChildren(
+      element(
+        "p",
+        "empty-state",
+        "Online appointments are not available just now. Please contact Louise to arrange a session.",
+      ),
+    );
     return;
   }
 
   const rules = config.bookingRules || {};
   const now = new Date();
   const today = dateKey(now);
-  const maxDays = Math.max(0, Number.isFinite(Number(rules.maxAdvanceBookingDays)) ? Number(rules.maxAdvanceBookingDays) : 90);
+  const maxDays = Math.max(
+    0,
+    Number.isFinite(Number(rules.maxAdvanceBookingDays))
+      ? Number(rules.maxAdvanceBookingDays)
+      : 90,
+  );
   const lastDayObject = dateObject(today);
   lastDayObject.setUTCDate(lastDayObject.getUTCDate() + maxDays);
   const lastDay = dateKey(lastDayObject);
   const firstMonth = today.slice(0, 7);
   const lastMonth = lastDay.slice(0, 7);
-  const requestedService = new URLSearchParams(window.location.search).get('service');
-  const initialService = services.find((service) => service.id === requestedService) || services[0];
+  const requestedService = new URLSearchParams(window.location.search).get(
+    "service",
+  );
+  const initialService =
+    services.find((service) => service.id === requestedService) || services[0];
   const state = {
     serviceId: initialService.id,
     month: firstMonth,
-    date: '',
-    time: '',
+    date: "",
+    time: "",
     days: [],
     slots: [],
     calendarLoading: false,
@@ -74,12 +106,13 @@ export async function initBooking(config) {
     completed: false,
     disposed: false,
     calendarSequence: 0,
-    slotsSequence: 0
+    slotsSequence: 0,
   };
   let calendarController;
   let slotsController;
   const eventController = new AbortController();
-  const listen = (target, event, handler) => target.addEventListener(event, handler, { signal: eventController.signal });
+  const listen = (target, event, handler) =>
+    target.addEventListener(event, handler, { signal: eventController.signal });
   const dispose = () => {
     state.disposed = true;
     calendarController?.abort();
@@ -170,36 +203,56 @@ export async function initBooking(config) {
 
   const get = (id) => root.querySelector(`#${id}`);
   const refs = {
-    service: get('bookingService'), serviceDescription: get('bookingServiceDescription'),
-    previous: get('bookingPrevious'), next: get('bookingNext'), month: get('bookingMonth'),
-    calendar: get('bookingCalendar'), calendarStatus: get('bookingCalendarStatus'), dateHint: get('bookingDateHint'),
-    selectedDate: get('bookingSelectedDate'), timezone: get('bookingTimezone'),
-    slots: get('bookingSlots'), slotsStatus: get('bookingSlotsStatus'),
-    summary: get('bookingSummary'), form: get('appointmentForm'), fields: get('bookingFormFields'),
-    submit: get('bookingSubmit'), formStatus: get('bookingFormStatus'), policy: get('bookingPolicy')
+    service: get("bookingService"),
+    serviceDescription: get("bookingServiceDescription"),
+    previous: get("bookingPrevious"),
+    next: get("bookingNext"),
+    month: get("bookingMonth"),
+    calendar: get("bookingCalendar"),
+    calendarStatus: get("bookingCalendarStatus"),
+    dateHint: get("bookingDateHint"),
+    selectedDate: get("bookingSelectedDate"),
+    timezone: get("bookingTimezone"),
+    slots: get("bookingSlots"),
+    slotsStatus: get("bookingSlotsStatus"),
+    summary: get("bookingSummary"),
+    form: get("appointmentForm"),
+    fields: get("bookingFormFields"),
+    submit: get("bookingSubmit"),
+    formStatus: get("bookingFormStatus"),
+    policy: get("bookingPolicy"),
   };
   const fields = {
-    fullName: [get('bookingName'), get('bookingNameError')],
-    email: [get('bookingEmail'), get('bookingEmailError')],
-    phone: [get('bookingPhone'), get('bookingPhoneError')],
-    consentAccepted: [get('bookingConsent'), get('bookingConsentError')]
+    fullName: [get("bookingName"), get("bookingNameError")],
+    email: [get("bookingEmail"), get("bookingEmailError")],
+    phone: [get("bookingPhone"), get("bookingPhoneError")],
+    consentAccepted: [get("bookingConsent"), get("bookingConsentError")],
   };
 
   // Native fieldsets have browser-specific borders; the site controls the visual grouping.
-  refs.fields.style.cssText = 'border:0;padding:0;margin:0;min-width:0';
-  const hiddenLegend = refs.fields.querySelector('legend');
-  hiddenLegend.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
-  refs.previous.style.minWidth = '44px';
-  refs.next.style.minWidth = '44px';
-  refs.calendar.style.cssText = 'display:grid;grid-template-columns:repeat(7,minmax(0,1fr))';
-  refs.timezone.textContent = config.business?.timezone === 'Europe/Dublin' || !config.business?.timezone
-    ? 'All appointment times are shown in Ireland time.'
-    : `Appointment time zone: ${config.business.timezone}.`;
-  refs.dateHint.textContent = `Appointments can be requested up to ${maxDays} days ahead${Number(rules.minNoticeHours) > 0 ? `, with at least ${Number(rules.minNoticeHours)} hours’ notice` : ''}. Unavailable dates are greyed out.`;
-  refs.policy.textContent = config.policies?.cancellation || 'This is an appointment request. Louise will contact you to confirm your session.';
+  refs.fields.style.cssText = "border:0;padding:0;margin:0;min-width:0";
+  const hiddenLegend = refs.fields.querySelector("legend");
+  hiddenLegend.style.cssText =
+    "position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0";
+  refs.previous.style.minWidth = "44px";
+  refs.next.style.minWidth = "44px";
+  refs.calendar.style.cssText =
+    "display:grid;grid-template-columns:repeat(7,minmax(0,1fr))";
+  refs.timezone.textContent =
+    config.business?.timezone === "Europe/Dublin" || !config.business?.timezone
+      ? "All appointment times are shown in Ireland time."
+      : `Appointment time zone: ${config.business.timezone}.`;
+  refs.dateHint.textContent = `Appointments can be requested up to ${maxDays} days ahead${Number(rules.minNoticeHours) > 0 ? `, with at least ${Number(rules.minNoticeHours)} hours’ notice` : ""}. Unavailable dates are greyed out.`;
+  refs.policy.textContent =
+    config.policies?.cancellation ||
+    "This is an appointment request. Louise will contact you to confirm your session.";
 
   for (const service of services) {
-    const option = element('option', '', `${service.name} · ${service.durationMinutes} min · ${servicePrice(service)}`);
+    const option = element(
+      "option",
+      "",
+      `${service.name} · ${service.durationMinutes} min · ${servicePrice(service)}`,
+    );
     option.value = service.id;
     refs.service.append(option);
   }
@@ -211,21 +264,21 @@ export async function initBooking(config) {
 
   function updateDescription() {
     const service = selectedService();
-    refs.serviceDescription.textContent = service?.shortDescription || '';
+    refs.serviceDescription.textContent = service?.shortDescription || "";
   }
 
-  function setStatus(target, message, kind = '') {
-    target.replaceChildren(element('span', '', message));
+  function setStatus(target, message, kind = "") {
+    target.replaceChildren(element("span", "", message));
     if (kind) target.dataset.status = kind;
     else delete target.dataset.status;
   }
 
   function retryStatus(target, message, callback) {
-    setStatus(target, message, 'error');
-    const retry = element('button', 'button button-outline', 'Try again');
-    retry.type = 'button';
-    listen(retry, 'click', callback);
-    target.append(document.createTextNode(' '), retry);
+    setStatus(target, message, "error");
+    const retry = element("button", "button button-outline", "Try again");
+    retry.type = "button";
+    listen(retry, "click", callback);
+    target.append(document.createTextNode(" "), retry);
   }
 
   function updateControls() {
@@ -235,34 +288,50 @@ export async function initBooking(config) {
     refs.next.disabled = locked || state.month >= lastMonth;
     refs.fields.disabled = locked;
     refs.submit.disabled = locked;
-    refs.submit.textContent = state.submitting ? 'Sending your request…' : 'Request appointment ↗';
-    for (const button of refs.calendar.querySelectorAll('button')) {
-      button.disabled = locked || state.calendarLoading || button.dataset.available !== 'true';
+    refs.submit.textContent = state.submitting
+      ? "Sending your request…"
+      : "Request appointment ↗";
+    for (const button of refs.calendar.querySelectorAll("button")) {
+      button.disabled =
+        locked || state.calendarLoading || button.dataset.available !== "true";
     }
-    for (const button of refs.slots.querySelectorAll('button')) {
-      button.disabled = locked || state.slotsLoading || button.dataset.available !== 'true';
+    for (const button of refs.slots.querySelectorAll("button")) {
+      button.disabled =
+        locked || state.slotsLoading || button.dataset.available !== "true";
     }
   }
 
   function updateSummary() {
     const service = selectedService();
     const fragment = document.createDocumentFragment();
-    fragment.append(element('h3', '', 'Your appointment'));
-    const list = element('dl', 'booking-summary-list');
+    fragment.append(element("h3", "", "Your appointment"));
+    const list = element("dl", "booking-summary-list");
     const rows = [
-      ['Treatment', service?.name || 'Choose a treatment'],
-      ['Duration', `${service?.durationMinutes || '—'} minutes`],
-      ['Price', servicePrice(service)],
-      ['Date', state.date ? dayFormatter.format(dateObject(state.date)) : 'Choose an available date'],
-      ['Time', state.time || 'Choose a time']
+      ["Treatment", service?.name || "Choose a treatment"],
+      ["Duration", `${service?.durationMinutes || "—"} minutes`],
+      ["Price", servicePrice(service)],
+      [
+        "Date",
+        state.date
+          ? dayFormatter.format(dateObject(state.date))
+          : "Choose an available date",
+      ],
+      ["Time", state.time || "Choose a time"],
     ];
     for (const [label, value] of rows) {
-      const row = element('div', 'booking-summary-row');
-      row.append(element('dt', '', label), element('dd', '', value));
+      const row = element("div", "booking-summary-row");
+      row.append(element("dt", "", label), element("dd", "", value));
       list.append(row);
     }
     fragment.append(list);
-    if (!state.completed) fragment.append(element('p', '', 'Your appointment is confirmed when you hear from Louise. No payment is taken here.'));
+    if (!state.completed)
+      fragment.append(
+        element(
+          "p",
+          "",
+          "Your appointment is confirmed when you hear from Louise. No payment is taken here.",
+        ),
+      );
     refs.summary.replaceChildren(fragment);
   }
 
@@ -271,48 +340,65 @@ export async function initBooking(config) {
     state.slotsSequence += 1;
     state.slotsLoading = false;
     state.slots = [];
-    state.date = '';
-    state.time = '';
-    refs.slots.removeAttribute('aria-busy');
+    state.date = "";
+    state.time = "";
+    refs.slots.removeAttribute("aria-busy");
     refs.slots.replaceChildren();
-    refs.selectedDate.textContent = 'Select an available date to see appointment times.';
-    setStatus(refs.slotsStatus, '');
+    refs.selectedDate.textContent =
+      "Select an available date to see appointment times.";
+    setStatus(refs.slotsStatus, "");
     updateSummary();
   }
 
   function renderCalendar() {
     refs.month.textContent = monthFormatter.format(dateObject(state.month));
     const fragment = document.createDocumentFragment();
-    for (const name of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']) {
-      const label = element('span', 'day-label', name);
-      label.setAttribute('aria-hidden', 'true');
+    for (const name of ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]) {
+      const label = element("span", "day-label", name);
+      label.setAttribute("aria-hidden", "true");
       fragment.append(label);
     }
     const leadingDays = (dateObject(state.month).getUTCDay() + 6) % 7;
     for (let i = 0; i < leadingDays; i += 1) {
-      const space = element('span');
-      space.setAttribute('aria-hidden', 'true');
+      const space = element("span");
+      space.setAttribute("aria-hidden", "true");
       fragment.append(space);
     }
-    const [year, month] = state.month.split('-').map(Number);
+    const [year, month] = state.month.split("-").map(Number);
     const numberOfDays = new Date(Date.UTC(year, month, 0)).getUTCDate();
     const days = new Map(state.days.map((day) => [day.date, day]));
     for (let n = 1; n <= numberOfDays; n += 1) {
-      const date = `${state.month}-${String(n).padStart(2, '0')}`;
+      const date = `${state.month}-${String(n).padStart(2, "0")}`;
       const day = days.get(date);
       const inWindow = date >= today && date <= lastDay;
-      const available = inWindow && Boolean(day && !day.isUnavailable && Number(day.availableCount) > 0);
-      const button = element('button', `calendar-day${date === state.date ? ' is-selected' : ''}`, String(n));
-      button.type = 'button';
+      const available =
+        inWindow &&
+        Boolean(day && !day.isUnavailable && Number(day.availableCount) > 0);
+      const button = element(
+        "button",
+        `calendar-day${date === state.date ? " is-selected" : ""}`,
+        String(n),
+      );
+      button.type = "button";
       button.dataset.date = date;
       button.dataset.available = String(available);
-      button.setAttribute('aria-pressed', String(date === state.date));
-      if (date === today) button.setAttribute('aria-current', 'date');
-      const reason = state.calendarLoading ? 'Loading availability' : !inWindow ? 'Outside the booking window' : day?.unavailableReason || (available ? `${day.availableCount} available times` : 'No available times');
-      button.setAttribute('aria-label', `${dayFormatter.format(dateObject(date))}. ${reason}`);
+      button.setAttribute("aria-pressed", String(date === state.date));
+      if (date === today) button.setAttribute("aria-current", "date");
+      const reason = state.calendarLoading
+        ? "Loading availability"
+        : !inWindow
+          ? "Outside the booking window"
+          : day?.unavailableReason ||
+            (available
+              ? `${day.availableCount} available times`
+              : "No available times");
+      button.setAttribute(
+        "aria-label",
+        `${dayFormatter.format(dateObject(date))}. ${reason}`,
+      );
       button.title = reason;
-      button.style.minHeight = '44px';
-      listen(button, 'click', () => chooseDate(date));
+      button.style.minHeight = "44px";
+      listen(button, "click", () => chooseDate(date));
       fragment.append(button);
     }
     refs.calendar.replaceChildren(fragment);
@@ -328,32 +414,61 @@ export async function initBooking(config) {
     const month = state.month;
     state.calendarLoading = true;
     state.days = [];
-    refs.calendar.setAttribute('aria-busy', 'true');
-    setStatus(refs.calendarStatus, 'Checking available dates…');
+    refs.calendar.setAttribute("aria-busy", "true");
+    setStatus(refs.calendarStatus, "Checking available dates…");
     renderCalendar();
     const timeout = window.setTimeout(() => controller.abort(), 20000);
     try {
       const query = new URLSearchParams({ serviceId, month });
-      const response = await fetch(`/api/availability/summary?${query}`, { signal: controller.signal, cache: 'no-store' });
+      const response = await fetch(`/api/availability/summary?${query}`, {
+        signal: controller.signal,
+        cache: "no-store",
+      });
       const result = await readResponse(response);
-      if (state.disposed || sequence !== state.calendarSequence || serviceId !== state.serviceId || month !== state.month) return;
-      if (!response.ok || !Array.isArray(result?.days)) throw new Error('Calendar could not be loaded.');
+      if (
+        state.disposed ||
+        sequence !== state.calendarSequence ||
+        serviceId !== state.serviceId ||
+        month !== state.month
+      )
+        return;
+      if (!response.ok || !Array.isArray(result?.days))
+        throw new Error("Calendar could not be loaded.");
       state.days = result.days;
       state.calendarLoading = false;
       renderCalendar();
-      const availableDays = state.days.filter((day) => day.date >= today && day.date <= lastDay && !day.isUnavailable && Number(day.availableCount) > 0).length;
-      setStatus(refs.calendarStatus, availableDays
-        ? `${availableDays} ${availableDays === 1 ? 'date has' : 'dates have'} availability in ${monthFormatter.format(dateObject(month))}.`
-        : `No appointments are available in ${monthFormatter.format(dateObject(month))}.${month < lastMonth ? ' Try the next month or another treatment.' : ' Try another treatment or contact Louise.'}`);
+      const availableDays = state.days.filter(
+        (day) =>
+          day.date >= today &&
+          day.date <= lastDay &&
+          !day.isUnavailable &&
+          Number(day.availableCount) > 0,
+      ).length;
+      setStatus(
+        refs.calendarStatus,
+        availableDays
+          ? `${availableDays} ${availableDays === 1 ? "date has" : "dates have"} availability in ${monthFormatter.format(dateObject(month))}.`
+          : `No appointments are available in ${monthFormatter.format(dateObject(month))}.${month < lastMonth ? " Try the next month or another treatment." : " Try another treatment or contact Louise."}`,
+      );
     } catch {
-      if (state.disposed || sequence !== state.calendarSequence || serviceId !== state.serviceId || month !== state.month) return;
+      if (
+        state.disposed ||
+        sequence !== state.calendarSequence ||
+        serviceId !== state.serviceId ||
+        month !== state.month
+      )
+        return;
       state.calendarLoading = false;
       renderCalendar();
-      retryStatus(refs.calendarStatus, 'We couldn’t load available dates. Please try again.', loadCalendar);
+      retryStatus(
+        refs.calendarStatus,
+        "We couldn’t load available dates. Please try again.",
+        loadCalendar,
+      );
     } finally {
       window.clearTimeout(timeout);
       if (sequence === state.calendarSequence && !state.disposed) {
-        refs.calendar.removeAttribute('aria-busy');
+        refs.calendar.removeAttribute("aria-busy");
         updateControls();
       }
     }
@@ -362,23 +477,30 @@ export async function initBooking(config) {
   function renderSlots() {
     const fragment = document.createDocumentFragment();
     for (const slot of state.slots) {
-      const button = element('button', `slot-button${slot.time === state.time ? ' is-selected' : ''}`, slot.label || slot.time);
-      button.type = 'button';
+      const button = element(
+        "button",
+        `slot-button${slot.time === state.time ? " is-selected" : ""}`,
+        slot.label || slot.time,
+      );
+      button.type = "button";
       button.dataset.time = slot.time;
       button.dataset.available = String(Boolean(slot.available));
-      button.setAttribute('aria-pressed', String(slot.time === state.time));
-      button.setAttribute('aria-label', `${slot.label || slot.time}${slot.available ? ', available' : `, unavailable${slot.reason ? `: ${slot.reason}` : ''}`}`);
+      button.setAttribute("aria-pressed", String(slot.time === state.time));
+      button.setAttribute(
+        "aria-label",
+        `${slot.label || slot.time}${slot.available ? ", available" : `, unavailable${slot.reason ? `: ${slot.reason}` : ""}`}`,
+      );
       if (slot.reason) button.title = slot.reason;
-      button.style.minHeight = '44px';
-      listen(button, 'click', () => {
+      button.style.minHeight = "44px";
+      listen(button, "click", () => {
         if (state.submitting || state.completed || !slot.available) return;
         state.time = slot.time;
-        for (const timeButton of refs.slots.querySelectorAll('button')) {
+        for (const timeButton of refs.slots.querySelectorAll("button")) {
           const selected = timeButton.dataset.time === state.time;
-          timeButton.classList.toggle('is-selected', selected);
-          timeButton.setAttribute('aria-pressed', String(selected));
+          timeButton.classList.toggle("is-selected", selected);
+          timeButton.setAttribute("aria-pressed", String(selected));
         }
-        setStatus(refs.formStatus, '');
+        setStatus(refs.formStatus, "");
         updateSummary();
       });
       fragment.append(button);
@@ -396,31 +518,60 @@ export async function initBooking(config) {
     const serviceId = state.serviceId;
     const date = state.date;
     state.slotsLoading = true;
-    refs.slots.setAttribute('aria-busy', 'true');
-    setStatus(refs.slotsStatus, 'Checking appointment times…');
+    refs.slots.setAttribute("aria-busy", "true");
+    setStatus(refs.slotsStatus, "Checking appointment times…");
     updateControls();
     const timeout = window.setTimeout(() => controller.abort(), 20000);
     try {
       const query = new URLSearchParams({ serviceId, date });
-      const response = await fetch(`/api/availability/slots?${query}`, { signal: controller.signal, cache: 'no-store' });
+      const response = await fetch(`/api/availability/slots?${query}`, {
+        signal: controller.signal,
+        cache: "no-store",
+      });
       const result = await readResponse(response);
-      if (state.disposed || sequence !== state.slotsSequence || serviceId !== state.serviceId || date !== state.date) return;
-      if (!response.ok || !Array.isArray(result?.slots)) throw new Error('Times could not be loaded.');
+      if (
+        state.disposed ||
+        sequence !== state.slotsSequence ||
+        serviceId !== state.serviceId ||
+        date !== state.date
+      )
+        return;
+      if (!response.ok || !Array.isArray(result?.slots))
+        throw new Error("Times could not be loaded.");
       state.slots = result.slots;
       state.slotsLoading = false;
-      if (!state.slots.some((slot) => slot.time === state.time && slot.available)) state.time = '';
+      if (
+        !state.slots.some((slot) => slot.time === state.time && slot.available)
+      )
+        state.time = "";
       renderSlots();
       updateSummary();
       const count = state.slots.filter((slot) => slot.available).length;
-      setStatus(refs.slotsStatus, count ? `${count} ${count === 1 ? 'time is' : 'times are'} available. Choose the one that suits you.` : result.unavailableReason || 'No times are available on this date. Please choose another date.');
+      setStatus(
+        refs.slotsStatus,
+        count
+          ? `${count} ${count === 1 ? "time is" : "times are"} available. Choose the one that suits you.`
+          : result.unavailableReason ||
+              "No times are available on this date. Please choose another date.",
+      );
     } catch {
-      if (state.disposed || sequence !== state.slotsSequence || serviceId !== state.serviceId || date !== state.date) return;
+      if (
+        state.disposed ||
+        sequence !== state.slotsSequence ||
+        serviceId !== state.serviceId ||
+        date !== state.date
+      )
+        return;
       state.slotsLoading = false;
-      retryStatus(refs.slotsStatus, 'We couldn’t load appointment times. Your details have been kept. Please try again.', loadSlots);
+      retryStatus(
+        refs.slotsStatus,
+        "We couldn’t load appointment times. Your details have been kept. Please try again.",
+        loadSlots,
+      );
     } finally {
       window.clearTimeout(timeout);
       if (sequence === state.slotsSequence && !state.disposed) {
-        refs.slots.removeAttribute('aria-busy');
+        refs.slots.removeAttribute("aria-busy");
         updateControls();
       }
     }
@@ -428,17 +579,25 @@ export async function initBooking(config) {
 
   function chooseDate(date) {
     if (state.submitting || state.completed || state.calendarLoading) return;
-    if (!state.days.some((day) => day.date === date && !day.isUnavailable && Number(day.availableCount) > 0)) return;
+    if (
+      !state.days.some(
+        (day) =>
+          day.date === date &&
+          !day.isUnavailable &&
+          Number(day.availableCount) > 0,
+      )
+    )
+      return;
     state.date = date;
-    state.time = '';
+    state.time = "";
     state.slots = [];
     refs.slots.replaceChildren();
     refs.selectedDate.textContent = dayFormatter.format(dateObject(date));
-    setStatus(refs.formStatus, '');
-    for (const button of refs.calendar.querySelectorAll('button')) {
+    setStatus(refs.formStatus, "");
+    for (const button of refs.calendar.querySelectorAll("button")) {
       const selected = button.dataset.date === date;
-      button.classList.toggle('is-selected', selected);
-      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
     }
     updateSummary();
     void loadSlots();
@@ -446,9 +605,9 @@ export async function initBooking(config) {
 
   function clearFieldErrors() {
     for (const [input, error] of Object.values(fields)) {
-      input.setCustomValidity('');
-      input.removeAttribute('aria-invalid');
-      error.textContent = '';
+      input.setCustomValidity("");
+      input.removeAttribute("aria-invalid");
+      error.textContent = "";
     }
   }
 
@@ -456,7 +615,7 @@ export async function initBooking(config) {
     if (!fields[name]) return;
     const [input, error] = fields[name];
     input.setCustomValidity(message);
-    input.setAttribute('aria-invalid', 'true');
+    input.setAttribute("aria-invalid", "true");
     error.textContent = message;
   }
 
@@ -466,16 +625,41 @@ export async function initBooking(config) {
     updateSummary();
     refs.form.hidden = true;
     refs.form.reset();
-    refs.formStatus.dataset.status = 'success';
-    const heading = element('h3', '', 'Your request has been received.');
-    const message = element('p', '', 'Your appointment is awaiting confirmation. Louise will contact you using your preferred method to confirm the details.');
-    const reference = element('p');
-    reference.append(element('strong', '', `Your reference: ${booking.bookingReference}`));
-    const appointment = element('p', '', `${booking.serviceName || selectedService()?.name} · ${dayFormatter.format(dateObject(state.date))} · ${state.time}`);
-    const reminder = element('p', '', 'Please keep your reference. You do not need to submit another request for this appointment.');
-    refs.formStatus.replaceChildren(heading, message, reference, appointment, reminder);
+    refs.formStatus.dataset.status = "success";
+    const heading = element("h3", "", "Your request has been received.");
+    const message = element(
+      "p",
+      "",
+      "Your appointment is awaiting confirmation. Louise will contact you using your preferred method to confirm the details.",
+    );
+    const reference = element("p");
+    reference.append(
+      element("strong", "", `Your reference: ${booking.bookingReference}`),
+    );
+    const appointment = element(
+      "p",
+      "",
+      `${booking.serviceName || selectedService()?.name} · ${dayFormatter.format(dateObject(state.date))} · ${state.time}`,
+    );
+    const reminder = element(
+      "p",
+      "",
+      "Please keep your reference. You do not need to submit another request for this appointment.",
+    );
+    refs.formStatus.replaceChildren(
+      heading,
+      message,
+      reference,
+      appointment,
+      reminder,
+    );
     refs.formStatus.focus({ preventScroll: true });
-    refs.formStatus.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    refs.formStatus.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "center",
+    });
   }
 
   async function submitBooking(event) {
@@ -485,41 +669,59 @@ export async function initBooking(config) {
     fields.fullName[0].value = fields.fullName[0].value.trim();
     fields.email[0].value = fields.email[0].value.trim();
     fields.phone[0].value = fields.phone[0].value.trim();
-    if (fields.fullName[0].value.length < 2) showFieldError('fullName', 'Please enter your full name.');
-    if (!/^[+\d()\-\s]{7,20}$/.test(fields.phone[0].value)) showFieldError('phone', 'Please enter a valid contact number, including a country code if needed.');
+    if (fields.fullName[0].value.length < 2)
+      showFieldError("fullName", "Please enter your full name.");
+    if (!/^[+\d()\-\s]{7,20}$/.test(fields.phone[0].value))
+      showFieldError(
+        "phone",
+        "Please enter a valid contact number, including a country code if needed.",
+      );
     if (!refs.form.reportValidity()) return;
-    if (!state.date || !state.time || state.slotsLoading || !state.slots.some((slot) => slot.time === state.time && slot.available)) {
-      setStatus(refs.formStatus, 'Please choose an available date and time before requesting your appointment.', 'error');
-      const firstChoice = (!state.date ? refs.calendar : refs.slots).querySelector('button:not(:disabled)');
+    if (
+      !state.date ||
+      !state.time ||
+      state.slotsLoading ||
+      !state.slots.some((slot) => slot.time === state.time && slot.available)
+    ) {
+      setStatus(
+        refs.formStatus,
+        "Please choose an available date and time before requesting your appointment.",
+        "error",
+      );
+      const firstChoice = (
+        !state.date ? refs.calendar : refs.slots
+      ).querySelector("button:not(:disabled)");
       (firstChoice || refs.service).focus();
       return;
     }
     const data = new FormData(refs.form);
     const payload = {
-      fullName: String(data.get('fullName') || '').trim(),
-      email: String(data.get('email') || '').trim(),
-      phone: String(data.get('phone') || '').trim(),
+      fullName: String(data.get("fullName") || "").trim(),
+      email: String(data.get("email") || "").trim(),
+      phone: String(data.get("phone") || "").trim(),
       serviceId: state.serviceId,
       date: state.date,
       time: state.time,
-      notes: String(data.get('notes') || '').trim(),
-      preferredContactMethod: String(data.get('preferredContactMethod') || 'email'),
-      consentAccepted: data.get('consentAccepted') === 'on',
-      website: String(data.get('website') || '')
+      notes: String(data.get("notes") || "").trim(),
+      preferredContactMethod: String(
+        data.get("preferredContactMethod") || "email",
+      ),
+      consentAccepted: data.get("consentAccepted") === "on",
+      website: String(data.get("website") || ""),
     };
     state.submitting = true;
     updateControls();
-    setStatus(refs.formStatus, 'Sending your appointment request…');
-    refs.form.setAttribute('aria-busy', 'true');
+    setStatus(refs.formStatus, "Sending your appointment request…");
+    refs.form.setAttribute("aria-busy", "true");
     // Do not automatically retry a POST: a lost response may still mean the request was saved.
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 30000);
     try {
-      const response = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-        signal: controller.signal
+        signal: controller.signal,
       });
       const result = await readResponse(response);
       if (state.disposed) return;
@@ -528,29 +730,47 @@ export async function initBooking(config) {
         return;
       }
       if (response.status === 422 && result?.fieldErrors) {
-        for (const [name, message] of Object.entries(result.fieldErrors)) showFieldError(name, String(message));
-        setStatus(refs.formStatus, 'Please check the highlighted details and try again. Your other details have been kept.', 'error');
+        for (const [name, message] of Object.entries(result.fieldErrors))
+          showFieldError(name, String(message));
+        setStatus(
+          refs.formStatus,
+          "Please check the highlighted details and try again. Your other details have been kept.",
+          "error",
+        );
       } else if (response.status === 409) {
-        state.time = '';
+        state.time = "";
         state.slots = [];
         refs.slots.replaceChildren();
         updateSummary();
-        setStatus(refs.formStatus, 'That time has just become unavailable. Please choose another time. Your contact details have been kept.', 'error');
+        setStatus(
+          refs.formStatus,
+          "That time has just become unavailable. Please choose another time. Your contact details have been kept.",
+          "error",
+        );
         void loadSlots();
         void loadCalendar();
       } else if (response.status >= 400 && response.status < 500) {
-        setStatus(refs.formStatus, result?.error || 'Please check your appointment details and try again. Your details have been kept.', 'error');
+        setStatus(
+          refs.formStatus,
+          result?.error ||
+            "Please check your appointment details and try again. Your details have been kept.",
+          "error",
+        );
       } else {
-        throw new Error('Booking response was not confirmed.');
+        throw new Error("Booking response was not confirmed.");
       }
     } catch {
       if (state.disposed) return;
-      setStatus(refs.formStatus, 'We couldn’t confirm whether your request was received. Your details are still here. Please contact Louise before submitting again so that the same appointment is not requested twice.', 'error');
+      setStatus(
+        refs.formStatus,
+        "We couldn’t confirm whether your request was received. Your details are still here. Please contact Louise before submitting again so that the same appointment is not requested twice.",
+        "error",
+      );
     } finally {
       window.clearTimeout(timeout);
       state.submitting = false;
       if (!state.disposed) {
-        refs.form.removeAttribute('aria-busy');
+        refs.form.removeAttribute("aria-busy");
         updateControls();
         const invalid = refs.form.querySelector('[aria-invalid="true"]');
         if (invalid && !state.completed) invalid.focus();
@@ -558,35 +778,36 @@ export async function initBooking(config) {
     }
   }
 
-  listen(refs.service, 'change', () => {
+  listen(refs.service, "change", () => {
     state.serviceId = refs.service.value;
     resetSlots();
     updateDescription();
-    setStatus(refs.formStatus, '');
+    setStatus(refs.formStatus, "");
     void loadCalendar();
   });
-  listen(refs.previous, 'click', () => {
-    if (state.month <= firstMonth || state.submitting || state.completed) return;
+  listen(refs.previous, "click", () => {
+    if (state.month <= firstMonth || state.submitting || state.completed)
+      return;
     state.month = nextMonth(state.month, -1);
     resetSlots();
-    setStatus(refs.formStatus, '');
+    setStatus(refs.formStatus, "");
     void loadCalendar();
   });
-  listen(refs.next, 'click', () => {
+  listen(refs.next, "click", () => {
     if (state.month >= lastMonth || state.submitting || state.completed) return;
     state.month = nextMonth(state.month, 1);
     resetSlots();
-    setStatus(refs.formStatus, '');
+    setStatus(refs.formStatus, "");
     void loadCalendar();
   });
   for (const [name, [input, error]] of Object.entries(fields)) {
-    listen(input, name === 'consentAccepted' ? 'change' : 'input', () => {
-      input.setCustomValidity('');
-      input.removeAttribute('aria-invalid');
-      error.textContent = '';
+    listen(input, name === "consentAccepted" ? "change" : "input", () => {
+      input.setCustomValidity("");
+      input.removeAttribute("aria-invalid");
+      error.textContent = "";
     });
   }
-  listen(refs.form, 'submit', submitBooking);
+  listen(refs.form, "submit", submitBooking);
   updateDescription();
   updateSummary();
   await loadCalendar();
