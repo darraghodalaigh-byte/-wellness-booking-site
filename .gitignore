@@ -1,0 +1,9 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/*.sqlite*
+qa/
+.DS_Store
+web-release/
+.vercel/

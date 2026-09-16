@@ -52,6 +52,13 @@ const dayChoices = [
   { label: 'Sat', value: 6 }
 ];
 
+// Escape values used in both HTML text and quoted attributes. Booking details
+// originate from the public form, even when they are displayed to an admin.
+function escapeHtml(value) {
+  const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+  return String(value ?? '').replace(/[&<>"']/g, (character) => entities[character]);
+}
+
 function todayDate() {
   const now = new Date();
   const y = now.getFullYear();
@@ -145,15 +152,15 @@ function renderBookingsTable() {
   refs.bookingsTbody.innerHTML = state.bookings
     .map(
       (booking) => `
-      <tr data-id="${booking.id}" class="${state.selectedBookingId === booking.id ? 'active-row' : ''}">
-        <td>${booking.bookingReference}</td>
-        <td>${booking.fullName}</td>
-        <td>${booking.serviceName}</td>
-        <td>${booking.date}</td>
-        <td>${booking.time}</td>
-        <td><span class="badge badge-${booking.status}">${booking.status}</span></td>
-        <td>${booking.phone}</td>
-        <td>${booking.email}</td>
+      <tr data-id="${escapeHtml(booking.id)}" class="${state.selectedBookingId === booking.id ? 'active-row' : ''}">
+        <td>${escapeHtml(booking.bookingReference)}</td>
+        <td>${escapeHtml(booking.fullName)}</td>
+        <td>${escapeHtml(booking.serviceName)}</td>
+        <td>${escapeHtml(booking.date)}</td>
+        <td>${escapeHtml(booking.time)}</td>
+        <td><span class="badge badge-${escapeHtml(booking.status)}">${escapeHtml(booking.status)}</span></td>
+        <td>${escapeHtml(booking.phone)}</td>
+        <td>${escapeHtml(booking.email)}</td>
       </tr>
     `
     )
@@ -178,16 +185,16 @@ function renderBookingDetail() {
 
   refs.bookingDetail.innerHTML = `
     <div class="stack compact">
-      <div><strong>Reference:</strong> ${booking.bookingReference}</div>
-      <div><strong>Client:</strong> ${booking.fullName}</div>
-      <div><strong>Email:</strong> ${booking.email}</div>
-      <div><strong>Phone:</strong> ${booking.phone}</div>
-      <div><strong>Service:</strong> ${booking.serviceName}</div>
-      <div><strong>Date & Time:</strong> ${booking.date} ${booking.time}</div>
-      <div><strong>Duration:</strong> ${booking.durationMinutes} minutes</div>
-      <div><strong>Status:</strong> ${booking.status}</div>
-      <div><strong>Notes:</strong> ${booking.notes || 'No notes'}</div>
-      <div><strong>Created:</strong> ${booking.createdAt}</div>
+      <div><strong>Reference:</strong> ${escapeHtml(booking.bookingReference)}</div>
+      <div><strong>Client:</strong> ${escapeHtml(booking.fullName)}</div>
+      <div><strong>Email:</strong> ${escapeHtml(booking.email)}</div>
+      <div><strong>Phone:</strong> ${escapeHtml(booking.phone)}</div>
+      <div><strong>Service:</strong> ${escapeHtml(booking.serviceName)}</div>
+      <div><strong>Date & Time:</strong> ${escapeHtml(booking.date)} ${escapeHtml(booking.time)}</div>
+      <div><strong>Duration:</strong> ${escapeHtml(booking.durationMinutes)} minutes</div>
+      <div><strong>Status:</strong> ${escapeHtml(booking.status)}</div>
+      <div><strong>Notes:</strong> ${escapeHtml(booking.notes || 'No notes')}</div>
+      <div><strong>Created:</strong> ${escapeHtml(booking.createdAt)}</div>
     </div>
   `;
 
@@ -217,11 +224,11 @@ function renderBlocks() {
 
   refs.blockList.innerHTML = items
     .map((item) => {
-      const attrs = [`data-type="${item.type}"`, `data-date="${item.date}"`];
-      if (item.start) attrs.push(`data-start="${item.start}"`);
-      if (item.end) attrs.push(`data-end="${item.end}"`);
+      const attrs = [`data-type="${escapeHtml(item.type)}"`, `data-date="${escapeHtml(item.date)}"`];
+      if (item.start) attrs.push(`data-start="${escapeHtml(item.start)}"`);
+      if (item.end) attrs.push(`data-end="${escapeHtml(item.end)}"`);
 
-      return `<li>${item.label} <button class="btn btn-ghost btn-xs" ${attrs.join(' ')}>Unblock</button></li>`;
+      return `<li>${escapeHtml(item.label)} <button class="btn btn-ghost btn-xs" ${attrs.join(' ')}>Unblock</button></li>`;
     })
     .join('');
 
@@ -276,12 +283,12 @@ function renderSettingsForm() {
       (service, index) => `
       <div class="service-row" data-index="${index}">
         <div class="grid-2">
-          <label>Name <input type="text" name="serviceName" value="${service.name}" required /></label>
-          <label>ID <input type="text" name="serviceId" value="${service.id}" readonly /></label>
+          <label>Name <input type="text" name="serviceName" value="${escapeHtml(service.name)}" required /></label>
+          <label>ID <input type="text" name="serviceId" value="${escapeHtml(service.id)}" readonly /></label>
         </div>
         <div class="grid-3">
-          <label>Duration (mins) <input type="number" name="serviceDuration" min="5" value="${service.durationMinutes}" required /></label>
-          <label>Price (GBP) <input type="number" name="servicePrice" min="0" value="${service.priceGBP}" required /></label>
+          <label>Duration (mins) <input type="number" name="serviceDuration" min="5" value="${escapeHtml(service.durationMinutes)}" required /></label>
+          <label>Price (GBP) <input type="number" name="servicePrice" min="0" value="${escapeHtml(service.priceGBP)}" required /></label>
           <label class="check-item inline-toggle"><input type="checkbox" name="serviceActive" ${service.active !== false ? 'checked' : ''}/> Active</label>
         </div>
       </div>
@@ -303,11 +310,11 @@ function renderCalendarView() {
       .map((day) => {
         const rows = day.items.length
           ? day.items
-              .map((booking) => `<li>${booking.time} - ${booking.fullName} (${booking.serviceName}) [${booking.status}]</li>`)
+              .map((booking) => `<li>${escapeHtml(booking.time)} - ${escapeHtml(booking.fullName)} (${escapeHtml(booking.serviceName)}) [${escapeHtml(booking.status)}]</li>`)
               .join('')
           : '<li class="muted">No bookings</li>';
 
-        return `<article class="calendar-day"><h3>${prettyDate(day.date)}</h3><ul>${rows}</ul></article>`;
+        return `<article class="calendar-day"><h3>${escapeHtml(prettyDate(day.date))}</h3><ul>${rows}</ul></article>`;
       })
       .join('');
     return;
@@ -315,11 +322,11 @@ function renderCalendarView() {
 
   const rows = state.calendarData.items.length
     ? state.calendarData.items
-        .map((booking) => `<li>${booking.time} - ${booking.fullName} (${booking.serviceName}) [${booking.status}]</li>`)
+        .map((booking) => `<li>${escapeHtml(booking.time)} - ${escapeHtml(booking.fullName)} (${escapeHtml(booking.serviceName)}) [${escapeHtml(booking.status)}]</li>`)
         .join('')
     : '<li class="muted">No bookings</li>';
 
-  refs.calendarView.innerHTML = `<article class="calendar-day"><h3>${prettyDate(state.calendarData.date)}</h3><ul>${rows}</ul></article>`;
+  refs.calendarView.innerHTML = `<article class="calendar-day"><h3>${escapeHtml(prettyDate(state.calendarData.date))}</h3><ul>${rows}</ul></article>`;
 }
 
 async function loadDashboard() {
@@ -545,5 +552,5 @@ async function init() {
 }
 
 init().catch((error) => {
-  refs.calendarView.innerHTML = `<p class="status error">${error.message}</p>`;
+  refs.calendarView.innerHTML = `<p class="status error">${escapeHtml(error.message)}</p>`;
 });

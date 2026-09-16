@@ -278,6 +278,16 @@ export async function createBookingRepository({ businessConfig }) {
     };
 
     return db.transaction(async (tx) => {
+      if (tx.dialect === 'postgres') {
+        // All services share one practitioner. Lock the date, including when
+        // it has no bookings yet, so a concurrent insert cannot pass the same
+        // overlap check. PostgreSQL releases this lock on commit or rollback.
+        await tx.run(
+          "SELECT pg_advisory_xact_lock(1937007987, ($1::date - DATE '2000-01-01')::integer)",
+          [booking.date]
+        );
+      }
+
       const overlapCheck = buildOverlapCheck({
         dialect: tx.dialect,
         date: booking.date,
