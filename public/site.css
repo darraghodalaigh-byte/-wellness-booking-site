@@ -3033,6 +3033,10 @@ h3 em,
   min-width: 0;
   padding-inline: 0;
 }
+.calendar-grid .day-label {
+  white-space: nowrap;
+  letter-spacing: 0;
+}
 @media (max-width: 620px) {
   .simple-links > a {
     grid-template-columns: auto minmax(0, 1fr) auto;
