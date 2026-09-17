@@ -1,4 +1,4 @@
-import { initBooking } from "./booking.js";
+import { initBooking } from "./booking.js?v=20260917-feedback";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -186,6 +186,9 @@ function renderShared(config) {
   });
   $$("[data-cancellation]").forEach(
     (el) => (el.textContent = config.policies.cancellation),
+  );
+  $$("[data-deposit]").forEach(
+    (el) => (el.textContent = config.policies.deposit || ""),
   );
   const story = $("#fullStory");
   if (story)

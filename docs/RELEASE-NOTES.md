@@ -72,3 +72,20 @@ Run `node scripts/build-web-release.mjs` from the repository. It writes a standa
 Verification: 19 contact-handler tests passed, covering validation, fixed recipient, malformed requests, provider failures, timeouts, duplicate clicks and rate limits. Mocked browser flows passed for success, definitive rejection and unknown delivery. Layouts passed at 320, 390, 768 and 1440 pixels; no browser errors or automated accessibility violations were reported. Live GET readiness, invalid POST rejection, filtered configuration, health and removed legacy artwork were checked. No live test email has been sent; actual inbox receipt remains to be confirmed with Louise. Existing appointment notification configuration on Render remains a separate outstanding item described above.
 
 Deployment: dpl_6gupWbFdMQevKvpK5WmUfgmD9eKt.
+
+## Louise’s feedback update — 17 September 2026
+
+Sources reviewed: the six supplied WhatsApp screenshots, the 4 April 2017 Word document, the genuine CLARITY Coach certificate photograph supplied earlier, and the 17-second snow-globe video. The Word document was treated as historical content, with the current screenshots and Darragh’s instructions taking precedence.
+
+Changes:
+- Qualified nurse; more than three decades in healthcare, including over 20 years as a healthcare leader. The distinction is consistent across home, about and coaching pages. The biography includes the five healthcare roles from Louise’s document.
+- Coaching now describes everyday life, change/career decisions and leadership/work, with a tailored introduction and agreed approach. Two short original testimonial excerpts are attributed to AnneMarie M and Eileen M. Dated fixed-duration programmes, retreats and mailing-list offers were not reinstated.
+- A 17-second snow-globe clip is presented with native controls, no autoplay, a poster and a visible visual description. The exported version contains no audio track. Local inspection of the original found no intelligible speech, only extremely quiet background sound. The original source file is unchanged.
+- CLARITY Coach certification by Jamie Smart in June 2017 is stated factually. The AI-restored certificate image is not presented as an exact scanned credential.
+- Conversation links lead to the email enquiry form, including a reflexology topic preset. Louise’s phone number stays absent from the published site.
+- Darragh confirmed payment details should be sent by email. A 50% deposit is now explained in the booking summary, FAQs, practical-information page, consent text and request confirmation. The summary calculates the deposit from the selected treatment price. A cancellation less than 24 hours before the appointment makes the booking deposit non-refundable. No additional refund or rescheduling promises have been invented, and no online payment processing was added.
+- Shared editorial content is applied to the published snapshot and the Vercel configuration endpoint, so legacy Render content cannot restore the old biography, telephone or cancellation wording. Operational prices, service IDs, booking rules, availability and book links remain live.
+
+Validation: six focused editorial/configuration tests passed, including stale-upstream protection and preservation of live operational data. Desktop booking QA verified the €22.50 deposit on a €45 treatment and the pending-deposit confirmation with a mocked local request. No live appointment, email or payment was created. The existing Render service needed a wake-up during local calendar testing; retry loaded its real availability successfully. Mobile coaching checks at 320, 390 and 768 pixels verified no horizontal overflow, a fully visible logo, readable new sections and working user-initiated video playback. The corrected biography remains after the live configuration response.
+
+The existing Render appointment notification configuration remains the separate outstanding item documented above. The enquiry form delivery setup is unchanged; actual Gmail receipt has not yet been tested with an authorized real email.

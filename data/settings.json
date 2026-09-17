@@ -3,7 +3,6 @@
     "name": "Soul to Sole",
     "ownerName": "Louise O'Dalaigh",
     "ownerEmail": "soultosolebylouise@gmail.com",
-    "phone": "",
     "instagram": "@soultosolebylouise",
     "instagramUrl": "https://www.instagram.com/soultosolebylouise/",
     "facebook": "Soul To Sole by Louise",
@@ -12,7 +11,7 @@
     "timezone": "Europe/Dublin",
     "tagline": "Reflexology and coaching sessions that bring calm, clarity, and grounded wellbeing.",
     "intro": "You've spent so long looking after everyone else.\nIt's easy to forget that you matter too.\nIf you've been running on empty — you're not alone.\nThere is so much hope. And this is a good place to start.",
-    "about": "I didn't plan any of this. What I planned was a career in healthcare — and for over two decades, that's exactly what I had.\n\nBut burnout has a way of asking questions you can't ignore. I found myself searching for something that would help me navigate life with a bit more ease. What I found changed everything.\n\nI came across an understanding about how our minds actually work. It transformed my life in ways I'm still discovering.\n\nAround the same time I started taking reflexology sessions myself — and found them enormously helpful for stress. So a few years later, I trained. Because if something genuinely helps, I want to be able to offer it to others.\n\nNone of this happened in a vacuum. I was doing all of it while raising four children, working full time in a very demanding role, and caring for elderly parents. Life was full — in every sense of the word. And this transformation changed how I showed up in all of it. As a parent. As a daughter. As a person.\n\nThat desire to help people never went away. It just found a new home.\n\nI work especially with people in healthcare and caring professions. People who are brilliant at giving to others — and have quietly stopped giving to themselves. I know that place. I've been there.\n\nPeople who work with me start to see life through a different lens. Things feel lighter. Clearer. And quite often — they start to laugh again. You'd be surprised how many people have forgotten how to do that. And how much difference it makes when they remember."
+    "about": "I didn't plan any of this. I qualified as a nurse and built a career spanning more than three decades in healthcare — including over 20 years as a healthcare leader.\n\nAlong the way, I worked as a nurse, ward sister, bed manager, general manager and services manager.\n\nBut burnout has a way of asking questions you can't ignore. I found myself searching for something that would help me navigate life with a bit more ease. What I found changed everything.\n\nI came across an understanding about how our minds actually work. It transformed my life in ways I'm still discovering.\n\nAround the same time I started taking reflexology sessions myself — and found them enormously helpful for stress. So a few years later, I trained. Because if something genuinely helps, I want to be able to offer it to others.\n\nNone of this happened in a vacuum. I was doing all of it while raising four children, working full time in a very demanding role, and caring for elderly parents. Life was full — in every sense of the word. And this transformation changed how I showed up in all of it. As a parent. As a daughter. As a person.\n\nThat desire to help people never went away. It just found a new home.\n\nI work especially with people in healthcare and caring professions. People who are brilliant at giving to others — and have quietly stopped giving to themselves. I know that place. I've been there.\n\nPeople who work with me start to see life through a different lens. Things feel lighter. Clearer. And quite often — they start to laugh again. You'd be surprised how many people have forgotten how to do that. And how much difference it makes when they remember."
   },
   "book": {
     "enabled": true,
@@ -173,9 +172,11 @@
     }
   ],
   "policies": {
-    "cancellation": "Please provide at least 24 hours notice to cancel or reschedule. Late cancellations may be charged 50% of the session fee.",
+    "cancellation": "Please give at least 24 hours’ notice to cancel or reschedule. If you cancel less than 24 hours before your appointment, the 50% booking deposit is non-refundable.",
     "arrival": "Please arrive 5 minutes before your session start time so you can settle comfortably.",
-    "privacy": "Your personal details are handled with care and used only to arrange your treatment and communication."
+    "privacy": "Your personal details are handled with care and used only to arrange your treatment and communication.",
+    "depositPercent": 50,
+    "deposit": "A 50% deposit is required to secure your appointment. Louise will email payment details after receiving your request. Your appointment is confirmed once the deposit is received and Louise confirms it by email. No payment is taken on this website."
   },
   "faq": [
     {
@@ -187,8 +188,16 @@
       "answer": "Yes. Package prices are available on request, and bespoke clarity coaching packages can be arranged directly with Louise."
     },
     {
+      "question": "Is a deposit required?",
+      "answer": "Yes. A 50% deposit is required to secure your appointment. Louise will email payment details after receiving your request. No payment is taken on this website."
+    },
+    {
+      "question": "Is my appointment confirmed when I submit a request?",
+      "answer": "Not yet. Submitting the form sends an appointment request. Louise will email payment details. Your appointment is confirmed once the 50% deposit is received and Louise confirms it by email."
+    },
+    {
       "question": "Can I reschedule my appointment?",
-      "answer": "Yes. If you need to move your time, contact Soul to Sole as early as possible and an alternative slot will be offered."
+      "answer": "Please email soultosolebylouise@gmail.com and give at least 24 hours’ notice to cancel or reschedule. If you cancel less than 24 hours before your appointment, the 50% booking deposit is non-refundable."
     }
   ],
   "testimonials": [

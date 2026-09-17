@@ -186,7 +186,7 @@ export async function initBooking(config) {
             </div>
             <label class="form-consent" for="bookingConsent">
               <input id="bookingConsent" name="consentAccepted" type="checkbox" required aria-describedby="bookingConsentError">
-              <span>I agree to my details being used to arrange this appointment and for Louise to contact me about it. <span aria-hidden="true">*</span></span>
+              <span>I agree to my details being used to arrange this appointment and for Louise to contact me by email. I have read the deposit and cancellation information below. <span aria-hidden="true">*</span></span>
             </label>
             <span class="field-error" id="bookingConsentError"></span>
             <p id="bookingPolicy"></p>
@@ -239,9 +239,8 @@ export async function initBooking(config) {
       ? "All appointment times are shown in Ireland time."
       : `Appointment time zone: ${config.business.timezone}.`;
   refs.dateHint.textContent = `Appointments can be requested up to ${maxDays} days ahead${Number(rules.minNoticeHours) > 0 ? `, with at least ${Number(rules.minNoticeHours)} hours’ notice` : ""}. Unavailable dates are greyed out.`;
-  refs.policy.textContent =
-    config.policies?.cancellation ||
-    "This is an appointment request. Louise will contact you to confirm your session.";
+  refs.policy.textContent = [config.policies?.deposit, config.policies?.cancellation]
+    .filter(Boolean).join(" ") || "This is an appointment request. Louise will email you to confirm your session.";
 
   for (const service of services) {
     const option = element(
@@ -306,6 +305,7 @@ export async function initBooking(config) {
       ["Treatment", service?.name || "Choose a treatment"],
       ["Duration", `${service?.durationMinutes || "—"} minutes`],
       ["Price", servicePrice(service)],
+      ["50% booking deposit", euro.format(Number(service.priceEUR ?? service.priceGBP) * 0.5)],
       [
         "Date",
         state.date
@@ -325,7 +325,7 @@ export async function initBooking(config) {
         element(
           "p",
           "",
-          "Your appointment is confirmed when you hear from Louise. No payment is taken here.",
+          "Louise will email payment details for your 50% deposit. Your appointment is confirmed once the deposit is received and Louise confirms it by email. No payment is taken here.",
         ),
       );
     refs.summary.replaceChildren(fragment);
@@ -626,7 +626,7 @@ export async function initBooking(config) {
     const message = element(
       "p",
       "",
-      "Your appointment is awaiting confirmation. Louise will email you to confirm the details.",
+      "Your appointment is awaiting confirmation. Louise will email payment details for your 50% deposit, then confirm your appointment once it is received. No payment has been taken here.",
     );
     const reference = element("p");
     reference.append(

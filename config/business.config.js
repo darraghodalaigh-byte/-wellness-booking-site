@@ -1,9 +1,9 @@
-export const BUSINESS_CONFIG = {
+import { applyPublicContent } from '../lib/public-content.js';
+
+export const BUSINESS_CONFIG = applyPublicContent({
   business: {
     name: 'Soul to Sole',
     ownerName: 'Louise O\'Dalaigh',
-    ownerEmail: 'soultosolebylouise@gmail.com',
-    phone: '',
     instagram: '@soultosolebylouise',
     instagramUrl: 'https://www.instagram.com/soultosolebylouise/',
     facebook: 'Soul To Sole by Louise',
@@ -14,22 +14,7 @@ export const BUSINESS_CONFIG = {
     intro: `You've spent so long looking after everyone else.
 It's easy to forget that you matter too.
 If you've been running on empty — you're not alone.
-There is so much hope. And this is a good place to start.`,
-    about: `I didn't plan any of this. What I planned was a career in healthcare — and for over two decades, that's exactly what I had.
-
-But burnout has a way of asking questions you can't ignore. I found myself searching for something that would help me navigate life with a bit more ease. What I found changed everything.
-
-I came across an understanding about how our minds actually work. It transformed my life in ways I'm still discovering.
-
-Around the same time I started taking reflexology sessions myself — and found them enormously helpful for stress. So a few years later, I trained. Because if something genuinely helps, I want to be able to offer it to others.
-
-None of this happened in a vacuum. I was doing all of it while raising four children, working full time in a very demanding role, and caring for elderly parents. Life was full — in every sense of the word. And this transformation changed how I showed up in all of it. As a parent. As a daughter. As a person.
-
-That desire to help people never went away. It just found a new home.
-
-I work especially with people in healthcare and caring professions. People who are brilliant at giving to others — and have quietly stopped giving to themselves. I know that place. I've been there.
-
-People who work with me start to see life through a different lens. Things feel lighter. Clearer. And quite often — they start to laugh again. You'd be surprised how many people have forgotten how to do that. And how much difference it makes when they remember.`
+There is so much hope. And this is a good place to start.`
   },
   book: {
     enabled: true,
@@ -56,9 +41,7 @@ People who work with me start to see life through a different lens. Things feel 
   },
   email: {
     senderName: 'Soul to Sole',
-    fromEmail: 'bookings@soultosole.ie',
-    replyToEmail: 'soultosolebylouise@gmail.com',
-    ownerEmail: 'soultosolebylouise@gmail.com'
+    fromEmail: 'bookings@soultosole.ie'
   },
   booking: {
     workingDays: [1, 2, 3, 4, 5, 6],
@@ -151,8 +134,6 @@ People who work with me start to see life through a different lens. Things feel 
     }
   ],
   policies: {
-    cancellation:
-      'Please provide at least 24 hours notice to cancel or reschedule. Late cancellations may be charged 50% of the session fee.',
     arrival: 'Please arrive 5 minutes before your session start time so you can settle comfortably.',
     privacy:
       'Your personal details are handled with care and used only to arrange your treatment and communication.'
@@ -167,11 +148,6 @@ People who work with me start to see life through a different lens. Things feel 
       question: 'Do you offer package options?',
       answer:
         'Yes. Package prices are available on request, and bespoke clarity coaching packages can be arranged directly with Louise.'
-    },
-    {
-      question: 'Can I reschedule my appointment?',
-      answer:
-        'Yes. If you need to move your time, contact Soul to Sole as early as possible and an alternative slot will be offered.'
     }
   ],
   testimonials: [
@@ -200,4 +176,4 @@ People who work with me start to see life through a different lens. Things feel 
         'I noticed such a difference in my sleep after my sessions with Louise. When I went a while without coming, I really missed it — that said everything about how much it had helped me.'
     }
   ]
-};
+});

@@ -29,11 +29,14 @@ for (const asset of [
   "brand/transformation-through-coaching-logo.png",
   "editorial/atlantic-morning.jpg",
   "editorial/louise-portrait.jpg",
+  "media/clarity-snowglobe.mp4",
+  "media/clarity-snowglobe-poster.jpg",
 ]) {
   await mkdir(new URL(`assets/${asset.split("/")[0]}/`, out), { recursive: true });
   await copyFile(new URL(`public/assets/${asset}`, root), new URL(`assets/${asset}`, out));
 }
 await cp(new URL("api/", root), new URL("api/", out), { recursive: true });
+await cp(new URL("lib/", root), new URL("lib/", out), { recursive: true });
 await writeFile(new URL("package.json", out), JSON.stringify({ private: true, type: "module", engines: { node: "22.x" } }, null, 2));
 const content = getPublicBusinessData(BUSINESS_CONFIG);
 delete content.business.phone;

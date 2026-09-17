@@ -1,4 +1,6 @@
-// Keep the existing live diary data, without republishing withdrawn contact details.
+import { applyPublicContent } from '../lib/public-content.js';
+
+// Keep live diary data while applying the website's approved editorial content.
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   if (!["GET", "HEAD"].includes(req.method)) {
@@ -11,10 +13,9 @@ export default async function handler(req, res) {
       headers: { Accept: "application/json" },
     });
     if (!response.ok) throw new Error("Configuration unavailable");
-    const config = await response.json();
-    if (!config.business || !Array.isArray(config.services)) throw new Error("Invalid configuration");
-    delete config.business.phone;
-    config.business.ownerEmail = "soultosolebylouise@gmail.com";
+    const upstream = await response.json();
+    if (!upstream.business || !Array.isArray(upstream.services)) throw new Error("Invalid configuration");
+    const config = applyPublicContent(upstream);
     if (req.method === "HEAD") return res.status(200).end();
     return res.status(200).json(config);
   } catch {
