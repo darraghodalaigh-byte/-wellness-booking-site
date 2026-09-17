@@ -97,3 +97,13 @@ The homepage and coaching page now include attributed excerpts from all four tes
 The carousel supports keyboard arrows, retained button focus, polite screen-reader announcements and reduced-motion preferences. Inactive quotes are hidden from assistive technology; all four remain readable if JavaScript is unavailable. The quote area keeps a stable height between slides, and mobile buttons have 44-pixel touch targets.
 
 Desktop and phone browser checks verified all four entries, forward/backward wrapping, keyboard navigation, stable layout, inactive-slide accessibility and no horizontal overflow at 320 and 390 pixels. No forms were submitted and no emails or bookings were created by these checks.
+
+## Author-name correction — 17 September 2026
+
+Darragh confirmed the correct name is **Louise O’Dálaigh**, with a fada on the first a; uppercase **LOUISE O’DÁLAIGH**. All nine public HTML pages now use this spelling in headers, footers, body text, metadata and image descriptions. Registered URLs, email addresses and social handles remain unchanged.
+
+The book front cover was corrected with the built-in ImageGen editing tool and visually checked against the original. Corrected PNG and high-quality JPEG files are both 1024 × 1536 pixels, matching the supplied original. Editor copies, the original reference and the generation prompt are saved in the workspace output/imagegen/soul-to-sole/book-cover-editor directory. This is front-cover artwork, not a printer-specific wrap with spine, back and bleed. Because the image was regenerated for the correction, its artwork is not pixel-identical to the source.
+
+Home and book pages use deeply-ok-cover-fada.jpeg so cached copies of the old cover are avoided. The legacy cover path also contains the corrected artwork. A lossless PNG is published alongside it for sharing with the editor. The coaching logo contains the registered domain, not the surname; its spelling is unchanged. Reference posters and the restored certificate are not included in the public release.
+
+The shared content layer now owns the approved author name, cover image and cover description, preventing the legacy diary response from restoring the old spelling. All operational book fields and links remain live. Six configuration regression checks pass, and the built release was checked for unaccented display-name references across every page. No appointments, emails or payments were created during verification.

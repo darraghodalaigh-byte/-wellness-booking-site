@@ -1,7 +1,7 @@
 {
   "business": {
     "name": "Soul to Sole",
-    "ownerName": "Louise O'Dalaigh",
+    "ownerName": "Louise O’Dálaigh",
     "ownerEmail": "soultosolebylouise@gmail.com",
     "instagram": "@soultosolebylouise",
     "instagramUrl": "https://www.instagram.com/soultosolebylouise/",
@@ -17,8 +17,8 @@
     "enabled": true,
     "title": "Deeply Ok",
     "heading": "My First Book — Coming Soon",
-    "coverImage": "/assets/brand/deeply-ok-cover.jpeg",
-    "coverAlt": "Cover of Deeply Ok by Louise O'Dalaigh",
+    "coverImage": "/assets/brand/deeply-ok-cover-fada.jpeg",
+    "coverAlt": "Deeply OK by Louise O’Dálaigh — A simple guide to feeling like yourself again",
     "description": [
       "There was a time I genuinely believed I was broken. Not struggling. Not having a hard patch. Broken.",
       "Deeply Ok is a collection of 99 short insight posts written with warmth, humour and radical honesty from the middle of ordinary family life, pointing toward one simple truth — that the okayness you have been searching for was never actually missing.",

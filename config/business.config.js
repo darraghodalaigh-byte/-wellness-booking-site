@@ -3,7 +3,6 @@ import { applyPublicContent } from '../lib/public-content.js';
 export const BUSINESS_CONFIG = applyPublicContent({
   business: {
     name: 'Soul to Sole',
-    ownerName: 'Louise O\'Dalaigh',
     instagram: '@soultosolebylouise',
     instagramUrl: 'https://www.instagram.com/soultosolebylouise/',
     facebook: 'Soul To Sole by Louise',
@@ -20,8 +19,6 @@ There is so much hope. And this is a good place to start.`
     enabled: true,
     title: 'Deeply Ok',
     heading: 'My First Book — Coming Soon',
-    coverImage: '/assets/brand/deeply-ok-cover.jpeg',
-    coverAlt: 'Cover of Deeply Ok by Louise O\'Dalaigh',
     description: [
       'There was a time I genuinely believed I was broken. Not struggling. Not having a hard patch. Broken.',
       'Deeply Ok is a collection of 99 short insight posts written with warmth, humour and radical honesty from the middle of ordinary family life, pointing toward one simple truth — that the okayness you have been searching for was never actually missing.',

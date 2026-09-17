@@ -26,6 +26,8 @@ for (const file of files)
 await rm(new URL("assets/", out), { recursive: true, force: true });
 for (const asset of [
   "brand/deeply-ok-cover.jpeg",
+  "brand/deeply-ok-cover-fada.jpeg",
+  "brand/deeply-ok-cover-fada.png",
   "brand/transformation-through-coaching-logo.png",
   "editorial/atlantic-morning.jpg",
   "editorial/louise-portrait.jpg",

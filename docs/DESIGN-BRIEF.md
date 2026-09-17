@@ -1,6 +1,6 @@
 # Soul to Sole by Louise — redesign brief
 
-Build a polished, personal, editorial website for Louise O’Dalaigh that makes three distinct paths immediately clear: reflexology and treatments, transformation through coaching, and the book Deeply OK. Preserve her real biography, portrait, brand character, existing treatment prices in euros, testimonials and working booking/admin capabilities.
+Build a polished, personal, editorial website for Louise O’Dálaigh that makes three distinct paths immediately clear: reflexology and treatments, transformation through coaching, and the book Deeply OK. Preserve her real biography, portrait, brand character, existing treatment prices in euros, testimonials and working booking/admin capabilities. Her surname has a fada on the first a; use O’DÁLAIGH in uppercase. Existing email addresses, domains and social URLs retain their registered spelling.
 
 Visual thesis: space to return to yourself. Warm paper, deep forest green and the existing plum identity, oversized literary serif type, restrained gold, quietly cinematic water imagery. The book has its own sky-blue/navy chapter. Use composition and typography rather than repetitive cards. Keep copy personal and specific.
 

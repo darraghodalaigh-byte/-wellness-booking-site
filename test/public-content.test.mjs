@@ -10,9 +10,9 @@ const cancellation = 'Please give at least 24 hours’ notice to cancel or resch
 
 function staleDiary() {
   return {
-    business: { name: 'Soul to Sole', ownerEmail: 'old@example.test', phone: '0123456789', about: 'Only two decades in healthcare.', timezone: 'Europe/Dublin' },
+    business: { name: 'Soul to Sole', ownerName: 'Louise O\'Dalaigh', ownerEmail: 'old@example.test', phone: '0123456789', about: 'Only two decades in healthcare.', timezone: 'Europe/Dublin' },
     services: [{ id: 'live-treatment', name: 'Live treatment', priceGBP: 83, durationMinutes: 90, active: true }],
-    book: { enabled: true, title: 'Deeply OK', amazonUrl: 'https://retailer.example/book', waitlistUrl: 'https://signup.example/book' },
+    book: { enabled: false, title: 'Deeply OK', coverImage: '/assets/brand/deeply-ok-cover.jpeg', coverAlt: 'Cover of Deeply OK by Louise O\'Dalaigh', amazonUrl: 'https://retailer.example/book', waitlistUrl: 'https://signup.example/book', launchDate: '2026-11-01', launchDateLabel: 'A current launch date', waitlistLabel: 'Live waitlist label', amazonLabel: 'Live retailer label', description: ['Current book copy.'], isbn: { paperback: 'preserved-book-id' } },
     bookingRules: { workingDays: [2, 4], minNoticeHours: 36, maxAdvanceBookingDays: 45 },
     availability: { disabledDates: ['2027-01-02'] },
     policies: { depositPercent: 0, deposit: 'No deposit needed.', cancellation: 'A late cancellation fee may apply.', arrival: 'Arrive five minutes early.', privacy: 'Your details are used for appointments.' },
@@ -28,14 +28,18 @@ function staleDiary() {
   };
 }
 
-test('stale upstream biography, contact information and booking policies cannot overwrite approved content', () => {
+test('stale upstream name, cover, biography, contact information and booking policies cannot overwrite approved content', () => {
   const source = staleDiary();
   const original = structuredClone(source);
   Object.freeze(source.business);
+  Object.freeze(source.book);
   Object.freeze(source.policies);
   Object.freeze(source.faq);
   Object.freeze(source);
   const result = applyPublicContent(source);
+  assert.equal(result.business.ownerName, 'Louise O’Dálaigh');
+  assert.equal(result.book.coverImage, '/assets/brand/deeply-ok-cover-fada.jpeg');
+  assert.equal(result.book.coverAlt, 'Deeply OK by Louise O’Dálaigh — A simple guide to feeling like yourself again');
   assert.match(result.business.about, /qualified as a nurse/);
   assert.match(result.business.about, /more than three decades in healthcare/);
   assert.match(result.business.about, /over 20 years as a healthcare leader/);
@@ -51,9 +55,15 @@ test('stale upstream biography, contact information and booking policies cannot 
 test('live services, prices, availability, book links and booking rules are retained exactly', () => {
   const source = staleDiary();
   const result = applyPublicContent(source);
-  for (const key of ['services', 'book', 'bookingRules', 'availability', 'testimonials']) {
+  for (const key of ['services', 'bookingRules', 'availability', 'testimonials']) {
     assert.strictEqual(result[key], source[key], `${key} must remain authoritative from the diary`);
   }
+  assert.notStrictEqual(result.book, source.book, 'book editorial changes require a copy');
+  const { coverImage: oldCoverImage, coverAlt: oldCoverAlt, ...liveBook } = source.book;
+  const { coverImage, coverAlt, ...preservedBook } = result.book;
+  assert.deepEqual(preservedBook, liveBook, 'every non-editorial book field must remain authoritative from the diary');
+  assert.strictEqual(result.book.isbn, source.book.isbn);
+  assert.strictEqual(result.book.description, source.book.description);
   assert.equal(result.services[0].priceGBP, 83);
   assert.equal(result.services[0].durationMinutes, 90);
   assert.equal(result.business.timezone, 'Europe/Dublin');
@@ -91,6 +101,9 @@ test('public responses do not gain internal email settings, while internal sende
 test('local business configuration and saved settings use the same approved editorial content', async () => {
   const settings = JSON.parse(await readFile(new URL('../data/settings.json', import.meta.url), 'utf8'));
   for (const config of [BUSINESS_CONFIG, settings]) {
+    assert.equal(config.business.ownerName, 'Louise O’Dálaigh');
+    assert.equal(config.book.coverImage, PUBLIC_CONTENT.book.coverImage);
+    assert.equal(config.book.coverAlt, PUBLIC_CONTENT.book.coverAlt);
     assert.equal(config.business.about, PUBLIC_CONTENT.business.about);
     assert.equal(config.business.ownerEmail, PUBLIC_CONTENT.business.ownerEmail);
     assert.equal(Object.hasOwn(config.business, 'phone'), false);
@@ -121,12 +134,15 @@ test('public-config API overlays stale editorial data without replacing current 
   assert.equal(endpoint, 'https://wellness-booking-site.onrender.com/api/public-config');
   assert.equal(captured.status, 200);
   assert.equal(captured.headers['Cache-Control'], 'no-store');
+  assert.equal(captured.body.business.ownerName, 'Louise O’Dálaigh');
   assert.equal(captured.body.business.about, PUBLIC_CONTENT.business.about);
   assert.equal(captured.body.policies.depositPercent, 50);
   assert.equal(captured.body.policies.cancellation, cancellation);
   assert.deepEqual(captured.body.faq.slice(-3), PUBLIC_CONTENT.faq);
   assert.strictEqual(captured.body.services, upstream.services);
   assert.strictEqual(captured.body.bookingRules, upstream.bookingRules);
-  assert.strictEqual(captured.body.book, upstream.book);
+  assert.deepEqual(captured.body.book, { ...upstream.book, ...PUBLIC_CONTENT.book });
+  assert.notEqual(captured.body.book.coverImage, upstream.book.coverImage);
+  assert.notEqual(captured.body.book.coverAlt, upstream.book.coverAlt);
   assert.equal(Object.hasOwn(captured.body.business, 'phone'), false);
 });
