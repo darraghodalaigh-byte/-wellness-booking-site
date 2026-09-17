@@ -906,8 +906,27 @@ summary:focus-visible,
 .coaching-hero > .container {
   position: relative;
 }
+.coaching-hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 80px);
+}
+.coaching-brand {
+  width: 100%;
+  max-width: 420px;
+  justify-self: end;
+  padding: 18px;
+  border-radius: 50%;
+  background: var(--white);
+}
+.coaching-brand img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
 .coaching-hero h1 {
-  font-size: clamp(5rem, 9.5vw, 10rem);
+  font-size: clamp(4rem, 7.8vw, 8.2rem);
   line-height: 0.98;
   max-width: 1050px;
 }
@@ -2369,6 +2388,15 @@ summary:focus-visible,
   }
   .coaching-hero {
     padding-block: 50px 40px;
+  }
+  .coaching-hero-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .coaching-brand {
+    width: min(78%, 290px);
+    justify-self: center;
+    padding: 12px;
   }
   .coaching-hero h1 {
     font-size: clamp(4rem, 14.7vw, 5.7rem);
