@@ -89,3 +89,11 @@ Changes:
 Validation: six focused editorial/configuration tests passed, including stale-upstream protection and preservation of live operational data. Desktop booking QA verified the €22.50 deposit on a €45 treatment and the pending-deposit confirmation with a mocked local request. No live appointment, email or payment was created. The existing Render service needed a wake-up during local calendar testing; retry loaded its real availability successfully. Mobile coaching checks at 320, 390 and 768 pixels verified no horizontal overflow, a fully visible logo, readable new sections and working user-initiated video playback. The corrected biography remains after the live configuration response.
 
 The existing Render appointment notification configuration remains the separate outstanding item documented above. The enquiry form delivery setup is unchanged; actual Gmail receipt has not yet been tested with an authorized real email.
+
+## Four testimonial carousel — 17 September 2026
+
+The homepage and coaching page now include attributed excerpts from all four testimonials in Louise’s 4 April 2017 Word document: AnneMarie M, Eileen M, Hillary Y. and Patricia H. Excerpts preserve the source wording; repeated source punctuation is normalised to ellipses. Previous and next arrows sit on either side of the quote, with a position indicator underneath. Navigation wraps in both directions and never advances automatically.
+
+The carousel supports keyboard arrows, retained button focus, polite screen-reader announcements and reduced-motion preferences. Inactive quotes are hidden from assistive technology; all four remain readable if JavaScript is unavailable. The quote area keeps a stable height between slides, and mobile buttons have 44-pixel touch targets.
+
+Desktop and phone browser checks verified all four entries, forward/backward wrapping, keyboard navigation, stable layout, inactive-slide accessibility and no horizontal overflow at 320 and 390 pixels. No forms were submitted and no emails or bookings were created by these checks.

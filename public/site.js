@@ -62,6 +62,48 @@ function setupMenu() {
     if (event.matches) toggle(false);
   });
 }
+function setupTestimonials() {
+  $$("[data-testimonials]").forEach((carousel) => {
+    const slides = $$(".testimonial-slide", carousel);
+    if (slides.length < 2) return;
+    const previous = $("[data-testimonial-previous]", carousel);
+    const next = $("[data-testimonial-next]", carousel);
+    const position = $("[data-testimonial-position]", carousel);
+    const announcement = $("[data-testimonial-announcement]", carousel);
+    let current = 0;
+    carousel.classList.add("is-enhanced");
+    function show(index, announce = true) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const active = i === current;
+        slide.classList.toggle("is-active", active);
+        slide.setAttribute("aria-hidden", String(!active));
+        slide.inert = !active;
+        slide.setAttribute("role", "group");
+        slide.setAttribute("aria-roledescription", "slide");
+        slide.setAttribute("aria-label", `${i + 1} of ${slides.length}`);
+      });
+      position.textContent = `${current + 1} / ${slides.length}`;
+      if (announce) {
+        const slide = slides[current];
+        announcement.textContent = `Testimonial ${current + 1} of ${slides.length}. ${$("blockquote", slide).textContent.trim()} ${$("figcaption", slide).textContent.trim()}`;
+      }
+    }
+    previous.hidden = false;
+    next.hidden = false;
+    position.hidden = false;
+    previous.addEventListener("click", () => show(current - 1));
+    next.addEventListener("click", () => show(current + 1));
+    carousel.addEventListener("keydown", (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        show(current + (event.key === "ArrowRight" ? 1 : -1));
+      }
+    });
+    show(0, false);
+  });
+}
 function setupMotion() {
   if (reducedMotion.matches || !("IntersectionObserver" in window)) return;
   document.documentElement.classList.add("js-motion");
@@ -515,6 +557,7 @@ async function loadContent() {
 }
 
 setupMenu();
+setupTestimonials();
 setupMotion();
 setupIdeas();
 $$("[data-year]").forEach(
