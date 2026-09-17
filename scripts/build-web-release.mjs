@@ -1,4 +1,4 @@
-import { mkdir, copyFile, cp, writeFile } from "node:fs/promises";
+import { mkdir, copyFile, cp, rm, writeFile } from "node:fs/promises";
 import { BUSINESS_CONFIG } from "../config/business.config.js";
 import { getPublicBusinessData } from "../server/scheduling.js";
 const root = new URL("../", import.meta.url);
@@ -13,6 +13,8 @@ const files = [
   "booking.html",
   "privacy.html",
   "coaching-ideas.html",
+  "contact.html",
+  "contact.js",
   "site.css",
   "site.js",
   "booking.js",
@@ -20,10 +22,21 @@ const files = [
 ];
 for (const file of files)
   await copyFile(new URL(`public/${file}`, root), new URL(file, out));
-await cp(new URL("public/assets/", root), new URL("assets/", out), {
-  recursive: true,
-});
+// Publish only the current website artwork; reference posters include old contact data.
+await rm(new URL("assets/", out), { recursive: true, force: true });
+for (const asset of [
+  "brand/deeply-ok-cover.jpeg",
+  "brand/transformation-through-coaching-logo.png",
+  "editorial/atlantic-morning.jpg",
+  "editorial/louise-portrait.jpg",
+]) {
+  await mkdir(new URL(`assets/${asset.split("/")[0]}/`, out), { recursive: true });
+  await copyFile(new URL(`public/assets/${asset}`, root), new URL(`assets/${asset}`, out));
+}
+await cp(new URL("api/", root), new URL("api/", out), { recursive: true });
+await writeFile(new URL("package.json", out), JSON.stringify({ private: true, type: "module", engines: { node: "22.x" } }, null, 2));
 const content = getPublicBusinessData(BUSINESS_CONFIG);
+delete content.business.phone;
 await writeFile(new URL("content.json", out), JSON.stringify(content));
 await writeFile(
   new URL("content.json", new URL("public/", root)),
@@ -37,10 +50,22 @@ await writeFile(
       cleanUrls: false,
       rewrites: [
         {
-          source: "/api/:path*",
-          destination: "https://wellness-booking-site.onrender.com/api/:path*",
+          source: "/api/availability/:path*",
+          destination: "https://wellness-booking-site.onrender.com/api/availability/:path*",
+        },
+        {
+          source: "/api/bookings",
+          destination: "https://wellness-booking-site.onrender.com/api/bookings",
+        },
+        {
+          source: "/api/health",
+          destination: "https://wellness-booking-site.onrender.com/api/health",
         },
       ],
+      functions: {
+        "api/contact.js": { maxDuration: 30 },
+        "api/public-config.js": { maxDuration: 60 },
+      },
       redirects: [
         {
           source: "/admin",
@@ -90,5 +115,5 @@ await writeFile(
   "User-agent: *\nDisallow: /coaching-ideas.html\nDisallow: /admin\nDisallow: /api/\n",
 );
 console.log(
-  "Public web release built. API uses existing booking service; practitioner login returns to Render.",
+  "Public web release built. Enquiries use Vercel functions; bookings and practitioner login use the existing Render service.",
 );

@@ -172,10 +172,6 @@ function renderFaq(config) {
 }
 function renderShared(config) {
   const b = config.business;
-  $$("[data-phone]").forEach((el) => {
-    el.textContent = b.phone;
-    el.href = `tel:${b.phone.replace(/[^\d+]/g, "").replace(/^0/, "+353")}`;
-  });
   $$("[data-email]").forEach((el) => {
     el.href = `mailto:${b.ownerEmail}`;
     if (el.textContent.includes("@")) el.textContent = b.ownerEmail;
@@ -255,10 +251,10 @@ function setupBook(config) {
       $("#bookAvailability").textContent =
         "Open the signup page for launch updates. Book pricing will be announced when sales open.";
     } else {
-      action.href = `mailto:${config.business.ownerEmail}?subject=${encodeURIComponent(`Deeply OK — ${label.toLowerCase()} enquiry`)}&body=${encodeURIComponent(`Hello Louise,\n\nI would love to know more about the ${label.toLowerCase()} edition of Deeply OK and when it will be available.\n\nThank you!`)}`;
+      action.href = `/contact.html?${new URLSearchParams({ topic: "book", edition: format })}`;
       action.textContent = "Ask Louise about the book ↗";
       $("#bookAvailability").textContent =
-        "Sales will open when the retailer details are ready. This opens your email app to enquire with Louise.";
+        "Sales will open when the retailer details are ready. Send a short enquiry and Louise will reply by email.";
     }
   };
   $$('input[name="bookFormat"]').forEach((input) =>
@@ -473,7 +469,7 @@ async function loadContent() {
       root.replaceChildren(
         node(
           "p",
-          "The appointment planner is unavailable at the moment. Please try again or call Louise to arrange your visit.",
+          "The appointment planner is unavailable at the moment. Please try again or send Louise an enquiry to arrange your visit by email.",
           "status-message",
         ),
       );
@@ -484,9 +480,9 @@ async function loadContent() {
         button.textContent = "Loading…";
         loadContent();
       });
-      const call = node("a", "Call 086 156 8818", "button button-outline");
-      call.href = "tel:+353861568818";
-      root.append(button, document.createTextNode(" "), call);
+      const contact = node("a", "Send an enquiry", "button button-outline");
+      contact.href = "/contact.html";
+      root.append(button, document.createTextNode(" "), contact);
     }
     if (!published) {
       const list = $("#treatmentList");
@@ -494,16 +490,22 @@ async function loadContent() {
         list.replaceChildren(
           node(
             "p",
-            "Treatment details are temporarily unavailable. Please call Louise on 086 156 8818 for prices and availability.",
+            "Treatment details are temporarily unavailable. Send Louise an enquiry for prices and availability; she’ll reply by email.",
           ),
+          Object.assign(node("a", "Send an enquiry", "text-link"), {
+            href: "/contact.html",
+          }),
         );
       const faq = $("#faqList");
       if (faq)
         faq.replaceChildren(
           node(
             "p",
-            "For any questions about your first visit, please call Louise on 086 156 8818.",
+            "For any questions about your first visit, send Louise an enquiry. She’ll reply by email.",
           ),
+          Object.assign(node("a", "Send an enquiry", "text-link"), {
+            href: "/contact.html",
+          }),
         );
     }
   }

@@ -172,12 +172,8 @@ export async function initBooking(config) {
                 <span class="field-error" id="bookingPhoneError"></span>
               </div>
               <div class="field">
-                <label for="bookingContactMethod">How would you prefer Louise to contact you?</label>
-                <select id="bookingContactMethod" name="preferredContactMethod">
-                  <option value="email">Email</option>
-                  <option value="phone">Phone</option>
-                  <option value="whatsapp">WhatsApp</option>
-                </select>
+                <p class="booking-email-note">Louise will reply to your email address to confirm the arrangements.</p>
+                <input name="preferredContactMethod" type="hidden" value="email">
               </div>
             </div>
             <div class="field">
@@ -630,7 +626,7 @@ export async function initBooking(config) {
     const message = element(
       "p",
       "",
-      "Your appointment is awaiting confirmation. Louise will contact you using your preferred method to confirm the details.",
+      "Your appointment is awaiting confirmation. Louise will email you to confirm the details.",
     );
     const reference = element("p");
     reference.append(
@@ -703,9 +699,7 @@ export async function initBooking(config) {
       date: state.date,
       time: state.time,
       notes: String(data.get("notes") || "").trim(),
-      preferredContactMethod: String(
-        data.get("preferredContactMethod") || "email",
-      ),
+      preferredContactMethod: "email",
       consentAccepted: data.get("consentAccepted") === "on",
       website: String(data.get("website") || ""),
     };

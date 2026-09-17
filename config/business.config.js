@@ -3,7 +3,7 @@ export const BUSINESS_CONFIG = {
     name: 'Soul to Sole',
     ownerName: 'Louise O\'Dalaigh',
     ownerEmail: 'soultosolebylouise@gmail.com',
-    phone: '086-156-8818',
+    phone: '',
     instagram: '@soultosolebylouise',
     instagramUrl: 'https://www.instagram.com/soultosolebylouise/',
     facebook: 'Soul To Sole by Louise',

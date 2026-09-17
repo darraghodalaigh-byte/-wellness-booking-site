@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en-IE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#203e35" />
+    <meta
+      name="description"
+      content="Send Louise a personal enquiry about reflexology, coaching or Deeply OK. Leave your details and Louise will reply by email."
+    />
+    <meta name="robots" content="index,follow" />
+    <title>Let’s talk | Soul to Sole by Louise</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/site.css?v=20260917-contact" />
+    <script type="module" src="/site.js?v=20260917-contact"></script>
+    <script type="module" src="/contact.js?v=20260917-contact"></script>
+  </head>
+  <body data-page="contact">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="nav-container">
+        <a class="wordmark" href="/" aria-label="Soul to Sole by Louise, home"
+          >soul <i>to</i> sole<span>BY LOUISE O’DALAIGH</span></a
+        ><button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primaryNav"
+        >
+          <span>Menu</span><span class="menu-lines" aria-hidden="true"></span>
+        </button>
+        <nav id="primaryNav" aria-label="Main navigation">
+          <a href="/reflexology.html">Reflexology</a
+          ><a href="/coaching.html">Coaching</a
+          ><a href="/book.html">The book</a
+          ><a href="/about.html">About Louise</a
+          ><a class="button button-small button-primary" href="/booking.html"
+            >Book a session <span aria-hidden="true">↗</span></a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="enquiry-page">
+      <section class="container enquiry-layout">
+        <div class="enquiry-intro">
+          <p class="eyebrow">Let’s talk</p>
+          <h1>A little hello.<br /><em>A place to begin.</em></h1>
+          <p class="lead">A question, a fresh start, or simply a sense that you’d like some support. There’s room for it here.</p>
+          <div class="enquiry-how">
+            <span class="eyebrow">At your pace. At hers, too.</span>
+            <p>Leave your details and a few words about what you’re looking for. Louise will read your message and reply by email when she’s available.</p>
+          </div>
+          <p class="enquiry-direct">Prefer to write directly?<br /><a href="mailto:soultosolebylouise@gmail.com" data-email>soultosolebylouise@gmail.com</a></p>
+        </div>
+        <div class="enquiry-card">
+          <p class="eyebrow">A few details, to begin</p>
+          <h2 id="enquiry-heading">Send Louise a message.</h2>
+          <p class="enquiry-required">All fields are required.</p>
+          <form id="enquiryForm" aria-labelledby="enquiry-heading" action="/api/contact" method="post">
+            <fieldset id="enquiryFields" disabled>
+              <legend class="sr-only">Your enquiry</legend>
+              <div class="field">
+                <label for="enquiryName">Your name</label>
+                <input id="enquiryName" name="fullName" autocomplete="name" required minlength="2" maxlength="120" aria-describedby="enquiryNameError" />
+                <span class="field-error" id="enquiryNameError"></span>
+              </div>
+              <div class="field">
+                <label for="enquiryEmail">Email address</label>
+                <input id="enquiryEmail" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" aria-describedby="enquiryEmailHint enquiryEmailError" />
+                <span class="field-hint" id="enquiryEmailHint">This is where Louise will reply.</span>
+                <span class="field-error" id="enquiryEmailError"></span>
+              </div>
+              <div class="field">
+                <label for="enquiryTopic">What would you like to talk about?</label>
+                <select id="enquiryTopic" name="topic" required aria-describedby="enquiryTopicError">
+                  <option value="general">A general question</option>
+                  <option value="reflexology">Reflexology & treatments</option>
+                  <option value="coaching">Coaching</option>
+                  <option value="book">The book — Deeply OK</option>
+                </select>
+                <span class="field-error" id="enquiryTopicError"></span>
+              </div>
+              <div class="field">
+                <label for="enquiryMessage">A little about what you’re looking for</label>
+                <textarea id="enquiryMessage" name="message" rows="5" required minlength="10" maxlength="2000" aria-describedby="enquiryMessageHint enquiryMessageError" placeholder="A few sentences is plenty. What brought you here?"></textarea>
+                <span class="field-hint" id="enquiryMessageHint">Please keep it brief and leave out sensitive medical details.</span>
+                <span class="field-error" id="enquiryMessageError"></span>
+              </div>
+              <div hidden aria-hidden="true">
+                <label for="enquiryWebsite">Leave this field empty</label>
+                <input id="enquiryWebsite" name="website" tabindex="-1" autocomplete="off" />
+              </div>
+              <label class="form-consent" for="enquiryConsent">
+                <input id="enquiryConsent" name="consentAccepted" type="checkbox" required aria-describedby="enquiryConsentError" />
+                <span>I agree to Louise using these details to reply to my enquiry. <a href="/privacy.html">Privacy information</a>.</span>
+              </label>
+              <span class="field-error" id="enquiryConsentError"></span>
+              <button class="button button-primary" id="enquirySubmit" type="submit">Send enquiry <span aria-hidden="true">↗</span></button>
+              <p class="enquiry-small-note">This is a personal enquiry, not a mailing-list signup or an appointment booking.</p>
+            </fieldset>
+          </form>
+          <div id="enquiryStatus" class="status-message" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">Getting the form ready…</div>
+          <noscript><p>Please enable JavaScript to use this form, or <a href="mailto:soultosolebylouise@gmail.com">email Louise directly</a>.</p></noscript>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-top">
+        <a class="wordmark" href="/"
+          >soul <i>to</i> sole<span>BY LOUISE O’DALAIGH</span></a
+        >
+        <p>Room to pause. <br />Space to see differently.</p>
+        <div class="footer-social">
+          <a
+            href="https://www.instagram.com/soultosolebylouise/"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-instagram
+            >Instagram ↗</a
+          ><a
+            href="https://www.facebook.com/louiseodalaigh/"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-facebook
+            >Facebook ↗</a
+          ><a href="mailto:soultosolebylouise@gmail.com" data-email>Email Louise ↗</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span data-year>2026</span> Soul to Sole by Louise</span
+        ><span>NRRI Reflexologist · Clarity Coach · Author</span>
+        <div>
+          <a href="/privacy.html">Privacy & appointments</a
+          ><a href="/admin">Practitioner login</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
