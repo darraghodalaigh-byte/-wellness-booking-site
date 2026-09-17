@@ -2,7 +2,7 @@ export const BUSINESS_CONFIG = {
   business: {
     name: 'Soul to Sole',
     ownerName: 'Louise O\'Dalaigh',
-    ownerEmail: 'hello@soultosole.ie',
+    ownerEmail: 'soultosolebylouise@gmail.com',
     phone: '086-156-8818',
     instagram: '@soultosolebylouise',
     instagramUrl: 'https://www.instagram.com/soultosolebylouise/',
@@ -57,8 +57,8 @@ People who work with me start to see life through a different lens. Things feel 
   email: {
     senderName: 'Soul to Sole',
     fromEmail: 'bookings@soultosole.ie',
-    replyToEmail: 'hello@soultosole.ie',
-    ownerEmail: 'hello@soultosole.ie'
+    replyToEmail: 'soultosolebylouise@gmail.com',
+    ownerEmail: 'soultosolebylouise@gmail.com'
   },
   booking: {
     workingDays: [1, 2, 3, 4, 5, 6],

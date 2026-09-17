@@ -23,6 +23,12 @@ This avoids restarting the original backend: its checked-in Render definition us
 
 The existing free booking service may take time to wake. Published page content is included locally so the public website loads promptly. The appointment diary always loads live configuration and availability, with retry and telephone fallbacks.
 
+## Contact email correction — 17 September 2026
+
+The confirmed contact is `soultosolebylouise@gmail.com`. All published contact links, privacy text and book enquiries use this address. The frontend explicitly keeps it when the legacy booking API supplies its old contact data. Source business settings, owner notification defaults and reply-to defaults have also been corrected for a future backend release.
+
+The existing Render backend has not been redeployed or reconfigured. Its notification recipient/reply-to settings and any environment overrides still need correction using authenticated backend access, followed by an authorized delivery check. The SMTP sender is separate and has not been changed to an unverified Gmail sender. No test emails were sent.
+
 ## Book sales
 
 The site has a dedicated book storefront with paperback, hardback and ebook selection. The supplied book launch date is 10 October 2026. No price, stock, retailer destination or payment account was supplied, so the current action is an honest book enquiry through the existing configured email address.

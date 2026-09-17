@@ -423,6 +423,14 @@ function setupIdeas() {
 function applyContent(config, booking = false) {
   if (!config.business || !Array.isArray(config.services))
     throw new Error("Invalid configuration");
+  // Keep the confirmed public contact independent of the legacy booking service.
+  config = {
+    ...config,
+    business: {
+      ...config.business,
+      ownerEmail: "soultosolebylouise@gmail.com",
+    },
+  };
   renderShared(config);
   renderTreatments(config);
   renderFaq(config);
