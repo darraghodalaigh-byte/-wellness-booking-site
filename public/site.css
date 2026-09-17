@@ -32,8 +32,9 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 16px/1.65 var(--sans);
+  font: var(--type-body)/1.65 var(--sans);
   -webkit-font-smoothing: antialiased;
+  overflow-wrap: anywhere;
 }
 body.menu-open {
   overflow: hidden;
@@ -87,17 +88,8 @@ h2,
 h3 {
   font-family: var(--serif);
   font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.035em;
-}
-h1 {
-  font-size: clamp(4rem, 6.8vw, 7.1rem);
-}
-h2 {
-  font-size: clamp(2.8rem, 4.3vw, 4.75rem);
-}
-h3 {
-  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 em {
   font-weight: 400;
@@ -128,23 +120,13 @@ summary:focus-visible,
 }
 .eyebrow {
   font-family: var(--sans);
-  font-size: 0.76rem;
   font-weight: 550;
-  letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1.6;
   margin-bottom: 25px;
 }
 .lead {
-  font-size: 1.2rem;
-  line-height: 1.7;
   max-width: 560px;
-}
-.large-copy {
-  font-size: 2rem;
-  font-family: var(--serif);
-  line-height: 1.3;
-  letter-spacing: -0.02em;
 }
 .small-note {
   font-size: 0.875rem;
@@ -196,8 +178,8 @@ summary:focus-visible,
 .wordmark > span {
   display: block;
   font-family: var(--sans);
-  font-size: 0.59rem;
-  letter-spacing: 0.24em;
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
   font-weight: 500;
   margin-top: 12px;
   margin-left: 3px;
@@ -209,7 +191,7 @@ summary:focus-visible,
 }
 .site-header nav > a:not(.button) {
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: var(--type-control);
   position: relative;
   padding: 12px 0;
 }
@@ -231,6 +213,7 @@ summary:focus-visible,
 }
 .button {
   min-height: 54px;
+  max-width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +223,6 @@ summary:focus-visible,
   padding: 15px 24px;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.93rem;
   line-height: 1.4;
   transition:
     transform 0.35s var(--ease),
@@ -271,7 +253,6 @@ summary:focus-visible,
 }
 .button-small {
   min-height: 46px;
-  font-size: 0.84rem;
   padding: 12px 18px;
   gap: 16px;
 }
@@ -292,7 +273,6 @@ summary:focus-visible,
   min-height: 48px;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.94rem;
   border-bottom: 1px solid currentColor;
   width: fit-content;
   padding-block: 9px;
@@ -308,7 +288,6 @@ summary:focus-visible,
   text-underline-offset: 5px;
   padding: 12px 0;
   min-height: 44px;
-  font-size: 0.9rem;
 }
 .menu-toggle {
   display: none;
@@ -327,20 +306,12 @@ summary:focus-visible,
   justify-content: center;
 }
 .hero-copy .eyebrow {
-  font-size: 0.68rem;
-  letter-spacing: 0.13em;
   margin-bottom: 38px;
-}
-.hero-copy h1 {
-  font-size: clamp(4.4rem, 7.7vw, 8.3rem);
-  line-height: 0.98;
-  letter-spacing: -0.047em;
 }
 .hero-copy h1 em {
   color: #69795c;
 }
 .hero-intro {
-  font-size: 1.03rem;
   line-height: 1.75;
   margin-top: 32px;
   max-width: 420px;
@@ -353,10 +324,8 @@ summary:focus-visible,
   margin-top: 32px;
 }
 .hero-footnote {
-  font-size: 0.75rem;
   margin-top: 80px;
   color: var(--muted);
-  letter-spacing: 0.03em;
 }
 .hero-landscape {
   position: relative;
@@ -389,11 +358,6 @@ summary:focus-visible,
   align-items: center;
   color: #fffdf6;
 }
-.landscape-caption > span {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.6rem;
-}
 .landscape-caption > a {
   border: 1px solid #ffffff70;
   border-radius: 50%;
@@ -409,11 +373,6 @@ summary:focus-visible,
   align-items: center;
   gap: 45px;
 }
-.intro-line > p {
-  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
-  font-family: var(--serif);
-  line-height: 1.4;
-}
 .intro-line .fine-rule {
   height: 1px;
   flex: 1;
@@ -421,7 +380,6 @@ summary:focus-visible,
 }
 .intro-line .eyebrow {
   margin: 0;
-  font-size: 0.66rem;
   max-width: 140px;
 }
 .pathways {
@@ -436,7 +394,6 @@ summary:focus-visible,
 }
 .section-heading > p {
   max-width: 400px;
-  font-size: 1rem;
   color: var(--muted);
 }
 .pathway-grid {
@@ -474,7 +431,6 @@ summary:focus-visible,
 }
 .pathway-top .eyebrow {
   margin: 0;
-  font-size: 0.68rem;
 }
 .round-arrow {
   border: 1px solid currentColor;
@@ -486,16 +442,13 @@ summary:focus-visible,
   transition: transform 0.4s;
 }
 .pathway h3 {
-  font-size: clamp(3.1rem, 4.6vw, 5rem);
   margin-bottom: 25px;
 }
 .pathway-kicker {
-  font-size: 0.84rem;
   margin-bottom: 14px;
   opacity: 0.8;
 }
 .pathway h3 + p {
-  font-size: 0.94rem;
   opacity: 0.9;
 }
 .pathway-link {
@@ -503,7 +456,6 @@ summary:focus-visible,
   padding-top: 24px;
   display: flex;
   justify-content: space-between;
-  font-size: 0.88rem;
   font-weight: 500;
 }
 .pathway-plum .pathway-link {
@@ -555,7 +507,6 @@ summary:focus-visible,
 }
 .editorial-copy > p:not(.eyebrow) {
   color: #526157;
-  font-size: 1.02rem;
 }
 .editorial-copy > .text-link {
   margin-top: 24px;
@@ -584,7 +535,6 @@ summary:focus-visible,
   gap: 80px;
 }
 .book-feature-copy h2 {
-  font-size: clamp(4rem, 6vw, 6.7rem);
   margin-bottom: 27px;
 }
 .book-feature-copy > p:not(.eyebrow, .large-copy, .release-label) {
@@ -592,12 +542,9 @@ summary:focus-visible,
   color: #506577;
 }
 .book-feature-copy .large-copy {
-  font-size: 2.2rem;
   margin-bottom: 24px;
 }
 .release-label {
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -642,9 +589,7 @@ summary:focus-visible,
   border-radius: 1px 3px 3px 1px;
 }
 .stage-caption {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.2rem;
+  font-family: var(--sans);
   margin-top: 42px;
   text-align: center;
 }
@@ -654,13 +599,10 @@ summary:focus-visible,
 }
 .quote-section blockquote {
   font-family: var(--serif);
-  font-size: clamp(2rem, 3.8vw, 3.6rem);
   line-height: 1.25;
   letter-spacing: -0.025em;
 }
 .quote-attribution {
-  font-size: 0.77rem;
-  letter-spacing: 0.11em;
   text-transform: uppercase;
   margin-top: 30px;
 }
@@ -675,9 +617,6 @@ summary:focus-visible,
   align-items: center;
   gap: 70px;
 }
-.contact-layout h2 {
-  font-size: clamp(2.5rem, 4vw, 4.4rem);
-}
 .contact-layout .eyebrow {
   color: #cad2b9;
 }
@@ -691,7 +630,6 @@ summary:focus-visible,
 .contact-phone {
   display: block;
   margin-top: 20px;
-  font-size: 0.9rem;
   width: fit-content;
 }
 .site-footer {
@@ -704,17 +642,11 @@ summary:focus-visible,
   padding-bottom: 55px;
   align-items: start;
 }
-.footer-top > p {
-  font-family: var(--serif);
-  font-size: 1.55rem;
-  line-height: 1.4;
-}
 .footer-social {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
-  font-size: 0.9rem;
 }
 .footer-social a {
   text-decoration: none;
@@ -727,7 +659,6 @@ summary:focus-visible,
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 18px;
-  font-size: 0.72rem;
   color: var(--muted);
 }
 .footer-bottom > div {
@@ -758,18 +689,15 @@ summary:focus-visible,
 }
 .treatment-pause > p {
   font-family: var(--serif);
-  font-size: clamp(3rem, 5vw, 5rem);
   line-height: 1.05;
   color: #738166;
   margin-bottom: 32px;
 }
 .treatment-pause > span:last-child {
-  font-size: 0.83rem;
   color: var(--muted);
   display: block;
 }
 .treatment-pause .eyebrow {
-  font-size: 0.7rem;
   display: block;
 }
 .three-notes {
@@ -784,16 +712,13 @@ summary:focus-visible,
 }
 .three-notes > article > span {
   display: block;
-  font-size: 0.8rem;
   margin-bottom: 24px;
 }
 .three-notes h3 {
-  font-size: 1.85rem;
   margin-bottom: 18px;
 }
 .three-notes p {
   color: var(--muted);
-  font-size: 0.97rem;
 }
 .treatment-list-section {
   background: var(--white);
@@ -817,12 +742,10 @@ summary:focus-visible,
   display: none;
 }
 .treatment-number {
-  font-size: 0.75rem;
   color: var(--muted);
 }
 .treatment-name {
   font-family: var(--serif);
-  font-size: clamp(1.6rem, 2.7vw, 2.35rem);
   line-height: 1.2;
   letter-spacing: -0.025em;
 }
@@ -832,12 +755,10 @@ summary:focus-visible,
 }
 .treatment-price {
   font-family: var(--serif);
-  font-size: 1.8rem;
   display: block;
   line-height: 1.1;
 }
 .treatment-duration {
-  font-size: 0.76rem;
   color: var(--muted);
 }
 .expand-symbol {
@@ -864,7 +785,6 @@ summary:focus-visible,
 }
 .treatment-note {
   margin-top: 30px;
-  font-size: 0.9rem;
   color: var(--muted);
 }
 .narrow-heading {
@@ -881,7 +801,6 @@ summary:focus-visible,
   border-bottom: 1px solid var(--line);
 }
 .faq-item summary {
-  font-size: 1.03rem;
   cursor: pointer;
   padding-right: 18px;
 }
@@ -891,7 +810,6 @@ summary:focus-visible,
   color: var(--muted);
 }
 .care-note {
-  font-size: 0.86rem;
   color: var(--muted);
   max-width: 760px;
   margin-top: 35px;
@@ -926,8 +844,6 @@ summary:focus-visible,
   object-fit: contain;
 }
 .coaching-hero h1 {
-  font-size: clamp(4rem, 7.8vw, 8.2rem);
-  line-height: 0.98;
   max-width: 1050px;
 }
 .coaching-hero h1 em {
@@ -944,7 +860,6 @@ summary:focus-visible,
   gap: 30px;
 }
 .coaching-hero-bottom p {
-  font-size: 1rem;
   color: #e0d7df;
   line-height: 1.7;
 }
@@ -953,13 +868,10 @@ summary:focus-visible,
   right: 0;
   top: 140px;
   writing-mode: vertical-rl;
-  font-size: 0.67rem;
-  letter-spacing: 0.18em;
   color: #cbbaca;
 }
 .coaching-intro h2,
 .book-editorial h2 {
-  font-size: clamp(2.6rem, 4.8vw, 5rem);
   max-width: 1100px;
 }
 .offset-copy {
@@ -969,11 +881,9 @@ summary:focus-visible,
   max-width: 640px;
 }
 .offset-copy > p {
-  font-size: 1.05rem;
   color: #526157;
 }
 .offset-copy > .large-copy {
-  font-size: 2rem;
   color: var(--navy);
 }
 .coaching-reflections {
@@ -987,17 +897,9 @@ summary:focus-visible,
   grid-template-columns: 100px 1fr;
   align-items: start;
 }
-.reflection-rows > div > span {
-  font-size: 0.8rem;
-}
-.reflection-rows h3 {
-  font-size: clamp(2.1rem, 3.8vw, 4rem);
-  line-height: 1.2;
-}
 .reflection-note {
   border-top: 1px solid #51415c30;
   padding-top: 30px;
-  font-size: 0.9rem;
   max-width: 740px;
 }
 .coaching-contact {
@@ -1046,24 +948,17 @@ summary:focus-visible,
   width: min(350px, 76%);
 }
 .product-stage-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
   text-transform: uppercase;
   margin-top: 55px;
 }
 .product-copy h1 {
-  font-size: clamp(4rem, 5.5vw, 6.4rem);
   white-space: nowrap;
   margin-bottom: 22px;
 }
 .book-subtitle {
-  font-family: var(--serif);
-  font-size: 1.9rem;
-  line-height: 1.25;
   margin-bottom: 24px;
 }
 .product-description {
-  font-size: 1rem;
   max-width: 460px;
   color: #506577;
 }
@@ -1073,7 +968,6 @@ summary:focus-visible,
   margin: 25px 0 0;
 }
 .format-selector legend {
-  font-size: 0.82rem;
   margin-bottom: 12px;
   font-weight: 500;
 }
@@ -1099,7 +993,6 @@ summary:focus-visible,
   border: 1px solid #102d4b40;
   padding: 12px 20px;
   border-radius: 3px;
-  font-size: 0.86rem;
   transition: all 0.2s;
 }
 .format-options input:checked + span {
@@ -1112,13 +1005,11 @@ summary:focus-visible,
   outline-offset: 4px;
 }
 .format-detail {
-  font-size: 0.78rem;
   min-height: 26px;
   margin-block: 15px 16px !important;
   color: #526879;
 }
 .book-availability {
-  font-size: 0.77rem;
   line-height: 1.7;
   max-width: 390px;
   margin-top: 15px !important;
@@ -1143,7 +1034,6 @@ summary:focus-visible,
   align-items: center;
 }
 .about-hero .lead {
-  font-size: 1.05rem;
   margin-top: 35px;
 }
 .about-hero .portrait-window {
@@ -1159,25 +1049,16 @@ summary:focus-visible,
   position: sticky;
   top: 145px;
   align-self: start;
-  font-size: 0.86rem;
 }
 .story-section aside .eyebrow {
-  font-size: 0.68rem;
   max-width: 180px;
 }
 .story-copy {
-  font-size: 1.15rem;
   line-height: 1.85;
   max-width: 720px;
 }
 .story-copy > p + p {
   margin-top: 26px;
-}
-.story-copy > p:first-child {
-  font-family: var(--serif);
-  font-size: 2rem;
-  line-height: 1.4;
-  letter-spacing: -0.02em;
 }
 .landscape-interlude {
   position: relative;
@@ -1203,12 +1084,11 @@ summary:focus-visible,
 }
 .landscape-interlude p {
   font-family: var(--serif);
-  font-size: clamp(2.8rem, 5vw, 5.4rem);
   line-height: 1.13;
 }
 .simple-links > a {
   display: grid;
-  grid-template-columns: 60px 1fr 40px;
+  grid-template-columns: 60px minmax(0, 1fr) 40px;
   border-top: 1px solid var(--line);
   padding-block: 30px;
   align-items: center;
@@ -1218,14 +1098,10 @@ summary:focus-visible,
 .simple-links > a:last-child {
   border-bottom: 1px solid var(--line);
 }
-.simple-links > a > span {
-  font-size: 0.9rem;
-}
 .simple-links > a > span:last-child {
   font-size: 1.8rem;
 }
 .simple-links h3 {
-  font-size: 2.6rem;
   transition: transform 0.3s;
 }
 .simple-links > a:hover h3 {
@@ -1236,14 +1112,9 @@ summary:focus-visible,
 }
 .privacy-page .story-copy > p:first-child {
   font-family: var(--sans);
-  font-size: 1rem;
 }
 .privacy-page h2 {
-  font-size: 2rem;
   margin-block: 35px 20px;
-}
-.privacy-page .story-copy {
-  font-size: 1rem;
 }
 .ideas-heading {
   padding-block: 70px 50px;
@@ -1259,7 +1130,6 @@ summary:focus-visible,
   margin-top: 25px;
   padding: 10px 15px;
   background: #e6e9dc;
-  font-size: 0.85rem;
 }
 .idea-tabs {
   display: grid;
@@ -1275,7 +1145,6 @@ summary:focus-visible,
   text-align: left;
   padding: 12px 10px;
   border-bottom: 3px solid transparent;
-  font-size: 0.87rem;
 }
 .idea-tabs button[aria-selected="true"] {
   border-color: var(--green);
@@ -1308,12 +1177,7 @@ summary:focus-visible,
   background: #dfebf2;
   color: #15324f;
 }
-.idea-panel h2 {
-  font-size: clamp(2.7rem, 4.5vw, 4.5rem);
-  line-height: 1.1;
-}
 .idea-panel .idea-description {
-  font-size: 1rem;
   max-width: 460px;
   margin-top: 25px;
 }
@@ -1323,15 +1187,9 @@ summary:focus-visible,
   opacity: 0.85;
 }
 .idea-panel aside h3 {
-  font-size: 1.45rem;
   margin-bottom: 14px;
 }
-.idea-panel aside p {
-  font-size: 0.9rem;
-}
 .idea-panel .idea-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
   text-transform: uppercase;
   margin-bottom: 22px;
 }
@@ -1352,7 +1210,6 @@ summary:focus-visible,
   margin: 0 0 28px;
 }
 .ideas-notes legend {
-  font-size: 1rem;
   font-weight: 600;
   margin-bottom: 15px;
 }
@@ -1384,7 +1241,6 @@ summary:focus-visible,
   margin-top: 18px;
 }
 .status-message {
-  font-size: 0.9rem;
   line-height: 1.6;
   min-height: 26px;
   margin-top: 14px;
@@ -1396,7 +1252,6 @@ summary:focus-visible,
   padding-block: 65px 40px;
 }
 .booking-heading h1 {
-  font-size: clamp(3.5rem, 5vw, 5.5rem);
   margin-bottom: 24px;
 }
 .booking-heading > p:last-child {
@@ -1420,11 +1275,7 @@ summary:focus-visible,
   border-radius: 5px;
 }
 .booking-layout h2 {
-  font-size: 2rem;
   margin-bottom: 20px;
-}
-.booking-layout h3 {
-  font-size: 1.5rem;
 }
 .booking-details {
   grid-column: 1/-1;
@@ -1433,7 +1284,6 @@ summary:focus-visible,
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 0.9rem;
 }
 .field input,
 .field select,
@@ -1445,7 +1295,6 @@ summary:focus-visible,
   border: 1px solid #88998b;
   background: #fff;
   border-radius: 3px;
-  font-size: 1rem;
 }
 .field textarea {
   resize: vertical;
@@ -1464,7 +1313,6 @@ summary:focus-visible,
 }
 .day-label {
   text-align: center;
-  font-size: 0.75rem;
   color: var(--muted);
   padding: 9px 0;
 }
@@ -1473,7 +1321,6 @@ summary:focus-visible,
   border: 1px solid transparent;
   background: #edf0e6;
   border-radius: 3px;
-  font-size: 0.95rem;
   font-weight: 500;
   transition: background 0.2s;
 }
@@ -1507,10 +1354,6 @@ summary:focus-visible,
   min-height: 44px;
   padding: 8px 14px;
 }
-.month-controls h3,
-.calendar-controls h3 {
-  font-size: 1.2rem;
-}
 .slot-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1526,7 +1369,6 @@ summary:focus-visible,
   border: 1px solid var(--line);
   border-radius: 3px;
   background: var(--white);
-  font-size: 0.87rem;
 }
 .slot-button:hover:not(:disabled) {
   background: #dce5d2;
@@ -1540,7 +1382,6 @@ summary:focus-visible,
   background: #e9eddf;
   margin-bottom: 28px;
   border-left: 3px solid #728669;
-  font-size: 0.94rem;
 }
 .booking-summary dl {
   display: flex;
@@ -1549,9 +1390,7 @@ summary:focus-visible,
   margin: 0;
 }
 .booking-summary dt {
-  font-size: 0.74rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: var(--muted);
 }
 .booking-summary dd {
@@ -1561,7 +1400,6 @@ summary:focus-visible,
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-size: 0.9rem;
   margin-block: 20px;
 }
 .form-consent input {
@@ -1572,7 +1410,6 @@ summary:focus-visible,
   accent-color: var(--green);
 }
 .field-error {
-  font-size: 0.8rem;
   color: #992f37;
 }
 .field-error:empty {
@@ -1590,11 +1427,9 @@ summary:focus-visible,
   border-top: 1px solid var(--line);
 }
 .booking-policies h3 {
-  font-size: 1.5rem;
   margin-bottom: 14px;
 }
 .booking-policies p {
-  font-size: 0.88rem;
   color: var(--muted);
 }
 .booking-layout .button {
@@ -1615,9 +1450,6 @@ summary:focus-visible,
 }
 .booking-layout label {
   font-weight: 500;
-}
-.booking-layout form > p {
-  font-size: 0.9rem;
 }
 .booking-layout .booking-form {
   max-width: 900px;
@@ -1684,9 +1516,6 @@ summary:focus-visible,
   .hero-copy .eyebrow {
     max-width: 260px;
   }
-  .hero-copy h1 {
-    font-size: 7.6vw;
-  }
   .hero-footnote {
     margin-top: 55px;
   }
@@ -1742,14 +1571,8 @@ summary:focus-visible,
   .slot-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  .product-copy h1 {
-    font-size: 5.6vw;
-  }
   .product-stage {
     min-height: 510px;
-  }
-  .book-subtitle {
-    font-size: 1.65rem;
   }
   .product-copy .eyebrow {
     margin-bottom: 15px;
@@ -1776,7 +1599,6 @@ summary:focus-visible,
     border: 0;
     padding: 10px 0 10px 16px;
     min-height: 44px;
-    font-size: 0.85rem;
     z-index: 55;
   }
   .menu-lines {
@@ -1819,8 +1641,8 @@ summary:focus-visible,
     display: flex;
   }
   .site-header nav > a:not(.button) {
-    font-family: var(--serif);
-    font-size: 2.6rem;
+    font-family: var(--sans);
+    font-size: var(--type-lead);
     padding: 4px 0;
   }
   .site-header nav > .button {
@@ -1833,9 +1655,6 @@ summary:focus-visible,
     padding-top: 50px;
     padding-bottom: 30px;
   }
-  .hero-copy h1 {
-    font-size: 8vw;
-  }
   .hero-actions {
     gap: 20px;
   }
@@ -1846,19 +1665,10 @@ summary:focus-visible,
     margin-top: 38px;
     max-width: 220px;
   }
-  .hero-intro {
-    font-size: 0.94rem;
-  }
-  .hero-copy .eyebrow {
-    font-size: 0.64rem;
-  }
   .landscape-caption {
     left: 25px;
     right: 25px;
     bottom: 25px;
-  }
-  .landscape-caption > span {
-    font-size: 1.3rem;
   }
   .intro-line .eyebrow {
     display: none;
@@ -1866,12 +1676,6 @@ summary:focus-visible,
   .pathway {
     min-height: 470px;
     padding: 25px;
-  }
-  .pathway h3 {
-    font-size: 3.5rem;
-  }
-  .pathway-top .eyebrow {
-    font-size: 0.62rem;
   }
   .round-arrow {
     width: 36px;
@@ -1883,20 +1687,11 @@ summary:focus-visible,
   .section-heading > p {
     max-width: 300px;
   }
-  .editorial-copy h2 {
-    font-size: 2.8rem;
-  }
-  .editorial-copy > p:not(.eyebrow) {
-    font-size: 0.95rem;
-  }
   .split-layout {
     gap: 35px;
   }
   .book-feature {
     padding-block: 65px;
-  }
-  .book-feature-copy h2 {
-    font-size: 4rem;
   }
   .book-feature-stage {
     padding: 20px;
@@ -1914,21 +1709,12 @@ summary:focus-visible,
   .footer-top > p {
     display: none;
   }
-  .footer-bottom {
-    font-size: 0.7rem;
-  }
   .three-notes {
     gap: 25px;
   }
   .page-hero-grid {
     grid-template-columns: 1.3fr 1fr;
     gap: 25px;
-  }
-  .page-hero h1 {
-    font-size: 4rem;
-  }
-  .page-hero .lead {
-    font-size: 1rem;
   }
   .treatment-pause {
     padding-left: 25px;
@@ -1937,12 +1723,6 @@ summary:focus-visible,
     padding-left: 0;
     gap: 25px;
   }
-  .treatment-detail > p {
-    font-size: 0.95rem;
-  }
-  .treatment-name {
-    font-size: 1.85rem;
-  }
   .offset-copy {
     margin-left: 35%;
     padding-left: 30px;
@@ -1950,37 +1730,18 @@ summary:focus-visible,
   .product-stage {
     min-height: 460px;
   }
-  .product-copy h1 {
-    font-size: 4rem;
-  }
   .book-product-grid {
     gap: 25px;
   }
-  .book-subtitle {
-    font-size: 1.4rem;
-  }
-  .product-description {
-    font-size: 0.93rem;
-  }
   .format-options label span {
     padding: 10px 12px;
-    font-size: 0.78rem;
   }
   .about-hero {
     gap: 35px;
   }
-  .about-hero h1 {
-    font-size: 4.5rem;
-  }
   .story-section {
     gap: 40px;
     grid-template-columns: 1fr 2fr;
-  }
-  .story-copy {
-    font-size: 1.02rem;
-  }
-  .story-copy > p:first-child {
-    font-size: 1.6rem;
   }
   .ideas-notes {
     grid-template-columns: 1fr;
@@ -1999,9 +1760,6 @@ summary:focus-visible,
     padding-left: 0;
     padding-top: 25px;
     max-width: 550px;
-  }
-  .idea-tabs button {
-    font-size: 0.78rem;
   }
   .planner-panel,
   .slots-panel,
@@ -2036,8 +1794,8 @@ summary:focus-visible,
     font-size: 1.9rem;
   }
   .wordmark > span {
-    font-size: 0.52rem;
-    letter-spacing: 0.21em;
+    font-size: 0.75rem;
+    letter-spacing: 0.07em;
     margin-top: 9px;
   }
   .site-header nav {
@@ -2046,20 +1804,10 @@ summary:focus-visible,
     padding: 30px 25px;
   }
   .eyebrow {
-    font-size: 0.67rem;
     margin-bottom: 20px;
   }
   .section-space {
     padding-block: 65px;
-  }
-  h1 {
-    font-size: 3.65rem;
-  }
-  h2 {
-    font-size: 2.75rem;
-  }
-  h3 {
-    font-size: 1.8rem;
   }
   .home-hero {
     display: flex;
@@ -2072,16 +1820,9 @@ summary:focus-visible,
   }
   .hero-copy .eyebrow {
     max-width: 100%;
-    font-size: 0.59rem;
-    letter-spacing: 0.105em;
     margin-bottom: 25px;
   }
-  .hero-copy h1 {
-    font-size: clamp(3.9rem, 14.5vw, 5.6rem);
-    line-height: 1;
-  }
   .hero-intro {
-    font-size: 0.99rem;
     margin-top: 24px;
     max-width: 360px;
   }
@@ -2093,18 +1834,15 @@ summary:focus-visible,
     gap: 23px;
   }
   .hero-actions .button {
-    font-size: 0.84rem;
     min-height: 51px;
     padding: 13px 18px;
   }
   .text-link {
-    font-size: 0.86rem;
     gap: 18px;
   }
   .hero-footnote {
     margin-top: 30px;
     max-width: none;
-    font-size: 0.64rem;
   }
   .hero-landscape {
     height: 350px;
@@ -2117,15 +1855,9 @@ summary:focus-visible,
     left: 25px;
     right: 25px;
   }
-  .landscape-caption > span {
-    font-size: 1.5rem;
-  }
   .intro-line {
     padding-block: 45px;
     gap: 0;
-  }
-  .intro-line > p {
-    font-size: 1.65rem;
   }
   .intro-line .fine-rule {
     display: none;
@@ -2140,7 +1872,6 @@ summary:focus-visible,
   .section-heading > p {
     margin-top: 25px;
     max-width: 100%;
-    font-size: 0.95rem;
   }
   .section-heading > p br {
     display: none;
@@ -2153,18 +1884,6 @@ summary:focus-visible,
     padding: 28px;
     min-height: 440px;
     gap: 32px;
-  }
-  .pathway h3 {
-    font-size: 3.8rem;
-  }
-  .pathway-top .eyebrow {
-    font-size: 0.64rem;
-  }
-  .pathway-kicker {
-    font-size: 0.78rem;
-  }
-  .pathway h3 + p {
-    font-size: 0.93rem;
   }
   .pathway-link {
     padding-top: 20px;
@@ -2187,11 +1906,7 @@ summary:focus-visible,
     max-width: none;
   }
   .editorial-copy h2 {
-    font-size: 3rem;
     margin-bottom: 26px;
-  }
-  .editorial-copy > p:not(.eyebrow) {
-    font-size: 1rem;
   }
   .signature {
     font-size: 2.7rem;
@@ -2204,15 +1919,6 @@ summary:focus-visible,
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  .book-feature-copy h2 {
-    font-size: 4.5rem;
-  }
-  .book-feature-copy .large-copy {
-    font-size: 2rem;
-  }
-  .book-feature-copy > p:not(.eyebrow, .large-copy, .release-label) {
-    font-size: 0.99rem;
-  }
   .book-feature-stage {
     padding: 25px 25px 0;
     order: -1;
@@ -2221,26 +1927,19 @@ summary:focus-visible,
     width: 215px;
   }
   .stage-caption {
-    font-size: 0.94rem;
     margin-top: 35px;
   }
   .book-feature-copy {
     margin-top: 10px;
   }
   .release-label {
-    font-size: 0.75rem;
     margin-block: 25px;
   }
   .quote-section {
     padding-block: 70px;
   }
   .quote-section blockquote {
-    font-size: 2.15rem;
     line-height: 1.25;
-  }
-  .quote-attribution {
-    font-size: 0.66rem;
-    letter-spacing: 0.1em;
   }
   .contact-section {
     padding-block: 60px;
@@ -2249,17 +1948,12 @@ summary:focus-visible,
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  .contact-layout h2 {
-    font-size: 2.8rem;
-  }
   .contact-copy p {
     max-width: 100%;
-    font-size: 0.95rem;
   }
   .contact-phone {
     display: inline-block;
     margin-left: 20px;
-    font-size: 0.82rem;
   }
   .contact-copy .button {
     margin-top: 23px;
@@ -2270,7 +1964,6 @@ summary:focus-visible,
     gap: 25px;
   }
   .footer-social {
-    font-size: 0.82rem;
     gap: 7px;
   }
   .site-footer {
@@ -2281,7 +1974,6 @@ summary:focus-visible,
     display: flex;
     flex-direction: column;
     gap: 13px;
-    font-size: 0.66rem;
   }
   .footer-bottom > div {
     flex-wrap: wrap;
@@ -2293,12 +1985,6 @@ summary:focus-visible,
   .page-hero-grid {
     grid-template-columns: 1fr;
     gap: 45px;
-  }
-  .page-hero h1 {
-    font-size: 3.7rem;
-  }
-  .page-hero .lead {
-    font-size: 1.05rem;
   }
   .treatment-pause {
     border-left: 0;
@@ -2314,11 +2000,7 @@ summary:focus-visible,
     margin: 0;
   }
   .treatment-pause > p {
-    font-size: 3.4rem;
     margin: 0;
-  }
-  .treatment-pause > span:last-child {
-    font-size: 0.78rem;
   }
   .three-notes {
     grid-template-columns: 1fr;
@@ -2337,12 +2019,10 @@ summary:focus-visible,
     padding-top: 4px;
   }
   .three-notes h3 {
-    font-size: 1.7rem;
     margin-bottom: 13px;
   }
   .three-notes p {
     grid-column: 2;
-    font-size: 0.96rem;
   }
   .treatment-item summary {
     grid-template-columns: 1fr auto 23px;
@@ -2352,17 +2032,8 @@ summary:focus-visible,
   .treatment-number {
     display: none;
   }
-  .treatment-name {
-    font-size: 1.5rem;
-  }
   .treatment-meta {
     min-width: 65px;
-  }
-  .treatment-price {
-    font-size: 1.55rem;
-  }
-  .treatment-duration {
-    font-size: 0.64rem;
   }
   .expand-symbol {
     font-size: 1.4rem;
@@ -2373,18 +2044,6 @@ summary:focus-visible,
   }
   .treatment-detail .button {
     margin-top: 20px;
-  }
-  .treatment-note {
-    font-size: 0.86rem;
-  }
-  .care-note {
-    font-size: 0.83rem;
-  }
-  .faq-item summary {
-    font-size: 1rem;
-  }
-  .faq-item p {
-    font-size: 0.94rem;
   }
   .coaching-hero {
     padding-block: 50px 40px;
@@ -2398,9 +2057,6 @@ summary:focus-visible,
     justify-self: center;
     padding: 12px;
   }
-  .coaching-hero h1 {
-    font-size: clamp(4rem, 14.7vw, 5.7rem);
-  }
   .coaching-side-note {
     display: none;
   }
@@ -2409,13 +2065,6 @@ summary:focus-visible,
     align-items: flex-start;
     flex-direction: column;
     gap: 25px;
-  }
-  .coaching-hero-bottom p {
-    font-size: 0.97rem;
-  }
-  .coaching-intro h2,
-  .book-editorial h2 {
-    font-size: 2.7rem;
   }
   .coaching-intro h2 br,
   .book-editorial h2 br {
@@ -2426,29 +2075,17 @@ summary:focus-visible,
     padding-left: 0;
     margin-top: 30px;
   }
-  .offset-copy > p {
-    font-size: 1.02rem;
-  }
   .reflection-rows > div {
     grid-template-columns: 32px 1fr;
     padding-block: 28px;
     gap: 12px;
   }
-  .reflection-rows h3 {
-    font-size: 2rem;
-  }
   .reflection-rows h3 br {
     display: none;
-  }
-  .reflection-note {
-    font-size: 0.86rem;
   }
   .center-actions {
     flex-direction: column;
     gap: 15px;
-  }
-  .narrow-center > p:not(.eyebrow) {
-    font-size: 0.97rem;
   }
   .book-hero {
     padding-block: 40px 55px;
@@ -2465,32 +2102,22 @@ summary:focus-visible,
     width: 230px;
   }
   .product-stage-label {
-    font-size: 0.65rem;
     margin-top: 38px;
   }
   .product-copy h1 {
-    font-size: 4.7rem;
     white-space: normal;
-  }
-  .book-subtitle {
-    font-size: 1.9rem;
-  }
-  .product-description {
-    font-size: 1rem;
   }
   .format-options label {
     flex: 1;
   }
   .format-options label span {
     padding: 12px 14px;
-    font-size: 0.86rem;
     text-align: center;
   }
   .product-copy .button {
     width: 100%;
   }
   .book-availability {
-    font-size: 0.79rem;
     max-width: 100%;
   }
   .book-highlights {
@@ -2505,11 +2132,7 @@ summary:focus-visible,
     gap: 35px;
     align-items: stretch;
   }
-  .about-hero h1 {
-    font-size: 4rem;
-  }
   .about-hero .lead {
-    font-size: 1rem;
     margin-top: 25px;
   }
   .about-hero .portrait-window {
@@ -2527,28 +2150,13 @@ summary:focus-visible,
   .story-section aside .eyebrow {
     max-width: none;
   }
-  .story-copy {
-    font-size: 1.05rem;
-  }
-  .story-copy > p:first-child {
-    font-size: 1.75rem;
-  }
   .landscape-interlude {
     height: 400px;
-  }
-  .landscape-interlude p {
-    font-size: 2.5rem;
   }
   .simple-links > a {
     grid-template-columns: 28px 1fr 24px;
     padding-block: 24px;
     gap: 10px;
-  }
-  .simple-links h3 {
-    font-size: 1.75rem;
-  }
-  .simple-links > a > span {
-    font-size: 0.7rem;
   }
   .simple-links > a > span:last-child {
     font-size: 1.4rem;
@@ -2556,21 +2164,11 @@ summary:focus-visible,
   .ideas-heading {
     padding-block: 45px 35px;
   }
-  .ideas-heading h1 {
-    font-size: 3.1rem;
-  }
-  .ideas-heading .lead {
-    font-size: 1.05rem;
-  }
-  .review-note {
-    font-size: 0.8rem;
-  }
   .idea-tabs {
     grid-template-columns: 1fr 1fr;
     gap: 0;
   }
   .idea-tabs button {
-    font-size: 0.8rem;
     padding: 13px 5px;
     min-height: 54px;
   }
@@ -2579,39 +2177,17 @@ summary:focus-visible,
     min-height: 560px;
     gap: 30px;
   }
-  .idea-panel h2 {
-    font-size: 2.65rem;
-  }
-  .idea-panel .idea-description {
-    font-size: 0.98rem;
-  }
-  .idea-panel aside p {
-    font-size: 0.84rem;
-  }
-  .idea-panel .idea-label {
-    font-size: 0.63rem;
-  }
   .ideas-notes {
     padding-top: 50px;
-  }
-  .ideas-notes h2 {
-    font-size: 2.8rem;
   }
   .notes-actions {
     gap: 10px;
   }
   .notes-actions > .button {
-    font-size: 0.8rem;
     padding: 12px 16px;
   }
   .booking-heading {
     padding-block: 45px 30px;
-  }
-  .booking-heading h1 {
-    font-size: 3.65rem;
-  }
-  .booking-heading > p:last-child {
-    font-size: 0.95rem;
   }
   .booking-heading > p:last-child br {
     display: none;
@@ -2625,20 +2201,11 @@ summary:focus-visible,
   .booking-details {
     padding: 22px 18px;
   }
-  .booking-layout h2 {
-    font-size: 1.8rem;
-  }
-  .booking-layout h3 {
-    font-size: 1.3rem;
-  }
   .calendar-day {
     height: 44px;
   }
   .calendar-grid {
     gap: 5px;
-  }
-  .day-label {
-    font-size: 0.7rem;
   }
   .slot-grid {
     grid-template-columns: repeat(4, 1fr);
@@ -2653,7 +2220,6 @@ summary:focus-visible,
   }
   .booking-summary {
     padding: 18px;
-    font-size: 0.9rem;
   }
   .booking-summary dl {
     gap: 15px;
@@ -2666,20 +2232,7 @@ summary:focus-visible,
   .booking-section {
     padding-bottom: 45px;
   }
-  .booking-policies h3 {
-    font-size: 1.5rem;
-  }
-  .booking-policies p {
-    font-size: 0.9rem;
-  }
-  .privacy-page h1 {
-    font-size: 3.6rem;
-  }
-  .privacy-page h2 {
-    font-size: 1.8rem;
-  }
   .booking-layout .button {
-    font-size: 0.87rem;
     min-height: 46px;
     padding: 12px 15px;
   }
@@ -2736,12 +2289,10 @@ summary:focus-visible,
 }
 .booking-month-controls h3 {
   font-family: var(--sans);
-  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0;
 }
 .booking-summary h3 {
-  font-size: 1.5rem;
   margin-bottom: 18px;
 }
 .booking-summary-list {
@@ -2756,7 +2307,6 @@ summary:focus-visible,
 #bookingTimezone,
 #bookingServiceDescription,
 #bookingPolicy {
-  font-size: 0.82rem;
   color: var(--muted);
   line-height: 1.65;
 }
@@ -2804,9 +2354,6 @@ summary:focus-visible,
     min-height: 44px;
     padding: 8px 12px;
   }
-  .booking-month-controls h3 {
-    font-size: 0.96rem;
-  }
   .booking-layout .slots-panel {
     min-height: 190px;
   }
@@ -2850,7 +2397,6 @@ summary:focus-visible,
   border-radius: 4px;
 }
 .diary-loading p:last-child {
-  font-size: 0.9rem;
   color: var(--muted);
 }
 
@@ -2878,13 +2424,11 @@ summary:focus-visible,
   box-shadow: 0 15px 40px #322a241a;
 }
 .clarity-film figcaption {
-  font-size: 0.78rem;
   line-height: 1.5;
   color: var(--muted);
   margin-top: 16px;
 }
 .clarity-film-copy h2 {
-  font-size: clamp(2.6rem, 4.5vw, 4.4rem);
   margin-bottom: 30px;
 }
 .clarity-film-copy > p:not(.eyebrow) {
@@ -2893,7 +2437,6 @@ summary:focus-visible,
   color: var(--muted);
 }
 .coaching-intro .credential-note {
-  font-size: 0.85rem;
   color: var(--green);
   padding-top: 24px;
   border-top: 1px solid var(--line);
@@ -2922,12 +2465,10 @@ summary:focus-visible,
     order: -1;
   }
   .clarity-film-copy h2 {
-    font-size: 2.8rem;
     margin-bottom: 24px;
   }
   .reflection-theme p {
     margin-top: 14px;
-    font-size: 0.96rem;
   }
 }
 .testimonials-section {
@@ -2937,9 +2478,6 @@ summary:focus-visible,
   text-align: center;
   margin-bottom: 48px;
 }
-.testimonial-heading h2 {
-  font-size: clamp(2.4rem, 4vw, 4rem);
-}
 .testimonial-slide {
   text-align: center;
 }
@@ -2948,7 +2486,6 @@ summary:focus-visible,
 }
 .testimonial-slide blockquote {
   font-family: var(--serif);
-  font-size: clamp(1.8rem, 2.6vw, 2.65rem);
   line-height: 1.35;
   letter-spacing: -0.02em;
 }
@@ -2961,11 +2498,9 @@ summary:focus-visible,
   display: block;
 }
 .testimonial-name {
-  font-size: 0.88rem;
   font-weight: 600;
 }
 .testimonial-location {
-  font-size: 0.78rem;
   color: var(--muted);
   margin-top: 3px;
 }
@@ -3016,8 +2551,6 @@ summary:focus-visible,
 }
 .testimonial-position {
   text-align: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
   color: var(--muted);
   margin-top: 30px;
 }
@@ -3037,17 +2570,8 @@ summary:focus-visible,
     height: 44px;
     font-size: 1.4rem;
   }
-  .testimonial-slide blockquote {
-    font-size: clamp(1.2rem, 5.5vw, 1.65rem);
-  }
   .testimonial-slide figcaption {
     margin-top: 24px;
-  }
-  .testimonial-name {
-    font-size: 0.8rem;
-  }
-  .testimonial-location {
-    font-size: 0.7rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -3082,7 +2606,6 @@ summary:focus-visible,
   padding-top: 20px;
 }
 .enquiry-intro h1 {
-  font-size: clamp(3.7rem, 5.5vw, 5.5rem);
   margin-bottom: 30px;
 }
 .enquiry-intro h1 em {
@@ -3090,7 +2613,6 @@ summary:focus-visible,
 }
 .enquiry-intro .lead {
   max-width: 450px;
-  font-size: 1.12rem;
 }
 .enquiry-how {
   margin-top: 45px;
@@ -3104,7 +2626,6 @@ summary:focus-visible,
 }
 .enquiry-how p,
 .enquiry-direct {
-  font-size: 0.96rem;
   color: var(--muted);
 }
 .enquiry-direct {
@@ -3121,11 +2642,9 @@ summary:focus-visible,
   border-radius: 5px;
 }
 .enquiry-card h2 {
-  font-size: clamp(2rem, 2.8vw, 2.7rem);
   max-width: 400px;
 }
 .enquiry-required {
-  font-size: 0.8rem;
   color: var(--muted);
   margin-block: 18px 28px;
 }
@@ -3154,14 +2673,12 @@ summary:focus-visible,
 .field-hint,
 .enquiry-small-note {
   color: var(--muted);
-  font-size: 0.78rem;
   line-height: 1.55;
 }
 .enquiry-small-note {
   margin-top: 16px;
 }
 .enquiry-card .form-consent {
-  font-size: 0.82rem;
   line-height: 1.6;
 }
 #enquirySubmit {
@@ -3174,7 +2691,6 @@ summary:focus-visible,
   padding-top: 30px;
 }
 #enquiryStatus h3 {
-  font-size: 2rem;
   margin-bottom: 20px;
 }
 #enquiryStatus .text-link {
@@ -3187,7 +2703,6 @@ summary:focus-visible,
   background: transparent;
 }
 .booking-email-note {
-  font-size: 0.9rem;
   padding-top: 28px;
 }
 @media (max-width: 860px) {
@@ -3198,9 +2713,6 @@ summary:focus-visible,
   }
   .enquiry-intro {
     padding-top: 0;
-  }
-  .enquiry-intro h1 {
-    font-size: clamp(3.2rem, 8vw, 4.5rem);
   }
   .enquiry-how {
     margin-top: 25px;
@@ -3217,16 +2729,312 @@ summary:focus-visible,
     gap: 32px;
   }
   .enquiry-intro h1 {
-    font-size: clamp(2.75rem, 12vw, 3.75rem);
     margin-bottom: 24px;
   }
   .enquiry-card {
     padding: 25px 20px;
   }
-  .enquiry-card h2 {
-    font-size: 2rem;
-  }
   .enquiry-card .eyebrow {
     letter-spacing: 0.1em;
+  }
+}
+
+
+/* Shared reading scale. Keep typography consistent across pages and breakpoints. */
+:root {
+  --type-h1: clamp(2.75rem, 1.5rem + 3.5vw, 5rem);
+  --type-h2: clamp(2rem, 1rem + 2.25vw, 3.25rem);
+  --type-h3: clamp(1.5rem, 1.25rem + 0.7vw, 2rem);
+  --type-body: 1.0625rem;
+  --type-lead: 1.25rem;
+  --type-label: 0.875rem;
+  --type-control: 1rem;
+  --type-quote: clamp(1.375rem, 1.25rem + 0.5vw, 1.75rem);
+  --type-panel-heading: 2rem;
+  --type-panel-subheading: 1.25rem;
+}
+@media (min-width: 861px) {
+  :root { --type-body: 1.125rem; }
+}
+
+h1,
+.hero-copy h1,
+.page-hero h1,
+.coaching-hero h1,
+.product-copy h1,
+.about-hero h1,
+.ideas-heading h1,
+.booking-heading h1,
+.privacy-page h1,
+.enquiry-intro h1 {
+  font-size: var(--type-h1);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+h2,
+.pathway h3,
+.book-feature-copy h2,
+.contact-layout h2,
+.coaching-intro h2, .book-editorial h2,
+.editorial-copy h2,
+.clarity-film-copy h2,
+.testimonial-heading h2,
+.idea-panel h2,
+.ideas-notes h2 {
+  font-size: var(--type-h2);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+h3,
+.three-notes h3,
+.reflection-rows h3,
+.simple-links h3,
+.booking-policies h3,
+.booking-summary h3,
+#enquiryStatus h3 {
+  font-size: var(--type-h3);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.hero-intro,
+.section-heading > p,
+.pathway h3 + p,
+.editorial-copy > p:not(.eyebrow),
+.book-feature-copy > p:not(.eyebrow, .large-copy, .release-label),
+.contact-copy p,
+.three-notes p,
+.treatment-detail > p,
+.treatment-note,
+.faq-item summary,
+.faq-item p,
+.coaching-hero-bottom p,
+.offset-copy > p,
+.reflection-note,
+.reflection-theme p,
+.product-description,
+.story-copy,
+.privacy-page .story-copy,
+.privacy-page .story-copy > p:first-child,
+.idea-panel .idea-description,
+.idea-panel aside p,
+.narrow-center > p:not(.eyebrow),
+.booking-heading > p:last-child,
+.enquiry-how p, .enquiry-direct {
+  font-size: var(--type-body);
+  line-height: 1.65;
+}
+
+.lead,
+.page-hero .lead,
+.about-hero .lead,
+.ideas-heading .lead,
+.enquiry-intro .lead,
+.book-subtitle,
+.story-copy > p:first-child,
+.large-copy,
+.book-feature-copy .large-copy,
+.offset-copy > .large-copy,
+.intro-line > p,
+.landscape-caption > span,
+.footer-top > p {
+  font-size: var(--type-lead);
+  font-family: var(--sans);
+  font-style: normal;
+  line-height: 1.65;
+  letter-spacing: normal;
+}
+
+.eyebrow,
+.hero-copy .eyebrow,
+.intro-line .eyebrow,
+.pathway-top .eyebrow,
+.pathway-kicker,
+.hero-footnote,
+.release-label,
+.quote-attribution,
+.footer-bottom,
+.treatment-pause > span:last-child,
+.treatment-pause .eyebrow,
+.three-notes > article > span,
+.treatment-number,
+.treatment-duration,
+.coaching-side-note,
+.reflection-rows > div > span,
+.product-stage-label,
+.story-section aside .eyebrow,
+.review-note,
+.idea-panel .idea-label,
+.day-label,
+.booking-summary dt,
+.field-error,
+.clarity-film figcaption,
+.coaching-intro .credential-note,
+.testimonial-name,
+.testimonial-location,
+.testimonial-position {
+  font-size: var(--type-label);
+  line-height: 1.6;
+  letter-spacing: 0.025em;
+}
+
+.button,
+.button-small,
+.text-link,
+.text-button,
+.hero-actions .button,
+.pathway-link,
+.contact-phone,
+.footer-social,
+.format-selector legend,
+.format-options label span,
+.format-detail,
+.book-availability,
+.story-section aside,
+.simple-links > a > span,
+.idea-tabs button,
+.ideas-notes legend,
+.notes-actions > .button,
+.status-message,
+.field,
+.field input, .field select, .field textarea, .planner-panel select,
+.calendar-day,
+.slot-button,
+.booking-summary,
+.form-consent,
+.booking-policies p,
+.booking-layout form > p,
+.menu-toggle,
+.booking-layout .button,
+.booking-month-controls h3,
+.booking-date-hint, #bookingTimezone, #bookingServiceDescription, #bookingPolicy,
+.diary-loading p:last-child,
+.enquiry-required,
+.field-hint, .enquiry-small-note,
+.enquiry-card .form-consent,
+.booking-email-note,
+.care-note,
+.stage-caption {
+  font-size: var(--type-control);
+  line-height: 1.65;
+}
+
+.quote-section blockquote,
+.testimonial-slide blockquote {
+  font-size: var(--type-quote);
+}
+
+.booking-layout h2,
+.enquiry-card h2,
+.privacy-page h2 {
+  font-size: var(--type-panel-heading);
+}
+
+.booking-layout h3,
+.month-controls h3, .calendar-controls h3,
+.idea-panel aside h3 {
+  font-size: var(--type-panel-subheading);
+}
+
+h1 em,
+h2 em,
+h3 em,
+.intro-line em,
+.landscape-caption > span,
+.stage-caption {
+  font-style: normal;
+}
+.eyebrow,
+.hero-copy .eyebrow,
+.pathway-top .eyebrow {
+  letter-spacing: 0.06em;
+}
+.story-copy {
+  line-height: 1.75;
+  max-width: 65ch;
+}
+.testimonial-slide blockquote {
+  line-height: 1.45;
+  letter-spacing: normal;
+}
+.treatment-name,
+.treatment-price {
+  font-family: var(--sans);
+  font-weight: 550;
+  letter-spacing: normal;
+}
+.product-copy h1 {
+  white-space: normal;
+}
+@media (max-width: 860px) {
+  .nav-container {
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    padding-block: 14px;
+  }
+  .wordmark {
+    max-width: 100%;
+  }
+  .menu-toggle {
+    margin-left: auto;
+  }
+  .site-header nav {
+    position: absolute;
+    top: 100%;
+    height: auto;
+    max-height: calc(100dvh - 10rem);
+  }
+  .site-header nav > a:not(.button) {
+    font-family: var(--sans);
+    font-size: var(--type-lead);
+    line-height: 1.5;
+  }
+}
+@media (max-width: 620px) {
+  .nav-container { gap: 16px; }
+  .pathway-top { gap: 12px; }
+  .round-arrow { flex-shrink: 0; }
+}
+
+.treatment-pause > p,
+.landscape-interlude p {
+  font-size: var(--type-h2);
+  line-height: 1.2;
+}
+.treatment-name,
+.treatment-price {
+  font-size: var(--type-lead);
+  line-height: 1.35;
+}
+
+/* Let larger reader text reflow within the existing page structure. */
+.page-hero-grid > *,
+.booking-layout > *,
+.about-hero > *,
+.story-section > *,
+.split-layout > *,
+.contact-layout > *,
+.book-product-grid > *,
+.coaching-hero-layout > *,
+.footer-top > * {
+  min-width: 0;
+}
+.booking-month-controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+.booking-month-controls h3 {
+  text-align: center;
+  min-width: 0;
+}
+.calendar-day {
+  min-width: 0;
+  padding-inline: 0;
+}
+@media (max-width: 620px) {
+  .simple-links > a {
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
 }

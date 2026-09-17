@@ -107,3 +107,13 @@ The book front cover was corrected with the built-in ImageGen editing tool and v
 Home and book pages use deeply-ok-cover-fada.jpeg so cached copies of the old cover are avoided. The legacy cover path also contains the corrected artwork. A lossless PNG is published alongside it for sharing with the editor. The coaching logo contains the registered domain, not the surname; its spelling is unchanged. Reference posters and the restored certificate are not included in the public release.
 
 The shared content layer now owns the approved author name, cover image and cover description, preventing the legacy diary response from restoring the old spelling. All operational book fields and links remain live. Six configuration regression checks pass, and the built release was checked for unaccented display-name references across every page. No appointments, emails or payments were created during verification.
+
+## Typography and readability — 17 September 2026
+
+Following the family’s feedback, the website keeps its two existing font families but uses a shared reading scale instead of page-specific sizing. Headings and quotations use DM Serif Display; body text, captions, menus and controls use DM Sans. Decorative heading italics are removed, while the wordmark and ordinary book-title emphasis retain their character.
+
+Main headings now range from 44 to 80 pixels, section headings from 32 to 52 pixels, and ordinary paragraphs use 17 pixels on phones and 18 pixels on larger screens. Supporting labels are at least 14 pixels, with form instructions and controls at 16 pixels. The brand’s author line is increased to 12 pixels. Biography introductions, book subtitles and other lead text use a consistent 20-pixel sans-serif style. These values scale with the reader’s text preference.
+
+The shared styles replace more than 230 individual font-size declarations and are referenced by every public page. Responsive text checks also identified reflow improvements: the mobile header and menu accommodate enlarged text, long words and email addresses wrap, and booking month controls and page grids can shrink without clipping.
+
+Desktop browser checks covered every public page at 1440 pixels, with additional checks around the desktop navigation breakpoint at 861 and 1024 pixels. Independent phone checks covered every page at 390 pixels, key pages at 320 pixels, and a doubled root text size. No live enquiry, appointment or payment was submitted. The corrected cover and the O’Dálaigh spelling are unchanged.
