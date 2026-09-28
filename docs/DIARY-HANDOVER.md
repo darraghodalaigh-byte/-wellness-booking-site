@@ -36,3 +36,7 @@ The new Vercel bridge forwards only allowlisted authenticated actions, rejects c
 - Example HTML in a client name was rendered as text. No live email, booking or availability change was used for testing.
 - Mobile checks passed at 320 and 390 pixels and 200% text. Simulated 503 responses retained drafts and paused writes until reload; simulated expired sessions hid private details and preserved unfinished availability entries.
 - A successful authenticated production flow and persistence across a host restart remain unverified until owner access and backup are available.
+
+## Published release
+
+Production deployment `dpl_TEcj3QZJbFubAnGLAV4tFqNnN41z` is READY at https://soultosolebylouise.com, from source commit `a9058bd`. Live checks confirmed that /admin opens the diary, the signed-out page renders without browser errors, unauthenticated settings/bookings requests are rejected, cross-origin writes are rejected, and diary/session responses are not cached. Existing public working hours and the approved 13 October book launch date are unchanged. Render remains signed out; owner setup and durable storage are still outstanding.
