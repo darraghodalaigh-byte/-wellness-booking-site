@@ -15,6 +15,9 @@ const files = [
   "coaching-ideas.html",
   "contact.html",
   "contact.js",
+  "diary.html",
+  "diary.css",
+  "diary.js",
   "site.css",
   "site.js",
   "booking.js",
@@ -70,22 +73,22 @@ await writeFile(
       functions: {
         "api/contact.js": { maxDuration: 30 },
         "api/public-config.js": { maxDuration: 60 },
+        "api/diary.js": { maxDuration: 60 },
       },
       redirects: [
         {
           source: "/admin",
-          destination: "https://wellness-booking-site.onrender.com/admin",
+          destination: "/diary.html",
           permanent: false,
         },
         {
           source: "/admin-login.html",
-          destination:
-            "https://wellness-booking-site.onrender.com/admin-login.html",
+          destination: "/diary.html",
           permanent: false,
         },
         {
           source: "/admin.html",
-          destination: "https://wellness-booking-site.onrender.com/admin.html",
+          destination: "/diary.html",
           permanent: false,
         },
       ],
@@ -106,6 +109,14 @@ await writeFile(
           headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
         },
         {
+          source: "/diary.html",
+          headers: [
+            { key: "X-Robots-Tag", value: "noindex, nofollow" },
+            { key: "Cache-Control", value: "private, no-store" },
+            { key: "Referrer-Policy", value: "no-referrer" },
+          ],
+        },
+        {
           source: "/assets/(.*)",
           headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
         },
@@ -117,8 +128,8 @@ await writeFile(
 );
 await writeFile(
   new URL("robots.txt", out),
-  "User-agent: *\nDisallow: /coaching-ideas.html\nDisallow: /admin\nDisallow: /api/\n",
+  "User-agent: *\nDisallow: /coaching-ideas.html\nDisallow: /diary.html\nDisallow: /admin\nDisallow: /api/\n",
 );
 console.log(
-  "Public web release built. Enquiries use Vercel functions; bookings and practitioner login use the existing Render service.",
+  "Public web release built. The private diary uses an authenticated bridge to the existing booking service.",
 );
