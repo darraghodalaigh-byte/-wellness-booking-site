@@ -24,8 +24,6 @@ There is so much hope. And this is a good place to start.`
       'Deeply Ok is a collection of 99 short insight posts written with warmth, humour and radical honesty from the middle of ordinary family life, pointing toward one simple truth — that the okayness you have been searching for was never actually missing.',
       'It was just temporarily hidden.'
     ],
-    launchDate: '2026-10-10',
-    launchDateLabel: 'Coming 10th October 2026 — World Mental Health Day',
     waitlistLabel: 'Join the Waitlist',
     waitlistUrl: '',
     amazonLabel: 'Buy Now on Amazon',

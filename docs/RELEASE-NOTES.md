@@ -31,7 +31,7 @@ The existing Render backend has not been redeployed or reconfigured. Its notific
 
 ## Book sales
 
-The site has a dedicated book storefront with paperback, hardback and ebook selection. The supplied book launch date is 10 October 2026. No price, stock, retailer destination or payment account was supplied, so the current action is an enquiry form with the selected book edition included.
+The site has a dedicated book storefront with paperback, hardback and ebook selection. The supplied book launch date is 13 October 2026. No price, stock, retailer destination or payment account was supplied, so the current action is an enquiry form with the selected book edition included.
 
 The frontend supports the existing `book.amazonUrl` and `book.waitlistUrl` fields from `/api/public-config`. A supplied retailer link becomes the live book action, including preorders; edition and price are confirmed with the retailer. A supplied waitlist URL becomes an external signup action. Enquiries are never represented as completed orders or subscriptions.
 
@@ -117,3 +117,16 @@ Main headings now range from 44 to 80 pixels, section headings from 32 to 52 pix
 The shared styles replace more than 230 individual font-size declarations and are referenced by every public page. Responsive text checks also identified reflow improvements: the mobile header and menu accommodate enlarged text, long words and email addresses wrap, and booking month controls and page grids can shrink without clipping.
 
 Desktop browser checks covered every public page at 1440 pixels, with additional checks around the desktop navigation breakpoint at 861 and 1024 pixels. Independent phone checks covered every page at 390 pixels, key pages at 320 pixels, and a doubled root text size. No live enquiry, appointment or payment was submitted. The corrected cover and the O’Dálaigh spelling are unchanged.
+
+
+## Launch date, testimonial privacy and conversations — 28 September 2026
+
+- Deeply OK now says “Coming 13 October 2026” on both the homepage and book page. The publication note, source settings and published content snapshot match. The approved editorial layer overrides the former 10 October date returned by the legacy diary while preserving retailer links and all operational book settings. The previous World Mental Health Day association has been removed from the publication note.
+- All four existing testimonial quotes remain unchanged. Home and coaching now credit only AnneMarie M, Eileen M, Hillary Y and Patricia H, with no location details.
+- Rebecca’s full four-paragraph testimonial is on the Reflexology page only, in a dedicated “In Rebecca’s words” section. The credit is Rebecca only. It is presented as her personal experience, with no added fertility outcome or claim.
+- The About page has a “Hear more from Louise” section with Jamie Smart’s Get Clarity episode 023 and Joe Bailey’s Caregiver Burnout conversation featuring Debbie Milam, Teresa Walding and Louise. The links open the specific YouTube video and Amazon Music episode. They do not embed players or load third-party media until the visitor follows a link.
+- The new sections use the existing typography scale, with readable body text and a single-column layout on phones. Shared stylesheet versions have been refreshed across the public pages.
+
+Podcast sources: [Jamie Smart’s episode page](https://www.jamiesmart.com/clarity-case-study-the-principles-of-clarity-at-work-in-the-nhs/) confirms the supplied YouTube link. [Amazon Music’s show listing](https://music.amazon.co.uk/podcasts/9b3de8a9-279f-4fdb-815d-a4908a63128f/thriving-in-the-eye-of-the-hurricane-podcast-with-joe-bailey) identifies the 9 June 2021 Caregiver Burnout episode and its direct episode link. Both outgoing URLs return HTTP 200.
+
+Verification: six focused configuration regression tests pass, including old-date protection and preservation of operational settings. Source comparisons confirm the four existing quotations are unchanged. Local desktop browser checks verify the date after configuration loads, shortened credits, the four-paragraph Rebecca section, both podcast destinations and no page errors. Independent mobile visual checks at 320 and 390 pixels found no horizontal overflow. No enquiry, appointment, email or payment was created during these checks.

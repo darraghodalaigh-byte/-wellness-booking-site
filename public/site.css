@@ -3037,6 +3037,71 @@ h3 em,
   white-space: nowrap;
   letter-spacing: 0;
 }
+/* Long-form client words and recorded conversations share the reading scale. */
+.client-story {
+  background: var(--white);
+}
+.client-story-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr);
+  gap: clamp(32px, 7vw, 100px);
+  align-items: start;
+}
+.client-story-heading h2 {
+  max-width: 12ch;
+}
+.client-story-quote {
+  max-width: 65ch;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+.client-story-quote blockquote {
+  font-family: var(--sans);
+  font-size: var(--type-body);
+  line-height: 1.75;
+}
+.client-story-quote figcaption {
+  margin-top: 28px;
+  font-size: var(--type-body);
+  font-weight: 600;
+}
+.louise-conversations {
+  background: var(--white);
+}
+.conversation-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(32px, 6vw, 80px);
+}
+.conversation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+.conversation .eyebrow {
+  margin-bottom: 18px;
+}
+.conversation h3 + p {
+  margin-top: 18px;
+  margin-bottom: 28px;
+  max-width: 55ch;
+}
+.conversation .text-link {
+  margin-top: auto;
+  min-height: 44px;
+}
+@media (max-width: 860px) {
+  .client-story-layout,
+  .conversation-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  .client-story-heading h2 {
+    max-width: none;
+  }
+}
 @media (max-width: 620px) {
   .simple-links > a {
     grid-template-columns: auto minmax(0, 1fr) auto;

@@ -12,7 +12,7 @@ function staleDiary() {
   return {
     business: { name: 'Soul to Sole', ownerName: 'Louise O\'Dalaigh', ownerEmail: 'old@example.test', phone: '0123456789', about: 'Only two decades in healthcare.', timezone: 'Europe/Dublin' },
     services: [{ id: 'live-treatment', name: 'Live treatment', priceGBP: 83, durationMinutes: 90, active: true }],
-    book: { enabled: false, title: 'Deeply OK', coverImage: '/assets/brand/deeply-ok-cover.jpeg', coverAlt: 'Cover of Deeply OK by Louise O\'Dalaigh', amazonUrl: 'https://retailer.example/book', waitlistUrl: 'https://signup.example/book', launchDate: '2026-11-01', launchDateLabel: 'A current launch date', waitlistLabel: 'Live waitlist label', amazonLabel: 'Live retailer label', description: ['Current book copy.'], isbn: { paperback: 'preserved-book-id' } },
+    book: { enabled: false, title: 'Deeply OK', coverImage: '/assets/brand/deeply-ok-cover.jpeg', coverAlt: 'Cover of Deeply OK by Louise O\'Dalaigh', amazonUrl: 'https://retailer.example/book', waitlistUrl: 'https://signup.example/book', launchDate: '2026-10-10', launchDateLabel: 'Coming 10th October 2026 — World Mental Health Day', waitlistLabel: 'Live waitlist label', amazonLabel: 'Live retailer label', description: ['Current book copy.'], isbn: { paperback: 'preserved-book-id' } },
     bookingRules: { workingDays: [2, 4], minNoticeHours: 36, maxAdvanceBookingDays: 45 },
     availability: { disabledDates: ['2027-01-02'] },
     policies: { depositPercent: 0, deposit: 'No deposit needed.', cancellation: 'A late cancellation fee may apply.', arrival: 'Arrive five minutes early.', privacy: 'Your details are used for appointments.' },
@@ -28,7 +28,7 @@ function staleDiary() {
   };
 }
 
-test('stale upstream name, cover, biography, contact information and booking policies cannot overwrite approved content', () => {
+test('stale upstream name, cover, launch date, biography, contact information and booking policies cannot overwrite approved content', () => {
   const source = staleDiary();
   const original = structuredClone(source);
   Object.freeze(source.business);
@@ -40,6 +40,8 @@ test('stale upstream name, cover, biography, contact information and booking pol
   assert.equal(result.business.ownerName, 'Louise O’Dálaigh');
   assert.equal(result.book.coverImage, '/assets/brand/deeply-ok-cover-fada.jpeg');
   assert.equal(result.book.coverAlt, 'Deeply OK by Louise O’Dálaigh — A simple guide to feeling like yourself again');
+  assert.equal(result.book.launchDate, '2026-10-13');
+  assert.equal(result.book.launchDateLabel, 'Coming 13 October 2026');
   assert.match(result.business.about, /qualified as a nurse/);
   assert.match(result.business.about, /more than three decades in healthcare/);
   assert.match(result.business.about, /over 20 years as a healthcare leader/);
@@ -59,8 +61,8 @@ test('live services, prices, availability, book links and booking rules are reta
     assert.strictEqual(result[key], source[key], `${key} must remain authoritative from the diary`);
   }
   assert.notStrictEqual(result.book, source.book, 'book editorial changes require a copy');
-  const { coverImage: oldCoverImage, coverAlt: oldCoverAlt, ...liveBook } = source.book;
-  const { coverImage, coverAlt, ...preservedBook } = result.book;
+  const { coverImage: oldCoverImage, coverAlt: oldCoverAlt, launchDate: oldLaunchDate, launchDateLabel: oldLaunchDateLabel, ...liveBook } = source.book;
+  const { coverImage, coverAlt, launchDate, launchDateLabel, ...preservedBook } = result.book;
   assert.deepEqual(preservedBook, liveBook, 'every non-editorial book field must remain authoritative from the diary');
   assert.strictEqual(result.book.isbn, source.book.isbn);
   assert.strictEqual(result.book.description, source.book.description);
@@ -104,6 +106,8 @@ test('local business configuration and saved settings use the same approved edit
     assert.equal(config.business.ownerName, 'Louise O’Dálaigh');
     assert.equal(config.book.coverImage, PUBLIC_CONTENT.book.coverImage);
     assert.equal(config.book.coverAlt, PUBLIC_CONTENT.book.coverAlt);
+    assert.equal(config.book.launchDate, '2026-10-13');
+    assert.equal(config.book.launchDateLabel, 'Coming 13 October 2026');
     assert.equal(config.business.about, PUBLIC_CONTENT.business.about);
     assert.equal(config.business.ownerEmail, PUBLIC_CONTENT.business.ownerEmail);
     assert.equal(Object.hasOwn(config.business, 'phone'), false);
@@ -144,5 +148,7 @@ test('public-config API overlays stale editorial data without replacing current 
   assert.deepEqual(captured.body.book, { ...upstream.book, ...PUBLIC_CONTENT.book });
   assert.notEqual(captured.body.book.coverImage, upstream.book.coverImage);
   assert.notEqual(captured.body.book.coverAlt, upstream.book.coverAlt);
+  assert.equal(captured.body.book.launchDate, '2026-10-13');
+  assert.equal(captured.body.book.launchDateLabel, 'Coming 13 October 2026');
   assert.equal(Object.hasOwn(captured.body.business, 'phone'), false);
 });
