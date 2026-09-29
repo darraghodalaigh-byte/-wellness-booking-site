@@ -1,6 +1,8 @@
 import { mkdir, copyFile, cp, rm, writeFile } from "node:fs/promises";
 import { BUSINESS_CONFIG } from "../config/business.config.js";
 import { getPublicBusinessData } from "../server/scheduling.js";
+import { build } from "esbuild";
+import { fileURLToPath } from "node:url";
 const root = new URL("../", import.meta.url);
 const out = new URL("../web-release/", import.meta.url);
 await mkdir(out, { recursive: true });
@@ -40,9 +42,11 @@ for (const asset of [
   await mkdir(new URL(`assets/${asset.split("/")[0]}/`, out), { recursive: true });
   await copyFile(new URL(`public/assets/${asset}`, root), new URL(`assets/${asset}`, out));
 }
-await cp(new URL("api/", root), new URL("api/", out), { recursive: true });
-await cp(new URL("lib/", root), new URL("lib/", out), { recursive: true });
-await writeFile(new URL("package.json", out), JSON.stringify({ private: true, type: "module", engines: { node: "22.x" } }, null, 2));
+await rm(new URL("api/", out), { recursive: true, force: true });
+await rm(new URL("lib/", out), { recursive: true, force: true });
+await build({ entryPoints: ["contact", "public-config", "diary", "availability", "bookings", "health"].map(name => fileURLToPath(new URL(`api/${name}.js`, root))),
+  outdir: fileURLToPath(new URL("api/", out)), bundle: true, platform: "node", target: "node22", format: "esm", external: ["pg"] });
+await writeFile(new URL("package.json", out), JSON.stringify({ private: true, type: "module", engines: { node: "22.x" }, dependencies: { pg: "8.13.1" } }, null, 2));
 const content = getPublicBusinessData(BUSINESS_CONFIG);
 delete content.business.phone;
 await writeFile(new URL("content.json", out), JSON.stringify(content));
@@ -59,21 +63,16 @@ await writeFile(
       rewrites: [
         {
           source: "/api/availability/:path*",
-          destination: "https://wellness-booking-site.onrender.com/api/availability/:path*",
-        },
-        {
-          source: "/api/bookings",
-          destination: "https://wellness-booking-site.onrender.com/api/bookings",
-        },
-        {
-          source: "/api/health",
-          destination: "https://wellness-booking-site.onrender.com/api/health",
+          destination: "/api/availability?action=:path*",
         },
       ],
       functions: {
         "api/contact.js": { maxDuration: 30 },
         "api/public-config.js": { maxDuration: 60 },
         "api/diary.js": { maxDuration: 60 },
+        "api/availability.js": { maxDuration: 30 },
+        "api/bookings.js": { maxDuration: 30 },
+        "api/health.js": { maxDuration: 15 },
       },
       redirects: [
         {
@@ -131,5 +130,5 @@ await writeFile(
   "User-agent: *\nDisallow: /coaching-ideas.html\nDisallow: /diary.html\nDisallow: /admin\nDisallow: /api/\n",
 );
 console.log(
-  "Public web release built. The private diary uses an authenticated bridge to the existing booking service.",
+  "Public web release built. Diary and customer appointments share persistent database storage.",
 );

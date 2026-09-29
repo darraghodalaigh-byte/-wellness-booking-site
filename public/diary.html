@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/diary.css?v=1" />
-    <script type="module" src="/diary.js?v=1"></script>
+    <script type="module" src="/diary.js?v=3"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to diary</a>
@@ -21,7 +21,7 @@
       <div class="header-actions"><span class="private-label">Private diary</span><button id="logout" class="button button-quiet" type="button" hidden>Sign out</button></div>
     </header>
     <main id="main" class="diary-main">
-      <div id="sessionCheck" class="session-check" role="status">Checking your sign-in… The diary may need a moment to open.</div>
+      <div id="sessionCheck" class="session-check" role="status">Checking your sign-in…</div>
       <section id="loginPanel" class="login-panel panel" aria-labelledby="loginHeading" hidden>
         <p class="eyebrow">A little space to organise</p>
         <h1 id="loginHeading">Welcome, Louise.</h1>
@@ -36,7 +36,7 @@
           </fieldset>
           <p id="loginStatus" class="status" role="status" aria-live="polite"></p>
         </form>
-        <p class="small-copy">Use your existing diary username and password.</p>
+        <p class="small-copy">Use the username and password you chose for your private diary.</p>
       </section>
       <div id="diaryApp" hidden>
         <div class="page-heading"><div><p class="eyebrow" id="todayLabel">Your space to organise</p><h1>Your diary, Louise.</h1><p class="intro">Set your week, protect your time, and keep track of the people coming to see you.</p></div><a class="text-link" href="/" target="_blank" rel="noopener noreferrer">View your website ↗</a></div>
@@ -59,7 +59,19 @@
             </fieldset>
             <p id="hoursStatus" class="status" role="status" aria-live="polite"></p>
           </form>
-          <details id="servicesDetails" class="panel services-panel"><summary>Treatments &amp; existing offerings <span id="servicesDirty" class="unsaved" hidden>Unsaved changes</span></summary><p class="small-copy">Review what people can book, how long it takes and the price in euros. Turning an offering off stops new bookings for it.</p><form id="servicesForm"><fieldset id="servicesFields" disabled><legend class="sr-only">Existing offerings</legend><div id="servicesList"></div><div class="form-actions"><button class="button button-primary" type="submit" data-write>Save offerings</button><button id="discardServices" class="button button-quiet" type="button" data-write hidden>Discard changes</button></div></fieldset><p id="servicesStatus" class="status" role="status" aria-live="polite"></p></form></details>
+          <details id="servicesDetails" class="panel services-panel">
+            <summary>Treatments &amp; sessions <span id="servicesDirty" class="unsaved" hidden>Unsaved changes</span></summary>
+            <p class="small-copy">Add or update one-to-one treatments and coaching sessions, including their length and price in euros. Turning a session off stops new bookings for it. Group courses are handled by enquiry until a course programme is configured.</p>
+            <form id="servicesForm">
+              <fieldset id="servicesFields" disabled>
+                <legend class="sr-only">Treatments and sessions</legend>
+                <div id="servicesList"></div>
+                <div class="form-actions"><button id="addService" class="button button-outline" type="button" data-write>Add a treatment or session</button><button class="button button-primary" type="submit" data-write>Save treatments &amp; sessions</button><button id="discardServices" class="button button-quiet" type="button" data-write hidden>Discard changes</button></div>
+                <p class="small-copy">New entries stay as drafts until you save. You can keep up to 30 treatments and sessions.</p>
+              </fieldset>
+              <p id="servicesStatus" class="status" role="status" aria-live="polite"></p>
+            </form>
+          </details>
         </section>
         <section id="panel-timeoff" role="tabpanel" aria-labelledby="tab-timeoff" hidden>
           <div class="section-title"><div><h2>Make room for time off</h2><p>Close a whole day, or just a few hours. Existing appointments stay in your diary.</p></div></div>

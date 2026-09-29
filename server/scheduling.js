@@ -1,6 +1,54 @@
 import { BUSINESS_CONFIG } from '../config/business.config.js';
 import { minutesToTime, parseTimeToMinutes } from './db/time.js';
 
+const dublinClock = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Europe/Dublin',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hourCycle: 'h23'
+});
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function dublinParts(instant) {
+  return Object.fromEntries(dublinClock.formatToParts(instant)
+    .filter((part) => part.type !== 'literal')
+    .map((part) => [part.type, Number(part.value)]));
+}
+
+function dublinWallTime(instant) {
+  const { year, month, day, hour, minute, second } = dublinParts(instant);
+  return Date.UTC(year, month - 1, day, hour, minute, second);
+}
+
+function dublinToday(now) {
+  const { year, month, day } = dublinParts(now);
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
+function dublinOffsetsForDate(date) {
+  const midnight = parseDateOnly(date).getTime();
+  // Sample either side of the date so both offsets are considered on a
+  // clock-change day. Intl supplies the timezone rules; the host TZ is unused.
+  return [...new Set([-DAY_MS, 0, DAY_MS].map((delta) => {
+    const instant = midnight + delta;
+    return dublinWallTime(instant) - instant;
+  }))];
+}
+
+function dublinSlotInstant(date, minute, offsets) {
+  const wallTime = parseDateOnly(date).getTime() + minute * 60 * 1000;
+  const matches = offsets.map((offset) => wallTime - offset)
+    .filter((instant) => dublinWallTime(instant) === wallTime);
+  // Spring's skipped hour has no matching instant. For autumn's repeated
+  // hour, consistently use the first occurrence; a passed slot must not
+  // become bookable again when the clock moves backwards.
+  return matches.length ? Math.min(...matches) : null;
+}
+
 function parseDateOnly(input) {
   const [year, month, day] = input.split('-').map(Number);
   return new Date(Date.UTC(year, month - 1, day));
@@ -46,9 +94,8 @@ function overlaps(a, b) {
   return a.start < b.end && b.start < a.end;
 }
 
-export function validateBookingWindow(date, config = BUSINESS_CONFIG) {
-  const today = new Date();
-  const localToday = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+export function validateBookingWindow(date, config = BUSINESS_CONFIG, now = new Date()) {
+  const localToday = dublinToday(now);
   const bookingDay = parseDateOnly(date);
   const advanceDays = dayDiff(bookingDay, localToday);
 
@@ -75,13 +122,13 @@ export function validateBookingWindow(date, config = BUSINESS_CONFIG) {
   return { valid: true };
 }
 
-export function buildSlotsForDate({ serviceId, date, bookings, blockedTimes = [], config = BUSINESS_CONFIG }) {
+export function buildSlotsForDate({ serviceId, date, bookings, blockedTimes = [], config = BUSINESS_CONFIG, now = new Date() }) {
   const service = getService(config, serviceId);
   if (!service) {
     return { error: 'Invalid service selected.' };
   }
 
-  const dateWindow = validateBookingWindow(date, config);
+  const dateWindow = validateBookingWindow(date, config, now);
   if (!dateWindow.valid) {
     return {
       service,
@@ -103,8 +150,8 @@ export function buildSlotsForDate({ serviceId, date, bookings, blockedTimes = []
     .filter((booking) => booking.date === date && occupiedStatuses.has(String(booking.status || '').toLowerCase()))
     .map((booking) => ({ ...getBookingRange(booking), id: booking.id }));
 
-  const now = new Date();
   const minNoticeCutoff = now.getTime() + (config.booking.minNoticeHours * 60 * 60 * 1000);
+  const dublinOffsets = dublinOffsetsForDate(date);
 
   const slots = [];
   for (let candidate = open; candidate + service.durationMinutes <= close; candidate += slotInterval) {
@@ -141,8 +188,11 @@ export function buildSlotsForDate({ serviceId, date, bookings, blockedTimes = []
     }
 
     if (available) {
-      const slotDateTime = new Date(`${date}T${minutesToTime(candidate)}:00`);
-      if (slotDateTime.getTime() < minNoticeCutoff) {
+      const slotInstant = dublinSlotInstant(date, candidate, dublinOffsets);
+      if (slotInstant === null) {
+        available = false;
+        reason = 'Unavailable during the clock change';
+      } else if (slotInstant < minNoticeCutoff) {
         available = false;
         reason = `Requires ${config.booking.minNoticeHours}h notice`;
       }
@@ -169,7 +219,8 @@ export function generateCalendarSummary({
   month,
   bookings,
   blockedTimesByDate = {},
-  config = BUSINESS_CONFIG
+  config = BUSINESS_CONFIG,
+  now = new Date()
 }) {
   const service = getService(config, serviceId);
   if (!service) {
@@ -193,7 +244,8 @@ export function generateCalendarSummary({
       date: dateStr,
       bookings,
       blockedTimes: blockedTimesByDate[dateStr] || [],
-      config
+      config,
+      now
     });
     const availableCount = slotResult.slots.filter((slot) => slot.available).length;
 
@@ -218,14 +270,15 @@ export function checkBookingConflict({
   time,
   bookings,
   blockedTimes = [],
-  config = BUSINESS_CONFIG
+  config = BUSINESS_CONFIG,
+  now = new Date()
 }) {
   const service = getService(config, serviceId);
   if (!service) {
     return { conflict: true, reason: 'Invalid service.' };
   }
 
-  const slotResult = buildSlotsForDate({ serviceId, date, bookings, blockedTimes, config });
+  const slotResult = buildSlotsForDate({ serviceId, date, bookings, blockedTimes, config, now });
   const slot = slotResult.slots.find((candidate) => candidate.time === time);
 
   if (!slot) {

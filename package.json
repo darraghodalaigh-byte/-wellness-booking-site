@@ -18,5 +18,8 @@
     "express": "^4.19.2",
     "nodemailer": "^10.0.10",
     "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
   }
 }

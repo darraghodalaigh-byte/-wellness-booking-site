@@ -76,7 +76,8 @@ export async function initBooking(config) {
 
   const rules = config.bookingRules || {};
   const now = new Date();
-  const today = dateKey(now);
+  const irelandParts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {timeZone: 'Europe/Dublin', year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(now).map(part => [part.type, part.value]));
+  const today = `${irelandParts.year}-${irelandParts.month}-${irelandParts.day}`;
   const maxDays = Math.max(
     0,
     Number.isFinite(Number(rules.maxAdvanceBookingDays))
@@ -728,7 +729,7 @@ export async function initBooking(config) {
           showFieldError(name, String(message));
         setStatus(
           refs.formStatus,
-          "Please check the highlighted details and try again. Your other details have been kept.",
+          Object.entries(result.fieldErrors).filter(([name]) => !fields[name]).map(([, message]) => String(message)).join(' ') || "Please check the highlighted details and try again. Your other details have been kept.",
           "error",
         );
       } else if (response.status === 409) {

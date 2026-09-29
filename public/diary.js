@@ -113,6 +113,7 @@ function syncControls() {
   const unavailable = !state.authenticated || !state.settings || state.busy || state.needsReload;
   for (const id of ["hoursFields", "servicesFields", "timeoffFields"]) $(id).disabled = unavailable;
   document.querySelectorAll("[data-write]").forEach((button) => { button.disabled = unavailable; });
+  $("addService").disabled = unavailable || $("servicesList").querySelectorAll(".service-editor").length >= 30;
   document.querySelectorAll("[data-booking-write]").forEach((control) => { control.disabled = !state.authenticated || state.busy || state.needsReload || state.bookingsLoading; });
   $("refreshBookings").disabled = state.busy || state.bookingsLoading;
   $("retryConnection").disabled = state.busy;
@@ -188,30 +189,57 @@ function serviceField(labelText, name, value, type = "text", options = {}) {
 function serviceValues(service) {
   return { name: String(service.name || ""), durationMinutes: Number(service.durationMinutes), priceGBP: Number(service.priceGBP), shortDescription: String(service.shortDescription || ""), active: service.active !== false };
 }
+function createServiceEditor(service, { isNew = false } = {}) {
+  const row = element("section", "service-editor");
+  row.dataset.serviceId = String(service.id || "");
+  if (isNew) {
+    row.dataset.newService = "true";
+    row.dataset.serviceSuffix = crypto.randomUUID().replaceAll("-", "").slice(0, 12);
+  }
+  const heading = element("h3", "", service.name || "New treatment or session");
+  heading.id = `service-heading-${row.dataset.serviceId || row.dataset.serviceSuffix}`;
+  row.setAttribute("aria-labelledby", heading.id);
+  const toggle = element("label", "service-toggle");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.name = "active";
+  checkbox.checked = service.active !== false;
+  toggle.append(checkbox, element("span", "", "Available for new bookings"));
+  const pair = element("div", "field-grid");
+  pair.append(serviceField("Length, in minutes", "durationMinutes", service.durationMinutes, "number", { min: "5", max: "480", step: "1", required: true }), serviceField("Price in euros (€)", "priceGBP", service.priceGBP, "number", { min: "0", max: "10000", step: "1", required: true }));
+  row.append(heading);
+  if (isNew) row.append(element("p", "small-copy service-draft-note", "New entry · not saved yet"));
+  row.append(toggle, serviceField("Name", "name", service.name, "text", { required: true, maxLength: 120 }), pair, serviceField("Short description", "shortDescription", service.shortDescription, "textarea", { maxLength: 2000 }));
+  if (isNew) {
+    const remove = element("button", "button button-quiet", "Remove this draft");
+    remove.type = "button";
+    remove.dataset.write = "";
+    remove.addEventListener("click", () => {
+      row.remove();
+      state.servicesDirty = serviceChanges().length > 0;
+      setStatus("servicesStatus", "The new draft was removed. Your other changes have been kept.");
+      syncControls();
+      $("addService").focus();
+    });
+    const actions = element("div", "form-actions service-draft-actions");
+    actions.append(remove);
+    row.append(actions);
+  }
+  return row;
+}
 function renderServices() {
   state.servicesBaseline = clone(state.settings.services);
-  const rows = state.settings.services.map((service, index) => {
-    const row = element("section", "service-editor");
-    row.dataset.serviceId = String(service.id);
-    const heading = element("h3", "", service.name);
-    heading.id = `service-heading-${index}`;
-    row.setAttribute("aria-labelledby", heading.id);
-    const toggle = element("label", "service-toggle");
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = "active";
-    checkbox.checked = service.active !== false;
-    toggle.append(checkbox, element("span", "", "Available for new bookings"));
-    const pair = element("div", "field-grid");
-    pair.append(serviceField("Length, in minutes", "durationMinutes", service.durationMinutes, "number", { min: "5", max: "480", step: "1", required: true }), serviceField("Price in euros (€)", "priceGBP", service.priceGBP, "number", { min: "0", max: "10000", step: "1", required: true }));
-    row.append(heading, toggle, serviceField("Name", "name", service.name, "text", { required: true, maxLength: 120 }), pair, serviceField("Short description", "shortDescription", service.shortDescription, "textarea", { maxLength: 2000 }));
-    return row;
-  });
-  $("servicesList").replaceChildren(...(rows.length ? rows : [element("p", "empty-state", "No offerings are currently configured.")]));
+  const rows = state.settings.services.map((service) => createServiceEditor(service));
+  $("servicesList").replaceChildren(...(rows.length ? rows : [element("p", "empty-state", "No treatments or sessions are configured. Add your first one below.")]));
   state.servicesDirty = false;
 }
-function serviceChanges() {
+function newServiceId(name, suffix) {
+  const slug = name.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60).replace(/-$/, "") || "session";
+  return `${slug}-${suffix}`;
+}
+function serviceChanges({ assignIds = false } = {}) {
   return [...$("servicesList").querySelectorAll(".service-editor")].map((row) => {
+    const isNew = row.dataset.newService === "true";
     const baseline = state.servicesBaseline.find((service) => String(service.id) === row.dataset.serviceId);
     const before = serviceValues(baseline || {});
     const after = {
@@ -221,9 +249,30 @@ function serviceChanges() {
       shortDescription: row.querySelector('[name="shortDescription"]').value.trim(),
       active: row.querySelector('[name="active"]').checked,
     };
-    const changes = Object.fromEntries(Object.entries(after).filter(([key, value]) => !same(value, before[key])));
-    return { id: row.dataset.serviceId, changes };
+    if (isNew && assignIds && !row.dataset.serviceId) row.dataset.serviceId = newServiceId(after.name, row.dataset.serviceSuffix);
+    const changes = isNew ? after : Object.fromEntries(Object.entries(after).filter(([key, value]) => !same(value, before[key])));
+    return { id: row.dataset.serviceId, isNew, changes };
   }).filter((item) => Object.keys(item.changes).length);
+}
+function mergeServiceChanges(services, changes) {
+  if (changes.some((change) => !change.isNew && !services.some((service) => String(service.id) === change.id))) throw new DiaryError("A treatment or session has changed elsewhere. Reload the diary and review your entries before saving.", 409);
+  const merged = services.map((service) => ({ ...service, active: service.active !== false, ...(changes.find((change) => change.id === String(service.id))?.changes || {}) }));
+  for (const change of changes) {
+    if (change.isNew && !merged.some((service) => String(service.id) === change.id)) merged.push({ id: change.id, ...change.changes, benefits: [] });
+  }
+  if (merged.length > 30) throw new DiaryError("You can keep up to 30 treatments and sessions. Remove a new draft before saving.", 400);
+  return merged;
+}
+function reconcileSavedServiceDrafts() {
+  for (const row of $("servicesList").querySelectorAll('[data-new-service="true"]')) {
+    const saved = state.settings.services.find((service) => String(service.id) === row.dataset.serviceId);
+    if (!saved) continue;
+    delete row.dataset.newService;
+    row.querySelector(".service-draft-note")?.remove();
+    row.querySelector(".service-draft-actions")?.remove();
+    state.servicesBaseline.push(clone(saved));
+  }
+  state.servicesDirty = serviceChanges().length > 0;
 }
 function blocksFromSettings() {
   if (!state.settings) return [];
@@ -258,6 +307,7 @@ async function loadSettings({ resetHours = false, resetServices = false } = {}) 
   if (request !== state.settingsRequest || !state.authenticated) return false;
   if (!validSettings(data.settings)) throw new DiaryError("The working-hours information is incomplete. Please reload before making changes.", 502);
   state.settings = clone(data.settings);
+  if (state.servicesDirty && !resetServices) reconcileSavedServiceDrafts();
   if (!state.hoursDirty || resetHours) renderHours();
   if (!state.servicesDirty || resetServices) renderServices();
   renderBlocks();
@@ -343,6 +393,9 @@ function renderBookings() {
       meta.append(part);
     }
     card.append(head, meta);
+    if (["unconfirmed", "sending", "pending"].includes(booking.notificationStatus)) {
+      card.append(element("p", "notice quiet-notice", "Booking notification delivery has not been confirmed. The booking is saved in your diary. Check your email before contacting the person separately."));
+    }
     if (booking.notes) card.append(element("p", "booking-notes", booking.notes));
     if (typeof booking.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.email)) {
       const reply = element("a", "text-link booking-email", "Reply by email ↗");
@@ -433,7 +486,7 @@ $("loginForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   if ($("loginFields").disabled) return;
   $("loginFields").disabled = true;
-  setStatus("loginStatus", "Signing in… The diary may need a moment to open.");
+  setStatus("loginStatus", "Signing in…");
   try {
     await api("login", { method: "POST", body: { username: $("username").value.trim(), password: $("password").value } });
     const session = await api("session");
@@ -495,18 +548,35 @@ $("hoursForm").addEventListener("submit", async (event) => {
   await runMutation("hoursStatus", () => api("settings", { method: "PUT", body: { booking: changes } }), () => loadSettings({ resetHours: true }), "Working hours saved and checked against the diary.");
 });
 $("discardHours").addEventListener("click", () => { renderHours(); setStatus("hoursStatus", "Your unsaved changes were discarded."); syncControls(); });
-$("servicesForm").addEventListener("input", () => { state.servicesDirty = serviceChanges().length > 0; setStatus("servicesStatus"); syncControls(); });
+$("addService").addEventListener("click", () => {
+  if (!state.authenticated || !state.settings || state.busy || state.needsReload || $("servicesList").querySelectorAll(".service-editor").length >= 30) return;
+  const row = createServiceEditor({ name: "", durationMinutes: "", priceGBP: "", shortDescription: "", active: false }, { isNew: true });
+  $("servicesList").querySelector(".empty-state")?.remove();
+  $("servicesList").append(row);
+  state.servicesDirty = true;
+  $("servicesDetails").open = true;
+  setStatus("servicesStatus", "Enter the new session details and choose whether it is available for bookings, then save when you are ready.");
+  syncControls();
+  row.querySelector('[name="name"]').focus();
+});
+$("servicesForm").addEventListener("input", (event) => {
+  if (event.target.name === "name") event.target.setCustomValidity("");
+  state.servicesDirty = serviceChanges().length > 0;
+  setStatus("servicesStatus");
+  syncControls();
+});
 $("servicesForm").addEventListener("submit", async (event) => {
   event.preventDefault();
-  const changes = serviceChanges();
-  if (!changes.length) { setStatus("servicesStatus", "Your offerings are already up to date."); return; }
+  for (const input of $("servicesList").querySelectorAll('[name="name"]')) input.setCustomValidity(input.value.trim() ? "" : "Enter a name for this treatment or session.");
+  if (!$("servicesForm").reportValidity()) return;
+  const changes = serviceChanges({ assignIds: true });
+  if (!changes.length) { setStatus("servicesStatus", "Your treatments and sessions are already up to date."); return; }
   await runMutation("servicesStatus", async () => {
     const fresh = await api("settings");
-    if (!validSettings(fresh.settings)) throw new DiaryError("The existing offerings could not be checked. Please reload before saving.", 502);
-    if (changes.some((change) => !fresh.settings.services.some((service) => String(service.id) === change.id))) throw new DiaryError("An offering has changed elsewhere. Reload the diary and review your entries before saving.", 409);
-    const services = fresh.settings.services.map((service) => ({ ...service, active: service.active !== false, ...(changes.find((change) => change.id === String(service.id))?.changes || {}) }));
+    if (!validSettings(fresh.settings)) throw new DiaryError("Your treatments and sessions could not be checked. Please reload before saving.", 502);
+    const services = mergeServiceChanges(fresh.settings.services, changes);
     await api("settings", { method: "PUT", body: { services } });
-  }, () => loadSettings({ resetServices: true }), "Offerings saved and checked against the diary.");
+  }, () => loadSettings({ resetServices: true }), "Treatments and sessions saved and checked against the diary.");
 });
 $("discardServices").addEventListener("click", () => { renderServices(); setStatus("servicesStatus", "Your unsaved changes were discarded."); syncControls(); });
 $("offType").addEventListener("change", updateOffFields);

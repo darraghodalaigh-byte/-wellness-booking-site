@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { PUBLIC_CONTENT, applyPublicContent } from '../lib/public-content.js';
 import { BUSINESS_CONFIG } from '../config/business.config.js';
-import publicConfigHandler from '../api/public-config.js';
+import { createPublicConfigHandler } from '../api/public-config.js';
 
 const deposit = 'A 50% deposit is required to secure your appointment. Louise will email payment details after receiving your request. Your appointment is confirmed once the deposit is received and Louise confirms it by email. No payment is taken on this website.';
 const cancellation = 'Please give at least 24 hours’ notice to cancel or reschedule. If you cancel less than 24 hours before your appointment, the 50% booking deposit is non-refundable.';
@@ -120,13 +120,14 @@ test('local business configuration and saved settings use the same approved edit
   }
 });
 
-test('public-config API overlays stale editorial data without replacing current diary values', async (context) => {
+test('public-config API overlays stored editorial data without replacing current diary values', async () => {
   const upstream = staleDiary();
-  let endpoint;
-  context.mock.method(globalThis, 'fetch', async (url) => {
-    endpoint = url;
-    return { ok: true, json: async () => upstream };
-  });
+  const stored = { ...upstream, booking: { ...BUSINESS_CONFIG.booking, ...upstream.bookingRules } };
+  let query;
+  const publicConfigHandler = createPublicConfigHandler({ store: { query: async (sql) => {
+    query = sql;
+    return { rows: [{ data: stored }] };
+  } } });
   const captured = { headers: {} };
   const response = {
     setHeader(key, value) { captured.headers[key] = value; },
@@ -135,7 +136,7 @@ test('public-config API overlays stale editorial data without replacing current 
     end() { captured.ended = true; }
   };
   await publicConfigHandler({ method: 'GET' }, response);
-  assert.equal(endpoint, 'https://wellness-booking-site.onrender.com/api/public-config');
+  assert.equal(query, "SELECT data FROM diary_config WHERE id='main'");
   assert.equal(captured.status, 200);
   assert.equal(captured.headers['Cache-Control'], 'no-store');
   assert.equal(captured.body.business.ownerName, 'Louise O’Dálaigh');
@@ -143,9 +144,12 @@ test('public-config API overlays stale editorial data without replacing current 
   assert.equal(captured.body.policies.depositPercent, 50);
   assert.equal(captured.body.policies.cancellation, cancellation);
   assert.deepEqual(captured.body.faq.slice(-3), PUBLIC_CONTENT.faq);
-  assert.strictEqual(captured.body.services, upstream.services);
-  assert.strictEqual(captured.body.bookingRules, upstream.bookingRules);
-  assert.deepEqual(captured.body.book, { ...upstream.book, ...PUBLIC_CONTENT.book });
+  assert.deepEqual(captured.body.services, upstream.services);
+  for (const [key, value] of Object.entries(upstream.bookingRules)) assert.deepEqual(captured.body.bookingRules[key], value);
+  const { isbn, ...publicBook } = upstream.book;
+  assert.deepEqual(captured.body.book, { ...publicBook, ...PUBLIC_CONTENT.book });
+  assert.equal(Object.hasOwn(captured.body, 'email'), false);
+  assert.equal(Object.hasOwn(captured.body.book, 'isbn'), false);
   assert.notEqual(captured.body.book.coverImage, upstream.book.coverImage);
   assert.notEqual(captured.body.book.coverAlt, upstream.book.coverAlt);
   assert.equal(captured.body.book.launchDate, '2026-10-13');
