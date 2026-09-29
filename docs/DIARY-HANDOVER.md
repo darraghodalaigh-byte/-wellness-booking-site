@@ -1,42 +1,49 @@
 # Louise’s private diary
 
 Entry point: https://soultosolebylouise.com/admin (opens /diary.html on the same domain).
+Username: `lodal01` (lowercase L). Use the password Darragh supplied privately. Passwords and database credentials are not stored in this repository.
 
 ## Using the diary
 
-1. Open **Louise’s diary** in the website footer.
-2. Sign in with the existing diary username and password.
-3. Under **Working hours**, select working days, choose start/finish times, and save. Those hours apply to all selected days. Appointment spacing and advance notice are under the expandable section.
-4. Under **Time off**, close a whole date or a time window. Remove a closure to reopen that time within the usual working hours.
-5. Under **Bookings**, review requests and reply by email. Status changes update the diary only: send confirmation, deposit instructions and cancellation messages separately. Confirm only after Louise has received the deposit and agreed the appointment.
-6. Existing treatments can be edited or switched off under **Treatments & existing offerings**. Prices are euros. This interface does not create group courses, capacities or recurring course sessions.
+1. Open **Louise’s diary** in the website footer and sign in.
+2. Under **Working hours**, choose working days, start/finish times and **Save working hours**. The hours apply to every selected day. Appointment spacing and advance notice are under the expandable section.
+3. Under **Time off**, close a whole date or a time window. Removing time off reopens the time within the usual working hours. The diary prevents a closure from overlapping an existing active appointment.
+4. Under **Bookings**, review requests and reply by email. A new request reserves its time and awaits confirmation. Send payment details for the 50% deposit, then confirm the appointment by email after receiving it. Changing a status updates the diary only; it does not send an email. Cancelling releases availability, and cancelled appointments cannot be reopened.
+5. Under **Working hours → Treatments & sessions**, edit an existing offering or **Add a treatment or session**. Enter a name, length, whole-euro price and description, enable availability if ready, then save. New entries are drafts until saved. Turning an offering off prevents new bookings without removing existing appointments.
+6. Sign out when finished, especially on a shared device.
 
-Do not share the diary credentials with customers. Signing out removes the session and clears displayed booking details. The diary is excluded from search indexing; each data request also requires authentication.
+Group courses still use the enquiry form. The diary supports one-to-one appointments; it does not claim to manage class capacity or multi-session course enrolments.
 
-## Access still required to complete the owner setup
+## Hosting and storage
 
-The existing Render host has diary credentials configured. They are not available in this workspace or the connected Vercel project. Darragh has been asked to sign in to the Render account in the in-app browser, or confirm access to the existing diary credentials. No credentials were guessed, changed, printed or embedded in the website. A single empty login request confirmed configuration without authenticating.
+The website, private diary and public booking endpoints run on Vercel. Neon stores the diary configuration, bookings, hashed sessions, notification state and rate limits on its free plan in London. Registration of the domain remains separate from website hosting. Louise does not need to sign into Vercel, Neon or Render for everyday diary management.
 
-Production owner login, a real availability-save check, and live booking export have not been completed. The interface and bridge can use the existing credentials; a new owner credential has not been issued. A Render sign-in is not itself the diary username/password.
+All eight existing treatments, prices, working hours and closures were copied from an authenticated backup of the original service. Initialization inserts missing configuration only and never overwrites a configured diary. Operational information comes from Postgres; approved public wording, contact information, name spelling and publication date remain protected by the editorial layer.
 
-## Existing host protection and remaining durability work
+Every booking insertion, closure, status change and settings change uses the same transaction lock. Availability uses Europe/Dublin independently of the server timezone, including clock changes. Database failures produce an error rather than an empty diary or fictitious availability.
 
-The Render service has not been restarted, redeployed or reconfigured, and no real bookings or availability settings were changed. The public customer calendar still uses the same original booking backend.
+## Login and privacy
 
-Before changing that host, export live appointments, settings and blocked times using authenticated access. The repository’s data/bookings.json is a legacy import source, not a live backup. Current source uses SQLite and filesystem settings on a Render free service; durable storage remains outstanding.
+The owner password is a salted scrypt hash in sensitive Vercel production configuration. Sessions are represented by hashed tokens in Postgres, with a 12-hour lifetime. The browser cookie is host-only, Secure, HttpOnly and SameSite=Strict. Sign-in throttling is persisted across function instances. Diary responses are private/no-store and require authentication; writes also require an allowed website origin.
 
-A database migration must make settings authoritative in the database, seed missing settings only, preserve dates as YYYY-MM-DD under the Postgres driver, and use consistent Europe/Dublin scheduling. Booking creation, reopening, blocks and availability changes need transactional conflict checks. Existing notification copy and recipients also need review against the email-only, pending-deposit process.
+Appointment requests are saved before notification is attempted. AgentMail sends a notification to Louise’s approved Gmail address, with the customer’s email as reply-to. Email acceptance is tracked separately from the saved booking. An uncertain notification shows a warning in the diary; it does not remove the request or tell the customer that an unsaved booking succeeded. Exact request retries reuse the existing pending booking. No automatic customer confirmation is sent.
 
-The new Vercel bridge forwards only allowlisted authenticated actions, rejects cross-origin writes and malformed settings, and uses a Secure/HttpOnly/SameSite=Strict host-only cookie. The legacy host still owns credentials and sessions. Sessions are lost if that host restarts. Login throttling in the bridge is a warm-instance safeguard, not distributed protection, and does not apply to direct requests to the legacy host. The cancellation preflight prevents reopening an already-cancelled appointment but is not an atomic cross-browser guarantee. The UI serializes its writes; the backend needs conditional status updates to close the remaining race.
+The public website contains no Louise phone number. The privacy page explains Vercel/Neon booking storage and AgentMail notification delivery.
 
-## Validation
+## Verification
 
-- 47 automated tests pass with `node --experimental-vm-modules --test --test-reporter=dot test/*.mjs` (14 new diary tests).
-- Isolated browser fixture: signed in, saved 10:00–16:00 hours, blocked and reopened a day, and updated an example request to confirmed. The real scheduling module used the same fixture state: the closed day offered no slots, reopening restored slots, and the example existing appointment remained unavailable.
-- Example HTML in a client name was rendered as text. No live email, booking or availability change was used for testing.
-- Mobile checks passed at 320 and 390 pixels and 200% text. Simulated 503 responses retained drafts and paused writes until reload; simulated expired sessions hid private details and preserved unfinished availability entries.
-- A successful authenticated production flow and persistence across a host restart remain unverified until owner access and backup are available.
+- Automated suite: 76 passed, zero failed; the separate Postgres integration suite is opt-in.
+- Real disposable local PostgreSQL 18.6: all ten integration scenarios passed (11 tests including the parent). Checks cover persistence across connections, private login, simultaneous booking contention, retry deduplication, cancellation, notification failure, validation and closure/booking races. The isolated local schema was removed and server stopped.
+- Remote database testing was limited to the legitimate diary setup and application checks. No production test schemas were created.
+- Chosen owner credentials work on the live domain. Saved hours immediately changed customer availability; a day closure survived sign-out/re-entry and removed all public slots. Original hours and closures were restored afterward. All eight services and zero original bookings were preserved.
+- Phone layouts passed at 320 and 390 pixels. The live authenticated diary had no horizontal overflow or console errors. Draft creation/removal and the empty booking state were checked.
+- The custom domain, www address and stable Vercel address are healthy. Render is suspended and its old public backend no longer serves appointments.
+- No real customer booking, email or payment was created during testing. Email-provider acceptance is covered by test responses; actual Gmail receipt was not exercised with a live test email.
 
-## Published release
+## Release and recovery
 
-Production deployment `dpl_TEcj3QZJbFubAnGLAV4tFqNnN41z` is READY at https://soultosolebylouise.com, from source commit `a9058bd`. Live checks confirmed that /admin opens the diary, the signed-out page renders without browser errors, unauthenticated settings/bookings requests are rejected, cross-origin writes are rejected, and diary/session responses are not cached. Existing public working hours and the approved 13 October book launch date are unchanged. Render remains signed out; owner setup and durable storage are still outstanding.
+The migration source is commit `fc4365d`. The final Vercel release is `dpl_mm8nK4K936P9Ppbhh7ZieKterkpr`. Live cutover results are recorded in RELEASE-NOTES.md.
+
+The original service is `srv-d7hnk1v7f7vs738muli0` on Render. Its final authenticated backup is held outside this repository in the restricted local migration folder. Keep the old service suspended after migration: it uses obsolete credentials and filesystem storage. Do not resume or redeploy it as the booking source without deliberate reconciliation with the authoritative Neon diary. Do not promote pre-migration Vercel releases, which proxy bookings to that obsolete service.
+
+Future releases: run the tests, run `node scripts/build-web-release.mjs`, and deploy from `web-release`. Required production configuration is DATABASE_URL, DIARY_USERNAME, DIARY_PASSWORD_HASH and the existing AgentMail credentials. Never commit or include these values in browser files.
